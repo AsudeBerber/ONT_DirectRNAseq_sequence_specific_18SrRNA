@@ -6,7 +6,7 @@ rule dorado:
     params:
         model = "sup@v3.0.1"
     threads:
-        4
+        20
     shell:
         "dorado_0.7.0 basecaller {params.model} {input} --emit-moves > {output}"
 
