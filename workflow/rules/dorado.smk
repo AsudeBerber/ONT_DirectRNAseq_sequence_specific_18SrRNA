@@ -18,3 +18,5 @@ rule dorado_all:
 
 
 #dorado_all apply for all rules since I have two samples data files
+#while running it snakemake -np dorado_all (it recognizes all input files and rule dorado as well)
+#then snakemake dorado_all --cores 4 (to run it actual)
