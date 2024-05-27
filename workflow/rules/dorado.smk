@@ -1,11 +1,8 @@
-sample = ["p2i", "p2s"]
-
-
 rule dorado:
     input:
         directory("resources/pod5/{sample}")
     output:
-        bam = "resources/basecalls/{sample}_basecalls.bam"
+        "resources/basecalls/{sample}_basecalls.bam"
     params:
         model = "sup@v3.0.1"
     threads:
@@ -16,8 +13,8 @@ rule dorado:
 
 rule dorado_all:
     input:
-        ["resources/basecalls/p2i_basecalls.bam",
-            "resources/basecalls/p2s_basecalls.bam"]
+        "resources/basecalls/p2i_basecalls.bam",
+        "resources/basecalls/p2s_basecalls.bam"
 
 
 #dorado_all apply for all rules since I have two samples data files
