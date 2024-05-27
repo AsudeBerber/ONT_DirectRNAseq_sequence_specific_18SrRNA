@@ -1,1 +1,1 @@
-# ONT_DirectRNAseq_sequence_specific_18SrRNA
+Data analysis of Oxford Nanopore Direct RNA seq  sequence specific experiment on HeLa cells

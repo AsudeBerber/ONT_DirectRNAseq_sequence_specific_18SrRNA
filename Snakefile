@@ -1,0 +1,1 @@
+include: "workflow/rules/dorado.smk"
