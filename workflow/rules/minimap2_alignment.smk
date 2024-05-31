@@ -1,21 +1,21 @@
 rule minimap2_align_txome:
     input:
         bam = "resources/basecalls/{sample}_basecalls.bam",
-        fa = "resources/referencetranscriptome/gencode.v46.transcripts.fa"
+        fa = "resources/referencetranscriptome/18SrRNA.fa"
     output:
-        "resources/alignments/{sample}_aligned_txome.bam"
+        "resources/alignments/{sample}_aligned.bam"
     conda:
         "../envs/minimap2.yaml"
     threads:
-        4
+        8
     shell:
         """
         samtools fastq -@ {threads} -T mv,ts,ns {input.bam} |
-            minimap2 -ax map-ont -N 10 -k14 -t {threads} {input.fa} - |
-            samtools view -bh -@ {threads} -o {output}
+            minimap2 -ax map-ont -k14 --secondary=no -t {threads} {input.fa} - |
+            samtools view -F 2048 -bh -@ {threads} -o {output}
         """ 
 
 rule minimap2_align_txome_all:
     input:
-        "resources/basecalls/p2i_basecalls.bam",
-        "resources/basecalls/p2s_basecalls.bam"
+        "resources/alignments/p2i_aligned.bam",
+        "resources/alignments/p2s_aligned.bam"
