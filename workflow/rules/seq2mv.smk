@@ -19,8 +19,8 @@ rule seq2mv_single_read:
         {input.bam} \
         {wildcards.read_id} \
         {wildcards.start} {wildcards.end} \
-        --pod5_dir resources/pod5/{wildcards.sequencer} """"
+        --pod5_dir resources/pod5/{wildcards.sequencer} """
         # \
-        #--region {params.region}"""
+        #--region {params.region}""
      
  
