@@ -10,9 +10,9 @@ rule minimap2_align_txome:
         8
     shell:
         """
-        samtools fastq {input.bam} -T mv,ts,ns -@ {threads}|
-            minimap2 -ax map-ont -k14 --secondary=no -t {threads} {input.fa} - |
-            samtools view -F 2048 -bh -@ {threads} -o {output}
+        samtools fastq {input.bam} -T mv,ts,ns -@ {threads} \
+        | minimap2 -ax map-ont -k14 --secondary=no -t {threads} {input.fa} - \
+        | samtools view -F 2048 -bh -@ {threads} -o {output}
         """ 
 
 rule minimap2_align_txome_all:
