@@ -1,10 +1,10 @@
 rule samtools_sort:
     input:
-        "data/mapped/{dir}/{sample}.bam"
+        "resources/{dir}/{sample}.bam"
     conda:  
         "../envs/sort.yaml"
     output:
-        "data/mapped/{dir}/{sample}_sorted.bam"
+        "resources/{dir}/{sample}_sorted.bam"
     threads:
         16
     shell:
@@ -14,11 +14,11 @@ rule samtools_sort:
 
 rule samtools_index:
     input:
-        "data/mapped/{dir}/{sample}.bam"
+        "resources/{dir}/{sample}.bam"
     conda:  
         "../envs/sort.yaml"
     output:
-        "data/mapped/{dir}/{sample}.bam.bai"
+        "resources/{dir}/{sample}.bam.bai"
     threads:
         16
     shell:
