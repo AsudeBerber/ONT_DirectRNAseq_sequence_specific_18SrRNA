@@ -8,7 +8,7 @@ rule samtools_sort:
     threads:
         16
     shell:
-        "samtools sort -T data/mapped/{wildcards.dir}/{wildcards.sample}_sorted -@ {threads} "
+        "samtools sort -T resources/{wildcards.dir}/{wildcards.sample}_sorted -@ {threads} "
         "-O bam {input} > {output}"
 
 
