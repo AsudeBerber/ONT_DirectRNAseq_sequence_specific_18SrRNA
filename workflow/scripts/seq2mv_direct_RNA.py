@@ -21,7 +21,7 @@ def read_id_list_bam(sample=None):
 
     f = open("resources/read_id_list_bam.txt", "a")
 
-    with ps.AlignmentFile(f"../../resources/alignments/{sample}") as samfile:
+    with ps.AlignmentFile(f"resources/alignments/{sample}") as samfile:
         samfile.fetch()
         for reads in samfile.fetch():
             f.write(str(reads.query_name) +"\n")
@@ -32,7 +32,7 @@ def read_id_list_bam(sample=None):
 #gets movetable (mv), ts and corresponding base sequence (seq) for given read id
 def bam_aligned(sample, read_ids, region=None):
 
-    samfile = ps.AlignmentFile(f"../../resources/alignments/{sample}")
+    samfile = ps.AlignmentFile(f"resources/alignments/{sample}")
 
     max_reads = samfile.mapped
     i = 0
@@ -102,14 +102,14 @@ def reverse_seq_mv(seq2mv):
 #writes generated array to txt file
 def seq2mv_to_txt(seq2mv):
     try:
-        a = open("../../resources/seq2mv.txt", "x")
+        a = open("resources/seq2mv.txt", "x")
     except: 
         # if file exists, it is wiped
-        a = open("../../resources/seq2mv.txt", "w")
+        a = open("resources/seq2mv.txt", "w")
         a.write("")
         a.close()
 
-    a = open("../../resources/seq2mv.txt", "a")
+    a = open("resources/seq2mv.txt", "a")
     for line in seq2mv:
         a.write(" ".join(line) + "\n")
     a.close()
@@ -131,9 +131,9 @@ def base_color(base):
 def plot_signal_plus_seq(seq2mv, read_ids, start, end, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
      
     if pod5_dir == None:
-        pod5_dir = "../../resources/pod5"
+        pod5_dir = "resources/pod5"
     else: 
-        pod5_dir = f"../../resources/{pod5_dir}"
+        pod5_dir = f"resources/{pod5_dir}"
 
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
