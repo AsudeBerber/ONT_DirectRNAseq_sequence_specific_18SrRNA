@@ -6,9 +6,9 @@ rule seq2mv_single_read:
     params:
         read = "1fee0116-fdcc-4647-af43-9ea8d074de19", 
         base_pos = "",
-        bases_around =  ""
+        bases_around =  "",
         # region = reference span (in IGV read description)
-        #region = "gi\|1154491913\|ref\|NR_003286.4\|:15-1868"
+        region = "gi\|1154491913\|ref\|NR_003286.4\|:15-1868"
     wildcard_constraints:
         sequencer = "p2i|p2s"
     conda:
