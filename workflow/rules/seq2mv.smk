@@ -14,7 +14,7 @@ rule seq2mv_single_read:
     conda:
         "../envs/seq2mv.yaml"
     shell:
-     """python workflow/scripts/seq2mv_direct_RNA.py {input.bam} {wildcards.read_id} {wildcards.start} {wildcards.end} \
+     """python workflow/scripts/seq2mv_direct_RNA.py {wildcards.sequencer} {input.bam} {wildcards.read_id} {wildcards.start} {wildcards.end} \
         --pod5_dir resources/pod5/{wildcards.sequencer} --region {params.region}"""
      
  
