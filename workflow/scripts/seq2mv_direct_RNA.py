@@ -246,7 +246,7 @@ seq2mv = seq_to_mv(reads_ids = args.readID, bam_dir = args.bam_dir, sample = arg
 # for 5' -> 3' sequencing direction, only this part has to be removed
 rev_seq2mv=reverse_seq_mv(seq2mv)
 
-a
+
 #plots array to signal
 plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, start = args.start, end = args.end, bam_dir = args.bam_dir, full_read=False, pod5_dir = args.pod5_dir)
 
