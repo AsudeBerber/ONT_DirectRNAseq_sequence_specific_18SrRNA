@@ -2,8 +2,3 @@
   - bioconda
 dependencies:
   - pip
-  - pip:
-    - pod5 == 0.3.10 
-    - matplotlib
-    - numpy
-    - pysam  == 0.22.1
