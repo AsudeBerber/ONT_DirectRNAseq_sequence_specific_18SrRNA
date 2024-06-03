@@ -10,7 +10,7 @@ import pysam as ps
 
 
 #creates textfile with all read_ids within bam file
-def read_id_list_bam(bam_dir = None, sample=None):
+def read_id_list_bam(sample=None):
     try:
         f = open("resources/read_id_list_bam.txt", "x")
     except:
@@ -21,7 +21,7 @@ def read_id_list_bam(bam_dir = None, sample=None):
 
     f = open("resources/read_id_list_bam.txt", "a")
 
-    with ps.AlignmentFile(f"../../resources/mapped/{bam_dir}/{sample}.bam") as samfile:
+    with ps.AlignmentFile(f"{sample}") as samfile:
         samfile.fetch()
         for reads in samfile.fetch():
             f.write(str(reads.query_name) +"\n")
@@ -30,9 +30,9 @@ def read_id_list_bam(bam_dir = None, sample=None):
 
 
 #gets movetable (mv), ts and corresponding base sequence (seq) for given read id
-def bam_aligned(bam_dir, sample, read_ids, region=None):
+def bam_aligned(sample, read_ids, region=None):
 
-    samfile = ps.AlignmentFile(f"../../resources/mapped/{bam_dir}/{sample}.bam")
+    samfile = ps.AlignmentFile(f"{sample}")
 
     max_reads = samfile.mapped
     i = 0
@@ -60,9 +60,9 @@ def bam_aligned(bam_dir, sample, read_ids, region=None):
 
 
 # assigns individual bases in sequence to corresponding part of signal through movetable information
-def seq_to_mv(reads_ids, bam_dir, sample, region, seq=None, mv=None, ts=0, fetch = True):
+def seq_to_mv(reads_ids, sample, region, seq=None, mv=None, ts=0, fetch = True):
     if fetch == True:
-        seq, mv, ts = bam_aligned(bam_dir, sample, reads_ids, region)
+        seq, mv, ts = bam_aligned(sample, reads_ids, region)
 
     s = mv[0] #stride length
     p = 1 #itinerates through movetable array
@@ -102,14 +102,14 @@ def reverse_seq_mv(seq2mv):
 #writes generated array to txt file
 def seq2mv_to_txt(seq2mv):
     try:
-        a = open("../../resources/seq2mv.txt", "x")
+        a = open("resources/seq2mv.txt", "x")
     except: 
         # if file exists, it is wiped
-        a = open("../../resources/seq2mv.txt", "w")
+        a = open("resources/seq2mv.txt", "w")
         a.write("")
         a.close()
 
-    a = open("../../resources/seq2mv.txt", "a")
+    a = open("resources/seq2mv.txt", "a")
     for line in seq2mv:
         a.write(" ".join(line) + "\n")
     a.close()
@@ -128,12 +128,12 @@ def base_color(base):
 
 
 #plots array of [start, end, base] to position (start - end) in signal
-def plot_signal_plus_seq(seq2mv, read_ids, start, end, bam_dir, full_read=False, range_var = "bases", pod5_dir = "pod5"):
+def plot_signal_plus_seq(seq2mv, read_ids, start, end, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
      
     if pod5_dir == None:
-        pod5_dir = "../../resources/pod5"
+        pod5_dir = "resources/pod5"
     else: 
-        pod5_dir = f"../../resources/{pod5_dir}"
+        pod5_dir = f"resources/{pod5_dir}"
 
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
@@ -192,10 +192,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, bam_dir, full_read=False,
                     break
 
         # check if plot dir exists, creates it otherwise
-        if not os.path.isdir(f"../../resources/mapped/{bam_dir}/plots/{read_ids}"):
-            os.makedirs(f"../../resources/mapped/{bam_dir}/plots/{read_ids}")
+        if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
+            os.makedirs(f"resources/mapped/signal/{sequencer}/plots/{read_ids}")
 
-        plt.savefig(f"../../resources/mapped/{bam_dir}/plots/{read_ids}/{read_ids}_{start}-{end}.png", dpi = 300)           
+        plt.savefig(f"resources/mapped/signal/{sequencer}/plots/{read_ids}/{read_ids}_{start}-{end}.png", dpi = 300)           
         plt.show()
 
 
@@ -207,7 +207,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, bam_dir, full_read=False,
 ##########################################################################################################################################################
 # exemplary command line argument:
 #
-# python seq2mv_direct_RNA.py noisy_corr RNAseq_test_noisy_correction_sorted becda29e-a3f7-4647-a0b4-1dfd9134c3cc 300 350 --region SIRV6001:16-6000
+# python seq2mv_direct_RNA.py RNAseq_test_noisy_correction_sorted becda29e-a3f7-4647-a0b4-1dfd9134c3cc 300 350 --region SIRV6001:16-6000
 #
 # if known, specify region/reference span(=chromosome) (e.g. "ERCC-00076[:start-end]" ; []<- this part is optional"); time for execution will be much slower otherwise (minutes range)
 # for region argument thousand seperators have to be removed, e.g. SIRV6001:16-6000 works, SIRV6001:16-6.000 (as given by IGV) does not
@@ -216,7 +216,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, bam_dir, full_read=False,
 
 parser = argparse.ArgumentParser(
                     description="plots electric current/timepoint with corresponding basecalled base for given Read_ID")
-parser.add_argument("bam_dir", help= "directory of bamfile, i.e.: path= ../../resources/mapped/[bam_dir]/[sample].bam")
+parser.add_argument("sequencer", help= "name of sequencer (p2i/p2s)")
 parser.add_argument("sample", help= "Name of sample bam file w/o .bam ending", action="store")
 parser.add_argument("readID", help= "Sample ID in bam and pod5 file", action="store")
 parser.add_argument("start", help= "index of first base to show in plot, start with 0", type=int, action="store")
@@ -231,14 +231,14 @@ parser.add_argument("--pod5_dir", type= str, action= "store")
 args = parser.parse_args()
 
 if args.get_readids == True:
-    read_id_list_bam(args.bam_dir, args.sample)
+    read_id_list_bam(args.sequencer, args.sample)
 
 if args.no_fetch == True:
     fetch = False
 else:
     fetch = True 
 
-seq2mv = seq_to_mv(reads_ids = args.readID, bam_dir = args.bam_dir, sample = args.sample, region =args.region,
+seq2mv = seq_to_mv(reads_ids = args.readID, sample = args.sample, region =args.region,
                     seq = args.seq, mv=args.mv, ts=args.ts, fetch=fetch)  
 
 
@@ -248,7 +248,7 @@ rev_seq2mv=reverse_seq_mv(seq2mv)
 
 
 #plots array to signal
-plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, start = args.start, end = args.end, bam_dir = args.bam_dir, full_read=False, pod5_dir = args.pod5_dir)
+plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, start = args.start, end = args.end, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
 
 
 #saves seq2mv array (base aligned to signal position) to txt file in ../resources
