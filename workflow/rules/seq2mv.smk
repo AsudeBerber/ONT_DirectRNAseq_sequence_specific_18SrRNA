@@ -1,6 +1,6 @@
 rule seq2mv_single_read:
     input: 
-        bam = "resources/alignments/p2s_aligned_sorted"
+        bam = "resources/alignments/p2s_aligned_sorted.bam"
     output:
         "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{start}-{end}.png"
     params:
