@@ -192,10 +192,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, sequencer, full_read=Fals
                     break
 
         # check if plot dir exists, creates it otherwise
-        if not os.path.isdir(f"../../resources/signal/{sequencer}/plots/{read_ids}"):
-            os.makedirs(f"../../resources/mapped/signal/{sequencer}/plots/{read_ids}")
+        if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
+            os.makedirs(f"resources/mapped/signal/{sequencer}/plots/{read_ids}")
 
-        plt.savefig(f"../../resources/mapped/signal/{sequencer}/plots/{read_ids}/{read_ids}_{start}-{end}.png", dpi = 300)           
+        plt.savefig(f"resources/mapped/signal/{sequencer}/plots/{read_ids}/{read_ids}_{start}-{end}.png", dpi = 300)           
         plt.show()
 
 
