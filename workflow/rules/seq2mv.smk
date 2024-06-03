@@ -1,18 +1,19 @@
 rule seq2mv_single_read:
     input: 
-     "thisfile.doesntexist"
+        bam = "resources/alignments/p2s_aligned_sorted"
     output:
-     "../../resources/signal/{bam_dir}/plots/{read_ids}/{read_ids}_{start}-{end}.png"
+        "../../resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{start}-{end}.png"
     params:
-        read = "x", 
-        bam = "",
-        # change to pod5/p2i for p2i data
-        pod5 = "pod5/p2s",
+        read = "1fee0116-fdcc-4647-af43-9ea8d074de19", 
         base_pos = "",
         bases_around =  "",
+        # region = reference span (in IGV read description)
+        region = "gi|1154491913|ref|NR_003286.4|:15-1.868"
+    wildcard_constraints:
+        sequencer = "p2i|p2s"
     conda:
         "../envs/seq2mv.yaml"
     shell:
-     "python seq2mv_direct_RNA.py {wildcards.dir} RNAseq_test_noisy_correction_sorted {params.read} 300 350 --pod5_dir resources/{pod5}"
+     "python seq2mv_direct_RNA.py {wildcards.dir} {input.bam} {params.read} 300 350 --pod5_dir resources/pod5/{wildcards.sequencer} --region {params.region}"
      
  
