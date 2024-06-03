@@ -12,16 +12,16 @@ import pysam as ps
 #creates textfile with all read_ids within bam file
 def read_id_list_bam(bam_dir = None, sample=None):
     try:
-        f = open("data/read_id_list_bam.txt", "x")
+        f = open("resources/read_id_list_bam.txt", "x")
     except:
         # if file exists, it is wiped
-        f = open("data/read_id_list_bam.txt", "w")
+        f = open("resources/read_id_list_bam.txt", "w")
         f.write("")
         f.close()
 
-    f = open("data/read_id_list_bam.txt", "a")
+    f = open("resources/read_id_list_bam.txt", "a")
 
-    with ps.AlignmentFile(f"../../data/mapped/{bam_dir}/{sample}.bam") as samfile:
+    with ps.AlignmentFile(f"../../resources/mapped/{bam_dir}/{sample}.bam") as samfile:
         samfile.fetch()
         for reads in samfile.fetch():
             f.write(str(reads.query_name) +"\n")
@@ -32,7 +32,7 @@ def read_id_list_bam(bam_dir = None, sample=None):
 #gets movetable (mv), ts and corresponding base sequence (seq) for given read id
 def bam_aligned(bam_dir, sample, read_ids, region=None):
 
-    samfile = ps.AlignmentFile(f"../../data/mapped/{bam_dir}/{sample}.bam")
+    samfile = ps.AlignmentFile(f"../../resources/mapped/{bam_dir}/{sample}.bam")
 
     max_reads = samfile.mapped
     i = 0
@@ -102,14 +102,14 @@ def reverse_seq_mv(seq2mv):
 #writes generated array to txt file
 def seq2mv_to_txt(seq2mv):
     try:
-        a = open("../../data/seq2mv.txt", "x")
+        a = open("../../resources/seq2mv.txt", "x")
     except: 
         # if file exists, it is wiped
-        a = open("../../data/seq2mv.txt", "w")
+        a = open("../../resources/seq2mv.txt", "w")
         a.write("")
         a.close()
 
-    a = open("../../data/seq2mv.txt", "a")
+    a = open("../../resources/seq2mv.txt", "a")
     for line in seq2mv:
         a.write(" ".join(line) + "\n")
     a.close()
@@ -131,9 +131,9 @@ def base_color(base):
 def plot_signal_plus_seq(seq2mv, read_ids, start, end, bam_dir, full_read=False, range_var = "bases", pod5_dir = "pod5"):
      
     if pod5_dir == None:
-        pod5_dir = "../../data/pod5"
+        pod5_dir = "../../resources/pod5"
     else: 
-        pod5_dir = f"../../data/{pod5_dir}"
+        pod5_dir = f"../../resources/{pod5_dir}"
 
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
@@ -192,14 +192,14 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, bam_dir, full_read=False,
                     break
 
         # check if plot dir exists, creates it otherwise
-        if not os.path.isdir(f"../../data/mapped/{bam_dir}/plots/{read_ids}"):
-            os.makedirs(f"../../data/mapped/{bam_dir}/plots/{read_ids}")
+        if not os.path.isdir(f"../../resources/mapped/{bam_dir}/plots/{read_ids}"):
+            os.makedirs(f"../../resources/mapped/{bam_dir}/plots/{read_ids}")
 
-        plt.savefig(f"../../data/mapped/{bam_dir}/plots/{read_ids}/{read_ids}_{start}-{end}.png", dpi = 300)           
+        plt.savefig(f"../../resources/mapped/{bam_dir}/plots/{read_ids}/{read_ids}_{start}-{end}.png", dpi = 300)           
         plt.show()
 
 
-# saves list of all read_ids in bamfile to ../data
+# saves list of all read_ids in bamfile to ../resources
 # read_id_list_bam()
     
 
@@ -216,7 +216,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, bam_dir, full_read=False,
 
 parser = argparse.ArgumentParser(
                     description="plots electric current/timepoint with corresponding basecalled base for given Read_ID")
-parser.add_argument("bam_dir", help= "directory of bamfile, i.e.: path= ../../data/mapped/[bam_dir]/[sample].bam")
+parser.add_argument("bam_dir", help= "directory of bamfile, i.e.: path= ../../resources/mapped/[bam_dir]/[sample].bam")
 parser.add_argument("sample", help= "Name of sample bam file w/o .bam ending", action="store")
 parser.add_argument("readID", help= "Sample ID in bam and pod5 file", action="store")
 parser.add_argument("start", help= "index of first base to show in plot, start with 0", type=int, action="store")
@@ -251,6 +251,6 @@ rev_seq2mv=reverse_seq_mv(seq2mv)
 plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, start = args.start, end = args.end, bam_dir = args.bam_dir, full_read=False, pod5_dir = args.pod5_dir)
 
 
-#saves seq2mv array (base aligned to signal position) to txt file in ../data
+#saves seq2mv array (base aligned to signal position) to txt file in ../resources
 # seq2mv_to_txt(seq2mv) 
 # seq2mv_to_txt(rev_seq2mv)
