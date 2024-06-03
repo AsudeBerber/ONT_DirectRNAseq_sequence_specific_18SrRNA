@@ -21,7 +21,7 @@ def read_id_list_bam(sample=None):
 
     f = open("resources/read_id_list_bam.txt", "a")
 
-    with ps.AlignmentFile(f"resources/alignments/{sample}") as samfile:
+    with ps.AlignmentFile(f"{sample}") as samfile:
         samfile.fetch()
         for reads in samfile.fetch():
             f.write(str(reads.query_name) +"\n")
@@ -32,7 +32,7 @@ def read_id_list_bam(sample=None):
 #gets movetable (mv), ts and corresponding base sequence (seq) for given read id
 def bam_aligned(sample, read_ids, region=None):
 
-    samfile = ps.AlignmentFile(f"resources/alignments/{sample}")
+    samfile = ps.AlignmentFile(f"{sample}")
 
     max_reads = samfile.mapped
     i = 0
