@@ -2,7 +2,7 @@ rule seq2mv_single_read:
     input: 
         bam = "resources/alignments/p2s_aligned_sorted"
     output:
-        "../../resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{start}-{end}.png"
+        "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{start}-{end}.png"
     params:
         read = "1fee0116-fdcc-4647-af43-9ea8d074de19", 
         base_pos = "",
@@ -14,6 +14,7 @@ rule seq2mv_single_read:
     conda:
         "../envs/seq2mv.yaml"
     shell:
-     "python seq2mv_direct_RNA.py {wildcards.dir} {input.bam} {params.read} 300 350 --pod5_dir resources/pod5/{wildcards.sequencer} --region {params.region}"
+     """python seq2mv_direct_RNA.py {wildcards.dir} {input.bam} {wildcards.read_id} {wildcards.start} {wildcards.end} \
+        --pod5_dir resources/pod5/{wildcards.sequencer} --region {params.region}"""
      
  
