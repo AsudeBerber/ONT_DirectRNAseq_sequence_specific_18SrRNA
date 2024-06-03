@@ -238,7 +238,7 @@ if args.no_fetch == True:
 else:
     fetch = True 
 
-seq2mv = seq_to_mv(reads_ids = args.readID, sequencer = args.sequencer, sample = args.sample, region =args.region,
+seq2mv = seq_to_mv(reads_ids = args.readID, sample = args.sample, region =args.region,
                     seq = args.seq, mv=args.mv, ts=args.ts, fetch=fetch)  
 
 
