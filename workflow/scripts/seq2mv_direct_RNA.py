@@ -216,7 +216,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
                     break
             
             print(xticks)
-            ax.set_xticks()
+            ax.set_xticks(xticks)
             ax.set_xticklabels([""])
 
         # check if plot dir exists, creates it otherwise
