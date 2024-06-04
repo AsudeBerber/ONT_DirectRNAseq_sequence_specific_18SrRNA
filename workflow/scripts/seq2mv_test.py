@@ -15,6 +15,7 @@ read_ids = "62b6f170-c678-465c-aafe-b31af1e94f19"
 
 
 for read in samfile.fetch():
+        i = 0
         if read.query_name == read_ids:
             read_ID = read.query_name
             seq = read.query_alignment_sequence
