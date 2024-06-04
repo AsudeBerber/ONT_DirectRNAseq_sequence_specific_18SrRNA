@@ -39,4 +39,3 @@ for read in samfile.fetch():
             if k.is_integer():
                 # print("currently at " +read.query_name + "\n")
                 print(f"reads compared: {i} of max. {max_reads}")
-            continue
