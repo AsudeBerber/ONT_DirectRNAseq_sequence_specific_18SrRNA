@@ -27,7 +27,6 @@ for read in samfile.fetch():
             ts = read.get_tag("ts")
             print(read.get_tags())
             print(f"ts:{ts}; {read_ID}") 
-            return(seq, mv, ts)
         else: 
             #removing the else part makes the code only 1s faster
             i = i+1
