@@ -2,7 +2,7 @@ rule seq2mv_single_read:
     input: 
         bam = "resources/alignments/{sequencer}_aligned_sorted.bam"
     output:
-        "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{start}-{end}.png"
+        "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{start}-{end}.svg"
     params:
         read = "1fee0116-fdcc-4647-af43-9ea8d074de19", 
         base_pos = "",
