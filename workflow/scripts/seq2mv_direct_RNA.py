@@ -36,7 +36,10 @@ def bam_aligned(sample, read_ids, region, pos):
 
     max_reads = samfile.mapped
     i = 0
-        
+    
+    # starts at position 0
+    pos = pos -1 
+
     for read in samfile.fetch(region = region):
         if read.query_name == read_ids:
             read_ID = read.query_name
@@ -254,7 +257,7 @@ else:
     fetch = True 
 
 seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
-                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos-1)  
+                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos)  
 
 
 # as RNA is sequenced 3' -> 5', but convention + basecalled sequence is 5' -> 3' the seq2mv has to be "turned around" 
