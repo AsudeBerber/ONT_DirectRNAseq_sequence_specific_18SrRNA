@@ -138,7 +138,7 @@ def base_color(base):
 
 
 #plots array of [start, end, base] to position (start - end) in signal
-def plot_signal_plus_seq(seq2mv, read_ids, base_read, range, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
+def plot_signal_plus_seq(seq2mv, read_ids, pos_read, base_read, range, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
      
     if pod5_dir == None:
         pod5_dir = "resources/pod5"
@@ -146,10 +146,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, base_read, range, sequencer, full_rea
         pod5_dir = f"{pod5_dir}"
 
     #for output file naming
-    base_input = base_read
+    base_input = pos_read
 
-    start = base_read - range
-    end = base_read + range
+    start = pos_read - range
+    end = pos_read + range
 
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
