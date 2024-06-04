@@ -7,7 +7,6 @@ import pod5 as p5
 import matplotlib.pyplot as plt
 import numpy as np
 import pysam as ps
-import seaborn as sns
 
 
 #creates textfile with all read_ids within bam file
