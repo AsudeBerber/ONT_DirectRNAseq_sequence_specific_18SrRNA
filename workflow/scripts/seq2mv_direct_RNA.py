@@ -254,7 +254,7 @@ else:
     fetch = True 
 
 seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
-                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos)  
+                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos-1)  
 
 
 # as RNA is sequenced 3' -> 5', but convention + basecalled sequence is 5' -> 3' the seq2mv has to be "turned around" 
@@ -263,7 +263,8 @@ rev_seq2mv=reverse_seq_mv(seq2mv)
 
 
 #plots array to signal
-plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos = args.pos, pos_read = pos_read, range = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
+plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos = args.pos, pos_read = pos_read,
+                      range = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
 
 
 #saves seq2mv array (base aligned to signal position) to txt file in ../resources
