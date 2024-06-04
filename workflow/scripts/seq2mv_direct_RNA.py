@@ -216,7 +216,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
                     xticks.append(int(base_data[1])+1)
                     break
             
-            print(xticks)
             ax.set_xticks(ticks = xticks)
             ax.set_xticklabels([])
 
