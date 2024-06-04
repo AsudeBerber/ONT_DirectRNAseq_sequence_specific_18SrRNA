@@ -190,14 +190,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             time_slice = time[start:end]
             #
 
-            # plot with seaborn
-            sns.set_theme(style="ticks", font_scale=1.25)
-            g = sns.relplot(x=time_slice, y = signal_slice,
-                        kind = "line")
-            g.set_axis_labels("time", "signal (pA)")
-            g.set_titles (read_ids)
-            g.save()
-
             # Plot using matplotlib
             fig, ax = plt.subplots(figsize=(18, 4))
             #

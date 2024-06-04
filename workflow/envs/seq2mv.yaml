@@ -8,5 +8,3 @@ dependencies:
     - matplotlib
     - numpy
     - pysam == 0.22.1
-    - seaborn 
-    - pandas 
