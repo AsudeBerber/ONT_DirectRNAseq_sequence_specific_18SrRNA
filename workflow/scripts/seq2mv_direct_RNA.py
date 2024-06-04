@@ -7,6 +7,7 @@ import pod5 as p5
 import matplotlib.pyplot as plt
 import numpy as np
 import pysam as ps
+import seaborn as sns
 
 
 #creates textfile with all read_ids within bam file
@@ -188,6 +189,14 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             time = np.arange(len(signal)) #arbitrary time units
             time_slice = time[start:end]
             #
+
+            # plot with seaborn
+            sns.set_theme(style="ticks", font_scale=1.25)
+            g = sns.relplot(x=time_slice, y = signal_slice,
+                        kind = line)
+            g.set_axis_labels("time", "signal (pA)")
+            g.set_titles (read_ids)
+
             # Plot using matplotlib
             fig, ax = plt.subplots(figsize=(18, 4))
             #
