@@ -197,11 +197,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             ax.margins(0.05, 0.1)
             ax.set(xlabel = "base", ylabel = "signal (pA)")
             plt.title(str("Read ID: "+ read_ids))
-            frame1 = plt.gca()
-            frame1.axes.xaxis.set_ticklabels([])
 #
             #annotation of bases to signal plot
             i = -range
+            xticks = []
             for base_data in seq2mv:
                 x_coord = (int(base_data[0])+int(base_data[1]))/2 
                 if x_coord < start:
@@ -210,10 +209,15 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
                     ax.annotate(base_data[2], xy = (x_coord+0.25, 0.02), fontsize = 7, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
                     ax.annotate(i, xy= (x_coord+0.25, -0.04), fontsize = 7, xycoords=("data", "axes fraction"), ha = "center")
                     ax.axvline(int(base_data[0]), linestyle = ":", linewidth = 0.5, color = "lightgrey")
+                    x.ticks = xticks.append(x_coord)
                     i = i + 1
                 else:
                     ax.axvline(int(base_data[0])-1, linestyle = ":", linewidth = 0.5, color = "lightgrey")
                     break
+            
+            print(xticks)
+            ax.set_xticks()
+            ax.set_xticklabels([""])
 
         # check if plot dir exists, creates it otherwise
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
