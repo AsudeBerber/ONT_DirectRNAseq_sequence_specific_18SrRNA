@@ -138,6 +138,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, sequencer, full_read=Fals
     else: 
         pod5_dir = f"{pod5_dir}"
 
+    #for output file naming
+    start_input = start
+    end_input = end
+
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
         with p5.Reader(pod5_file) as reader:
@@ -198,7 +202,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, sequencer, full_read=Fals
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
             os.makedirs(f"resources/mapped/signal/{sequencer}/plots/{read_ids}")
 
-        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{start}-{end}.png", dpi = 300)           
+        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{start_input}-{end_input}.png", dpi = 300)           
         plt.show()
 
 
