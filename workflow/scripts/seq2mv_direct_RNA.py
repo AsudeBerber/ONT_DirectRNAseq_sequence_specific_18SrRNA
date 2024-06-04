@@ -213,7 +213,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
                     i = i + 1
                 else:
                     ax.axvline(int(base_data[0])-1, linestyle = ":", linewidth = 0.5, color = "lightgrey")
-                    xticks.append(int(base_data[1]+1))
+                    xticks.append(int(base_data[1])+1)
                     break
             
             print(xticks)
