@@ -29,6 +29,9 @@ for read in samfile.fetch():
             #print(read.get_tags())
             #print(f"ts:{ts}; {read_ID}") 
             aligned_pairs = read.get_aligned_pairs()
+            for i, pair in enumerate(aligned_pairs):
+                 if pair == ("\d", 1337):
+                      print(i, pair)
             print(aligned_pairs.index(int, 1337))
         else: 
             #removing the else part makes the code only 1s faster
