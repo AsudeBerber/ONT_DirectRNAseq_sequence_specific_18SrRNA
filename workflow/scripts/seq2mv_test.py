@@ -26,8 +26,10 @@ for read in samfile.fetch():
 
             mv = read.get_tag("mv")
             ts = read.get_tag("ts")
-            print(read.get_tags())
-            print(f"ts:{ts}; {read_ID}") 
+            #print(read.get_tags())
+            #print(f"ts:{ts}; {read_ID}") 
+            seq_aligned_pairs = read.get_aligned_pairs()
+            print(seq_aligned_pairs)
         else: 
             #removing the else part makes the code only 1s faster
             i = i+1
