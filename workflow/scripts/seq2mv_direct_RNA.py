@@ -42,7 +42,10 @@ def bam_aligned(sample, read_ids, region=None):
             read_ID = read.query_name
             seq = read.query_alignment_sequence
             seq = seq[::-1] #sequence order is 5' -> 3', mv and signal are 3' -> 5'
-            read.set_tag("ts", None) #first ts tag is transcript strand, has to be removed
+
+            # Workaround in cases where two ts tags per read exists:
+            # read.set_tag("ts", None) #first ts tag is transcript strand, has to be removed
+
             mv = read.get_tag("mv")
             ts = read.get_tag("ts")
             # print(read.get_tags())
