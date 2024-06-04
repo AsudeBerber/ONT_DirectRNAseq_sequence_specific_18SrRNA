@@ -146,7 +146,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
         pod5_dir = f"{pod5_dir}"
 
     #for output file naming
-    base_input = pos_read
 
     start = pos_read - range
     end = pos_read + range
@@ -264,7 +263,7 @@ rev_seq2mv=reverse_seq_mv(seq2mv)
 
 
 #plots array to signal
-plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos_read = pos_read, range = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
+plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos = args.pos, pos_read = pos_read, range = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
 
 
 #saves seq2mv array (base aligned to signal position) to txt file in ../resources
