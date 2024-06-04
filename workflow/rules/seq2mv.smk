@@ -2,7 +2,7 @@ rule seq2mv_single_read:
     input: 
         bam = "resources/alignments/{sequencer}_aligned_sorted.bam"
     output:
-        "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{start}-{end}.svg"
+        "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{base}-pm{range}.svg"
     params:
         read = "1fee0116-fdcc-4647-af43-9ea8d074de19", 
         base_pos = "",
@@ -19,7 +19,7 @@ rule seq2mv_single_read:
         {wildcards.sequencer} \
         {input.bam} \
         {wildcards.read_id} \
-        {wildcards.start} {wildcards.end} \
+        {wildcards.base} {wildcards.range} \
         --pod5_dir resources/pod5/{wildcards.sequencer} \
         --region {params.region}"""
      

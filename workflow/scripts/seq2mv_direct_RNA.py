@@ -131,7 +131,7 @@ def base_color(base):
 
 
 #plots array of [start, end, base] to position (start - end) in signal
-def plot_signal_plus_seq(seq2mv, read_ids, start, end, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
+def plot_signal_plus_seq(seq2mv, read_ids, base, range, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
      
     if pod5_dir == None:
         pod5_dir = "resources/pod5"
@@ -139,8 +139,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, sequencer, full_read=Fals
         pod5_dir = f"{pod5_dir}"
 
     #for output file naming
-    start_input = start
-    end_input = end
+    base_input = base
+
+    start = base - range
+    end = base + range
 
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
@@ -202,7 +204,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, sequencer, full_read=Fals
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
             os.makedirs(f"resources/mapped/signal/{sequencer}/plots/{read_ids}")
 
-        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{start_input}-{end_input}.svg", dpi = 300)           
+        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{base_input}-pm{range}.svg", dpi = 300)           
         plt.show()
 
 
@@ -226,8 +228,8 @@ parser = argparse.ArgumentParser(
 parser.add_argument("sequencer", help= "name of sequencer (p2i/p2s)")
 parser.add_argument("sample", help= "Name of sample bam file w/o .bam ending", action="store")
 parser.add_argument("readID", help= "Sample ID in bam and pod5 file", action="store")
-parser.add_argument("start", help= "index of first base to show in plot, start with 0", type=int, action="store")
-parser.add_argument("end", help= "index of last base to show in plot", type=int, action="store")
+parser.add_argument("base", help= "index of base in middle, start with 0", type=int, action="store")
+parser.add_argument("range", help= "bases to display the left/right of middle base", type=int, action="store")
 parser.add_argument("--no_fetch", help= "Disables fetching mv, ts, seq from readID - requieres --mv, --ts, --seq", action="store_true")
 parser.add_argument("--seq", help= "complete sequence of read", action="store_true")
 parser.add_argument("--mv", help= "movetable", action="store_true")
@@ -255,7 +257,7 @@ rev_seq2mv=reverse_seq_mv(seq2mv)
 
 
 #plots array to signal
-plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, start = args.start, end = args.end, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
+plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, base = args.base, range = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
 
 
 #saves seq2mv array (base aligned to signal position) to txt file in ../resources
