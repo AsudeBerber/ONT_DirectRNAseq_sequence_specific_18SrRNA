@@ -28,10 +28,12 @@ for read in samfile.fetch():
             ts = read.get_tag("ts")
             #print(read.get_tags())
             #print(f"ts:{ts}; {read_ID}") 
+
+            # creates pairs of base positions (query, reference) -> looks up position in alignment sequence for corresponding reference base position
             aligned_pairs = read.get_aligned_pairs()
             for i, pair in enumerate(aligned_pairs):
                 if pair [1] == 1337: 
-                    print (pair [0])
+                    return pair[0]
         else: 
             #removing the else part makes the code only 1s faster
             i = i+1
