@@ -69,7 +69,7 @@ def bam_aligned(read_ids, region, pos):
 
 
 # assigns individual bases in sequence to corresponding part of signal through movetable information
-def seq_to_mv(reads_ids, region, seq=None, mv=None, ts=0, fetch = True, pos):
+def seq_to_mv(reads_ids, region, seq=None, mv=None, ts=0, fetch = True, pos=42):
     if fetch == True:
         seq, mv, ts, pos_read = bam_aligned(reads_ids, region, pos)
 
