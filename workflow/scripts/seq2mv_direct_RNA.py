@@ -197,7 +197,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             ax.margins(0.05, 0.1)
             ax.set(xlabel = "base", ylabel = "signal (pA)")
             plt.title(str("Read ID: "+ read_ids))
-            ax.annotate(f"18S RNA transcript- position {pos} ± {range} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
+            ax.annotate(f"18S RNA transcript - position {pos} ± {range} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
 #
             #annotation of bases to signal plot
             i = -range
