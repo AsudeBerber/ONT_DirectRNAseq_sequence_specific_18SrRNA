@@ -30,7 +30,7 @@ def read_id_list_bam(sample=None):
 
 
 #gets movetable (mv), ts and corresponding base sequence (seq) for given read id
-def bam_aligned(sample, read_ids, region, pos=):
+def bam_aligned(read_ids, region, pos=):
 
     samfile = ps.AlignmentFile(f"{sample}")
 
@@ -69,9 +69,9 @@ def bam_aligned(sample, read_ids, region, pos=):
 
 
 # assigns individual bases in sequence to corresponding part of signal through movetable information
-def seq_to_mv(reads_ids, sample, region, seq=None, mv=None, ts=0, fetch = True, pos):
+def seq_to_mv(reads_ids, region, seq=None, mv=None, ts=0, fetch = True, pos):
     if fetch == True:
-        seq, mv, ts, pos_read = bam_aligned(sample, reads_ids, region, pos)
+        seq, mv, ts, pos_read = bam_aligned(reads_ids, region, pos)
 
     s = mv[0] #stride length
     p = 1 #itinerates through movetable array
@@ -253,7 +253,7 @@ if args.no_fetch == True:
 else:
     fetch = True 
 
-seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, sample = args.sample, region =args.region,
+seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region =args.region,
                     seq = args.seq, mv=args.mv, ts=args.ts, fetch=fetch, pos = args.pos)  
 
 
