@@ -1,6 +1,6 @@
 rule seq2mv_single_read:
     input: 
-        bam = "resources/alignments/{sequencer}_aligned_sorted.bam"
+        bam = "resources/alignments/{sequencer}_aligned_sorted.bam",
         bai = "{input.bam}.bai"
     output:
         "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{base}-pm{range}.svg"
