@@ -10,7 +10,7 @@ rule seq2mv_single_read:
         # site 2: 1842	ac4C 99%
         # region = reference span (in IGV read description)
         # thousand seperators have to be removed (e.g. 1.868 -> 1868); special characters like "|" have to be written with escape sign ("|" -> "\|")
-        region = "gi|1154491913|ref|NR_003286.4|:15-1868"
+        region = "gi\|1154491913\|ref\|NR_003286.4\|:15-1868"
     wildcard_constraints:
         sequencer = "p2i|p2s"
     conda:
