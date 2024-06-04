@@ -30,9 +30,7 @@ for read in samfile.fetch():
             #print(f"ts:{ts}; {read_ID}") 
             aligned_pairs = read.get_aligned_pairs()
             for i, pair in enumerate(aligned_pairs):
-                 if pair[1] == 1337:
-                      print(i, pair)
-            print(aligned_pairs.index(1337))
+                print(i, pair)
         else: 
             #removing the else part makes the code only 1s faster
             i = i+1
