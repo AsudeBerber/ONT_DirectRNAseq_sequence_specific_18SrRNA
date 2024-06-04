@@ -138,7 +138,7 @@ def base_color(base):
 
 
 #plots array of [start, end, base] to position (start - end) in signal
-def plot_signal_plus_seq(seq2mv, read_ids, pos_read, range, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
+def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
      
     if pod5_dir == None:
         pod5_dir = "resources/pod5"
@@ -211,7 +211,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos_read, range, sequencer, full_read
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
             os.makedirs(f"resources/mapped/signal/{sequencer}/plots/{read_ids}")
 
-        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{base_input}-pm{range}.svg", dpi = 300)           
+        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{pos}-pm{range}.svg", dpi = 300)           
         plt.show()
 
 
