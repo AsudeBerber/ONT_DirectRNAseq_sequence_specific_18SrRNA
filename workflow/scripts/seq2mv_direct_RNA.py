@@ -30,24 +30,36 @@ def read_id_list_bam(sample=None):
 
 
 #gets movetable (mv), ts and corresponding base sequence (seq) for given read id
-def bam_aligned(sample, read_ids, region=None):
+def bam_aligned(sample, read_ids, region, pos):
 
     samfile = ps.AlignmentFile(f"{sample}")
 
     max_reads = samfile.mapped
     i = 0
-        
+    
+    # starts at position 0
+    pos = pos -1 
+
     for read in samfile.fetch(region = region):
         if read.query_name == read_ids:
             read_ID = read.query_name
             seq = read.query_alignment_sequence
             seq = seq[::-1] #sequence order is 5' -> 3', mv and signal are 3' -> 5'
-            read.set_tag("ts", None) #first ts tag is transcript strand, has to be removed
+
+            # Workaround in cases where two ts tags per read exists:
+            # read.set_tag("ts", None) #first ts tag is transcript strand, has to be removed
+
             mv = read.get_tag("mv")
             ts = read.get_tag("ts")
+
+            # creates pairs of base positions (query, reference) -> looks up position in alignment sequence for corresponding reference base position
+            for pair in read.get_aligned_pairs():
+                if pair [1] == pos: 
+                    pos_read = pair[0]
+                
             # print(read.get_tags())
             # print(f"ts:{ts}; {read_ID}") 
-            return(seq, mv, ts)
+            return(seq, mv, ts, pos_read)
         else: 
             #removing the else part makes the code only 1s faster
             i = i+1
@@ -60,10 +72,11 @@ def bam_aligned(sample, read_ids, region=None):
 
 
 # assigns individual bases in sequence to corresponding part of signal through movetable information
-def seq_to_mv(reads_ids, sample, region, seq=None, mv=None, ts=0, fetch = True):
+def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, pos=42):
     if fetch == True:
-        seq, mv, ts = bam_aligned(sample, reads_ids, region)
-
+        seq, mv, ts, pos_read = bam_aligned(sample, reads_ids, region, pos)
+    
+    print(pos_read)
     s = mv[0] #stride length
     p = 1 #itinerates through movetable array
     x = 0 #number of additional strides (stride amount - 1)
@@ -85,7 +98,7 @@ def seq_to_mv(reads_ids, sample, region, seq=None, mv=None, ts=0, fetch = True):
         start = end+1 #next base starts 1 after end of previous base
 
     print ("sequence-to-signal alignment finished,", len(seq), "bases, signal length =", end)    
-    return seq2mv
+    return seq2mv, pos_read
 
 
 def reverse_seq_mv(seq2mv):
@@ -128,12 +141,17 @@ def base_color(base):
 
 
 #plots array of [start, end, base] to position (start - end) in signal
-def plot_signal_plus_seq(seq2mv, read_ids, start, end, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
+def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
      
     if pod5_dir == None:
         pod5_dir = "resources/pod5"
     else: 
-        pod5_dir = f"resources/{pod5_dir}"
+        pod5_dir = f"{pod5_dir}"
+
+    #for output file naming
+
+    start = pos_read - range
+    end = pos_read + range
 
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
@@ -195,7 +213,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, start, end, sequencer, full_read=Fals
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
             os.makedirs(f"resources/mapped/signal/{sequencer}/plots/{read_ids}")
 
-        plt.savefig(f"resources/mapped/signal/{sequencer}/plots/{read_ids}/{read_ids}_{start}-{end}.png", dpi = 300)           
+        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{pos}-pm{range}.svg", dpi = 300)           
         plt.show()
 
 
@@ -219,8 +237,8 @@ parser = argparse.ArgumentParser(
 parser.add_argument("sequencer", help= "name of sequencer (p2i/p2s)")
 parser.add_argument("sample", help= "Name of sample bam file w/o .bam ending", action="store")
 parser.add_argument("readID", help= "Sample ID in bam and pod5 file", action="store")
-parser.add_argument("start", help= "index of first base to show in plot, start with 0", type=int, action="store")
-parser.add_argument("end", help= "index of last base to show in plot", type=int, action="store")
+parser.add_argument("pos", help= "position/index of base in middle, start with 0", type=int, action="store")
+parser.add_argument("range", help= "bases to display the left/right of middle base", type=int, action="store")
 parser.add_argument("--no_fetch", help= "Disables fetching mv, ts, seq from readID - requieres --mv, --ts, --seq", action="store_true")
 parser.add_argument("--seq", help= "complete sequence of read", action="store_true")
 parser.add_argument("--mv", help= "movetable", action="store_true")
@@ -238,8 +256,8 @@ if args.no_fetch == True:
 else:
     fetch = True 
 
-seq2mv = seq_to_mv(reads_ids = args.readID, sample = args.sample, region =args.region,
-                    seq = args.seq, mv=args.mv, ts=args.ts, fetch=fetch)  
+seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
+                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos)  
 
 
 # as RNA is sequenced 3' -> 5', but convention + basecalled sequence is 5' -> 3' the seq2mv has to be "turned around" 
@@ -248,7 +266,8 @@ rev_seq2mv=reverse_seq_mv(seq2mv)
 
 
 #plots array to signal
-plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, start = args.start, end = args.end, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
+plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos = args.pos, pos_read = pos_read,
+                      range = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
 
 
 #saves seq2mv array (base aligned to signal position) to txt file in ../resources
