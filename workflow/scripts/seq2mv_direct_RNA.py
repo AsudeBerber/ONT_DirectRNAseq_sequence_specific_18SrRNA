@@ -94,7 +94,7 @@ def seq_to_mv(reads_ids, region, seq=None, mv=None, ts=0, fetch = True, pos=42):
         start = end+1 #next base starts 1 after end of previous base
 
     print ("sequence-to-signal alignment finished,", len(seq), "bases, signal length =", end)    
-    return seq2mv, pos_red
+    return seq2mv, pos_read
 
 
 def reverse_seq_mv(seq2mv):
