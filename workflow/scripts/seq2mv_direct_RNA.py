@@ -188,26 +188,37 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             time = np.arange(len(signal)) #arbitrary time units
             time_slice = time[start:end]
             #
+
             # Plot using matplotlib
             fig, ax = plt.subplots(figsize=(18, 4))
             #
             ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
-            ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.8, edgecolor = "none")
+            ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.5, edgecolor = "none")
             ax.margins(0.05, 0.1)
-            ax.set(xlabel = "time", ylabel = "Signal (pA)")
+            ax.set(xlabel = "base", ylabel = "signal (pA)")
             plt.title(str("Read ID: "+ read_ids))
+            ax.annotate(f"18S RNA transcript - position {pos} ± {range} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
 #
             #annotation of bases to signal plot
+            i = -range
+            xticks = []
             for base_data in seq2mv:
                 x_coord = (int(base_data[0])+int(base_data[1]))/2 
                 if x_coord < start:
                     pass
                 elif x_coord > start and x_coord < end: 
-                    ax.annotate(base_data[2], xy = (x_coord+0.25, 0.02), fontsize = 7, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
-                    ax.axvline(int(base_data[0]), linestyle = ":", linewidth = 0.5, color = "lightgrey")
+                    ax.annotate(base_data[2], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
+                    ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
+                    ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
+                    xticks.append(int(base_data[0])-0.5)
+                    i = i + 1
                 else:
-                    ax.axvline(int(base_data[0])-1, linestyle = ":", linewidth = 0.5, color = "lightgrey")
+                    ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
+                    xticks.append(int(base_data[0])-0.5)
                     break
+            
+            ax.set_xticks(ticks = xticks)
+            ax.set_xticklabels([])
 
         # check if plot dir exists, creates it otherwise
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
