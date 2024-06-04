@@ -193,7 +193,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             fig, ax = plt.subplots(figsize=(18, 4))
             #
             ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
-            ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.8, edgecolor = "none")
+            ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.5, edgecolor = "none")
             ax.margins(0.05, 0.1)
             ax.set(xlabel = "base", ylabel = "signal (pA)")
             plt.title(str("Read ID: "+ read_ids))
