@@ -29,7 +29,7 @@ for read in samfile.fetch():
             #print(read.get_tags())
             #print(f"ts:{ts}; {read_ID}") 
             aligned_pairs = read.get_aligned_pairs(with_seq = True)
-            
+            print(aligned_pairs)
         else: 
             #removing the else part makes the code only 1s faster
             i = i+1
