@@ -9,7 +9,7 @@ import numpy as np
 import pysam as ps
 
 
-sample = "../../resources/alignments/p2s/p2s_aligned_sorted.bam"
+sample = "resources/alignments/p2s/p2s_aligned_sorted.bam"
 samfile = ps.AlignmentFile(f"{sample}")
 read_ids = "62b6f170-c678-465c-aafe-b31af1e94f19"
 
