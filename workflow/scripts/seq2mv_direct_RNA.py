@@ -72,7 +72,8 @@ def bam_aligned(sample, read_ids, region, pos):
 def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, pos=42):
     if fetch == True:
         seq, mv, ts, pos_read = bam_aligned(sample, reads_ids, region, pos)
-
+    
+    print(pos_read)
     s = mv[0] #stride length
     p = 1 #itinerates through movetable array
     x = 0 #number of additional strides (stride amount - 1)
