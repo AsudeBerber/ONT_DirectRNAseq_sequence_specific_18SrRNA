@@ -206,8 +206,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
                 if x_coord < start:
                     pass
                 elif x_coord > start and x_coord < end: 
-                    ax.annotate(base_data[2], xy = (x_coord+0.25, 0.02), fontsize = 7, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
-                    ax.annotate(i, xy= (int(base_data[0])+0.25, -0.06), fontsize = 7, xycoords=("data", "axes fraction"), ha = "center")
+                    ax.annotate(base_data[2], xy = (x_coord+0.25, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
+                    ax.annotate(i, xy= (int(base_data[0])+0.25, -0.06), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
                     ax.axvline(int(base_data[0]), linestyle = ":", linewidth = 0.5, color = "lightgrey")
                     xticks.append(x_coord)
                     i = i + 1
@@ -215,7 +215,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
                     ax.axvline(int(base_data[0])-1, linestyle = ":", linewidth = 0.5, color = "lightgrey")
                     break
             
-            print(xticks)
             ax.set_xticks(ticks = xticks)
             ax.set_xticklabels([])
 
