@@ -192,21 +192,24 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             #
 
             #constructs colormap for plot
-            cmap_plot = ["#444444", "#9C9C9C"]*range_bp
-            cmap_plot.append("#D63E3B")
-            cmap_plot.extend(["#444444", "#9C9C9C"]*range_bp)
+            cmap_plot = ["#67a9cf", "#d1e5f0"]*range_bp
+            cmap_plot.append("#b2182b")
+            cmap_plot.extend(["#67a9cf", "#d1e5f0"]*range_bp)
 
             # Plot using matplotlib
-            fig, ax = plt.subplots(figsize=(18, 12))
+
+            # for powerpoint slide:
+            # fig, ax = plt.subplots(figsize=(18, 12))
+
+            fig, ax = plt.subplots(figsize=(18, 4))
             #
-            ax.plot (time_slice, signal_slice,linewidth = 1, color = "black", zorder = 1)
+            ax.plot (time_slice, signal_slice,linewidth = 1, color = "grey", zorder = 1)
             for i, base in enumerate(range(start_b, end_b +1)):
                         # like slice above, just for every base -> signal per base can be colored differently
                         base_start = int(seq2mv[base][0])
                         base_end = int(seq2mv[base][1])
                         signal_slice_base = signal[base_start:base_end]
                         time_slice_base = time [base_start:base_end]
-                        print (i, base)
                         ax.scatter(time_slice_base, signal_slice_base,
                                    linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
                                 # linewidth = 1, marker= "o", facecolor = "black", zorder = 2, alpha = 0.5, edgecolor = "none")
