@@ -243,7 +243,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                 # read seq
                 ax.annotate(base_data[2], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
                 # ref seq
-                ax.annotate(base_data[3], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
+                ax.annotate(base_data[3], xy = (x_coord, 0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
                 ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
                 ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
                 xticks.append(int(base_data[0])-0.5)
