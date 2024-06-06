@@ -57,7 +57,7 @@ def bam_aligned(sample, read_ids, region, pos):
             ref_seq = ref_seq[::-1]
             
             # creates pairs of base positions (query, reference) -> looks up position in alignment sequence for corresponding reference base position
-            for pair in aln_pairs:
+            for pair in read.get_aligned_pairs():
                 if pair [1] == pos: 
                     pos_read = pair[0]
                 
