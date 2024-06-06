@@ -192,14 +192,14 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             #
 
         #constructs colormap for plot
-        cmap_plot = np.arange(range_bp*2 + 1)
+        cmap_plot = np.array(range(range_bp*2 + 1))
         for i in  cmap_plot:
             if i == range_bp:
                 cmap_plot[i] = "#b2182b"
             elif i %2 == 0:
                 cmap_plot[i] = "#2166ac"
             else:
-                cmap_plot[i] =  "#67a9cf"
+                cmap_plot[i] = "#67a9cf"
                 
 
         # Plot using matplotlib
