@@ -11,7 +11,7 @@ rule minimap2_align_txome:
     shell:
         """
         samtools fastq -@ {threads} -T mv,ts,ns {input.bam} |
-            minimap2 -ax map-ont -k14 --secondary=no -t {threads} {input.fa} - -y|
+            minimap2 -ax map-ont -k14 --secondary=no -t {threads} {input.fa} - -y --MD|
             samtools view -F 2048 -bh -@ {threads} -o {output}
         """ 
 
