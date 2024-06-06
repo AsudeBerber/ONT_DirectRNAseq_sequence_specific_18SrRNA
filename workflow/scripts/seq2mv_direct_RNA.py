@@ -57,7 +57,7 @@ def bam_aligned(sample, read_ids, region, pos):
             for pair in read.get_aligned_pairs(with_seq = True):
                 if pair [1] == pos: 
                     pos_read = pair[0]
-                    print pair[2]
+                    print (pair[2])
                 
             # print(read.get_tags())
             # print(f"ts:{ts}; {read_ID}") 
