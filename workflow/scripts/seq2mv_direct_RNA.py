@@ -193,7 +193,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             time_slice = time[start:end]
             #
 
-            cmap_plot = [("#444444", "#9C9C9C")*range_bp,"#D63E3B", ("#444444", "#9C9C9C")*range_bp]
+            #constructs colormap for plot
+            cmap_plot = ["#444444", "#9C9C9C"]*range_bp
+            cmap_plot.append("#D63E3B")
+            cmap_plot.extend(["#444444", "#9C9C9C"]*range_bp)
 
             # Plot using matplotlib
             fig, ax = plt.subplots(figsize=(18, 12))
