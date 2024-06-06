@@ -154,9 +154,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
     start = pos_read - range_bp
     end = pos_read + range_bp
 
-    start_b = start
-    end_b = end
-
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
         with p5.Reader(pod5_file) as reader:
@@ -201,8 +198,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
             for i, base in enumerate(range(start_b, end_b +1)):
                         # like slice above, just for every base -> signal per base can be colored differently
-                        base_start = seq2mv[base][0]
-                        base_end = seq2mv[base][1]
+                        base_start = int(seq2mv[base][0])
+                        base_end = int(seq2mv[base][1])
                         signal_slice_base = signal[base_start:base_end]
                         time_slice_base = time [base_start:base_end]
                         ax.scatter(time_slice_base, signal_slice_base,
