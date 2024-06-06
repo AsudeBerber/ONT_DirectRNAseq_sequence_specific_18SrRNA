@@ -191,57 +191,62 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             time_slice = time[start:end]
             #
 
-            #constructs colormap for plot
-            cmap_plot = ["#2166ac", "#67a9cf"]*range_bp/2
-            cmap_plot.extend(["#b2182b"])
-            cmap_plot.extend(["#2166ac", "#67a9cf"]*range_bp/2)
-
-            # Plot using matplotlib
-
-            # for powerpoint slide:
-            # fig, ax = plt.subplots(figsize=(18, 12))
-
-            fig, ax = plt.subplots(figsize=(18, 4))
-            #
-            ax.plot (time_slice, signal_slice,linewidth = 1, color = "grey", zorder = 1)
-            for i, base in enumerate(range(start_b, end_b +1)):
-                        # like slice above, just for every base -> signal per base can be colored differently
-                        base_start = int(seq2mv[base][0])
-                        base_end = int(seq2mv[base][1])
-                        signal_slice_base = signal[base_start:base_end]
-                        time_slice_base = time [base_start:base_end]
-                        ax.scatter(time_slice_base, signal_slice_base,
-                                   linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
-                                # linewidth = 1, marker= "o", facecolor = "black", zorder = 2, alpha = 0.5, edgecolor = "none")
+        #constructs colormap for plot
+        cmap_plot = np.arange(range_bp*2 + 1)
+        for i cmap_plot:
+            if i == range_bp:
+                cmap_plot[i] = "#b2182b"
+            elif i %2 == 0:
+                cmap_plot[i] = "#2166ac"
+            else cmap_plot[i] =  "#67a9cf"
                 
-            # for powerpoint title slide:
-            # ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
+
+        # Plot using matplotlib
+
+        # for powerpoint slide:
+        # fig, ax = plt.subplots(figsize=(18, 12))
+
+        fig, ax = plt.subplots(figsize=(18, 4))
+        #
+        ax.plot (time_slice, signal_slice,linewidth = 1, color = "grey", zorder = 1)
+        for i, base in enumerate(range(start_b, end_b +1)):
+                    # like slice above, just for every base -> signal per base can be colored differently
+                    base_start = int(seq2mv[base][0])
+                    base_end = int(seq2mv[base][1])
+                    signal_slice_base = signal[base_start:base_end]
+                    time_slice_base = time [base_start:base_end]
+                    ax.scatter(time_slice_base, signal_slice_base,
+                                linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
+                            # linewidth = 1, marker= "o", facecolor = "black", zorder = 2, alpha = 0.5, edgecolor = "none")
             
-            ax.margins(0.05, 0.1)
-            ax.set(xlabel = "base", ylabel = "signal (pA)")
-            plt.title(str("Read ID: "+ read_ids))
-            ax.annotate(f"18S RNA transcript - position {pos} ± {range_bp} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
+        # for powerpoint title slide:
+        # ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
+        
+        ax.margins(0.05, 0.1)
+        ax.set(xlabel = "base", ylabel = "signal (pA)")
+        plt.title(str("Read ID: "+ read_ids))
+        ax.annotate(f"18S RNA transcript - position {pos} ± {range_bp} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
 #
-            #annotation of bases to signal plot
-            i = -range_bp
-            xticks = []
-            for base_data in seq2mv:
-                x_coord = (int(base_data[0])+int(base_data[1]))/2 
-                if x_coord < start:
-                    pass
-                elif x_coord > start and x_coord < end: 
-                    ax.annotate(base_data[2], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
-                    ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
-                    ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
-                    xticks.append(int(base_data[0])-0.5)
-                    i = i + 1
-                else:
-                    ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
-                    xticks.append(int(base_data[0])-0.5)
-                    break
-            
-            ax.set_xticks(ticks = xticks)
-            ax.set_xticklabels([])
+        #annotation of bases to signal plot
+        i = -range_bp
+        xticks = []
+        for base_data in seq2mv:
+            x_coord = (int(base_data[0])+int(base_data[1]))/2 
+            if x_coord < start:
+                pass
+            elif x_coord > start and x_coord < end: 
+                ax.annotate(base_data[2], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
+                ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
+                ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
+                xticks.append(int(base_data[0])-0.5)
+                i = i + 1
+            else:
+                ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
+                xticks.append(int(base_data[0])-0.5)
+                break
+        
+        ax.set_xticks(ticks = xticks)
+        ax.set_xticklabels([])
 
         # check if plot dir exists, creates it otherwise
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
