@@ -154,6 +154,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
     start = pos_read - range
     end = pos_read + range
 
+    start_base = start
+    end_base = end
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
         with p5.Reader(pod5_file) as reader:
@@ -198,7 +200,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
             # for powerpoint title slide:
             # ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
-            ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = base_data[2],cmap = cmap, zorder = 2, alpha = 0.5, edgecolor = "none")
+            
             ax.margins(0.05, 0.1)
             ax.set(xlabel = "base", ylabel = "signal (pA)")
             plt.title(str("Read ID: "+ read_ids))
@@ -212,6 +214,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
                 if x_coord < start:
                     pass
                 elif x_coord > start and x_coord < end: 
+                    for i, base in range (start_base, end_base+1):
+                        ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = i,cmap = cmap, zorder = 2, alpha = 0.5, edgecolor = "none")
                     ax.annotate(base_data[2], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
                     ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
                     ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
