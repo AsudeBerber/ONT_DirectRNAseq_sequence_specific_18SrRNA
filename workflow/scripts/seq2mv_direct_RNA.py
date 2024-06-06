@@ -5,7 +5,7 @@ import argparse
 import os
 import pod5 as p5
 import matplotlib.pyplot as plt
-from matplotlib.colors import ListedColormap
+from matplotlib import colormaps
 import numpy as np
 import pysam as ps
 
@@ -55,9 +55,11 @@ def bam_aligned(sample, read_ids, region, pos):
 
             ref_seq = read.get_reference_sequence()
             ref_seq = ref_seq[::-1]
+
+            aln_pairs = read.get_aligned_pairs(with_seq = True)
             
             # creates pairs of base positions (query, reference) -> looks up position in alignment sequence for corresponding reference base position
-            for pair in read.get_aligned_pairs():
+            for pair in aln_pairs:
                 if pair [1] == pos: 
                     pos_read = pair[0]
                 
@@ -210,6 +212,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
 
         # for powerpoint slide:
         # fig, ax = plt.subplots(figsize=(18, 12))
+                
+        viridis = colormaps["viridis"].resampled(range_bp*2 +1)
 
         fig, ax = plt.subplots(figsize=(18, 4))
         #
@@ -221,11 +225,11 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                     signal_slice_base = signal[base_start:base_end]
                     time_slice_base = time [base_start:base_end]
                     ax.scatter(time_slice_base, signal_slice_base,
-                                linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
-                            # linewidth = 1, marker= "o", facecolor = "black", zorder = 2, alpha = 0.5, edgecolor = "none")
+                                # linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
+                                linewidth = 1, marker= "o", facecolor = viridis.colors[i], zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
             
         # for powerpoint title slide:
-        # ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
+        
         
         ax.margins(0.05, 0.1)
         ax.set(xlabel = "base", ylabel = "signal (pA)")
@@ -243,7 +247,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                 # read seq
                 ax.annotate(base_data[2], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
                 # ref seq
-                ax.annotate(base_data[3], xy = (x_coord, 0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
+                # ax.annotate(base_data[3], xy = (x_coord, 0.06), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
                 ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
                 ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
                 xticks.append(int(base_data[0])-0.5)
