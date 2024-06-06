@@ -211,11 +211,11 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
         # Plot using matplotlib
 
         # for powerpoint slide:
-        # fig, ax = plt.subplots(figsize=(18, 12))
+        fig, ax = plt.subplots(figsize=(18, 12))
                 
         viridis = colormaps["viridis"].resampled(range_bp*2 +1)
 
-        fig, ax = plt.subplots(figsize=(18, 4))
+        # fig, ax = plt.subplots(figsize=(18, 4))
         #
         ax.plot (time_slice, signal_slice,linewidth = 1, color = "#B9B9B9", zorder = 1)
         for i, base in enumerate(range(start_b, end_b +1)):
