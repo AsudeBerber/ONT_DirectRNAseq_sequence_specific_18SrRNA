@@ -199,9 +199,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             fig, ax = plt.subplots(figsize=(18, 12))
             #
             ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
-            print(range(start_b, end_b))
             for i, base in enumerate(range(start_b, end_b +1)):
-                        print(i, base)
+                        print(time_slice[int(seq2mv[base][0]): int(seq2mv[base][1]))
                         ax.scatter(time_slice[int(seq2mv[base][0]): int(seq2mv[base][1])], 
                                    signal_slice[int(seq2mv[base][0]): int(seq2mv[base][1])],
                                    linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
