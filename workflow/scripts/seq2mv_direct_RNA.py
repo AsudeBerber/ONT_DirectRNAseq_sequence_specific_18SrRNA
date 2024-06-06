@@ -198,7 +198,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                 cmap_plot[i] = "#b2182b"
             elif i %2 == 0:
                 cmap_plot[i] = "#2166ac"
-            else cmap_plot[i] =  "#67a9cf"
+            else:
+                cmap_plot[i] =  "#67a9cf"
                 
 
         # Plot using matplotlib
