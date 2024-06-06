@@ -193,7 +193,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             time_slice = time[start:end]
             #
 
-            cmap = ListedColormap([("#444444", "#9C9C9C")*range_bp,"#D63E3B"])
+            cmap_plot = [("#444444", "#9C9C9C")*range_bp,"#D63E3B"]
 
             # Plot using matplotlib
             fig, ax = plt.subplots(figsize=(18, 12))
@@ -203,7 +203,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             for i, base in enumerate(range(start_b, end_b +1)):
                         ax.scatter(time_slice[int(seq2mv[base][0]): int(seq2mv[base][1])], 
                                    signal_slice[int(seq2mv[base][0]): int(seq2mv[base][1])],
-                                   linewidth = 1, marker= "o", facecolor = cmap,cmap = cmap, zorder = 2, alpha = 0.5, edgecolor = "none")
+                                   linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
                 
             # for powerpoint title slide:
             # ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
