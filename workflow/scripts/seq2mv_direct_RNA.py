@@ -198,6 +198,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             fig, ax = plt.subplots(figsize=(18, 12))
             #
             ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
+            for i, base in enumerate(range(start_base, end_base +1)):
+                        ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = i,cmap = cmap, zorder = 2, alpha = 0.5, edgecolor = "none")
             # for powerpoint title slide:
             # ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
             
@@ -214,8 +216,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
                 if x_coord < start:
                     pass
                 elif x_coord > start and x_coord < end: 
-                    for i, base in enumerate(range(start_base, end_base +1)):
-                        ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = i,cmap = cmap, zorder = 2, alpha = 0.5, edgecolor = "none")
                     ax.annotate(base_data[2], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
                     ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
                     ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
