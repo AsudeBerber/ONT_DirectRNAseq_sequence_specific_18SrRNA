@@ -211,11 +211,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
         # Plot using matplotlib
 
         # for powerpoint slide:
-        fig, ax = plt.subplots(figsize=(18, 12))
-                
-        viridis = colormaps["viridis"].resampled(range_bp*2 +1)
+        # fig, ax = plt.subplots(figsize=(18, 12))    
+        # viridis = colormaps["viridis"].resampled(range_bp*2 +1)
 
-        # fig, ax = plt.subplots(figsize=(18, 4))
+        fig, ax = plt.subplots(figsize=(18, 4))
         #
         ax.plot (time_slice, signal_slice,linewidth = 1, color = "#B9B9B9", zorder = 1)
         for i, base in enumerate(range(start_b, end_b +1)):
@@ -225,10 +224,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                     signal_slice_base = signal[base_start:base_end]
                     time_slice_base = time [base_start:base_end]
                     ax.scatter(time_slice_base, signal_slice_base,
-                                # linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
-                                linewidth = 1, marker= "o", facecolor = viridis.colors[i], zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
+                                linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
+                                # linewidth = 1, marker= "o", facecolor = viridis.colors[i], zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
             
-        # for powerpoint title slide:
+        
         
         
         ax.margins(0.05, 0.1)
