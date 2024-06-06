@@ -142,7 +142,7 @@ def base_color(base):
 
 
 #plots array of [start, end, base] to position (start - end) in signal
-def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
+def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
      
     if pod5_dir == None:
         pod5_dir = "resources/pod5"
@@ -151,11 +151,12 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
 
     #for output file naming
 
-    start = pos_read - range
-    end = pos_read + range
+    start = pos_read - range_bp
+    end = pos_read + range_bp
 
     start_b = start
     end_b = end
+
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
         with p5.Reader(pod5_file) as reader:
@@ -192,14 +193,14 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             time_slice = time[start:end]
             #
 
-            cmap = ListedColormap([("#444444", "#9C9C9C")*range,"#D63E3B"])
+            cmap = ListedColormap([("#444444", "#9C9C9C")*range_bp,"#D63E3B"])
 
             # Plot using matplotlib
             fig, ax = plt.subplots(figsize=(18, 12))
             #
             ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
             print(range(start_b, end_b))
-            for i, base in enumerate(range(start_b, end_b +1)):
+            for i, base in enumerate(range_bp(start_b, end_b +1)):
                         ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = i,cmap = cmap, zorder = 2, alpha = 0.5, edgecolor = "none")
                 
             # for powerpoint title slide:
@@ -208,10 +209,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             ax.margins(0.05, 0.1)
             ax.set(xlabel = "base", ylabel = "signal (pA)")
             plt.title(str("Read ID: "+ read_ids))
-            ax.annotate(f"18S RNA transcript - position {pos} ± {range} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
+            ax.annotate(f"18S RNA transcript - position {pos} ± {range_bp} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
 #
             #annotation of bases to signal plot
-            i = -range
+            i = -range_bp
             xticks = []
             for base_data in seq2mv:
                 x_coord = (int(base_data[0])+int(base_data[1]))/2 
@@ -235,7 +236,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
             os.makedirs(f"resources/mapped/signal/{sequencer}/plots/{read_ids}")
 
-        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{pos}-pm{range}.svg", dpi = 300)           
+        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{pos}-pm{range_bp}.svg", dpi = 300)           
         plt.show()
 
 
@@ -289,7 +290,7 @@ rev_seq2mv=reverse_seq_mv(seq2mv)
 
 #plots array to signal
 plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos = args.pos, pos_read = pos_read,
-                      range = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
+                      range_bp = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
 
 
 #saves seq2mv array (base aligned to signal position) to txt file in ../resources
