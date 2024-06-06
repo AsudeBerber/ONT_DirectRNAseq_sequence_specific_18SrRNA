@@ -200,7 +200,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             #
             ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
             print(range(start_b, end_b))
-            for i, base in enumerate(range_bp(start_b, end_b +1)):
+            for i, base in enumerate(range(start_b, end_b +1)):
                         ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = i,cmap = cmap, zorder = 2, alpha = 0.5, edgecolor = "none")
                 
             # for powerpoint title slide:
