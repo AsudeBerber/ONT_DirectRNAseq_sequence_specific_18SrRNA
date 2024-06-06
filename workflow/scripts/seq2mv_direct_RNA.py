@@ -207,8 +207,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                         time_slice_base = time [base_start:base_end]
                         print (i, base)
                         ax.scatter(time_slice_base, signal_slice_base,
-                                #    linewidth = 1, marker= "o", facecolor = "cmap_plot[i]", zorder = 2, alpha = 0.5, edgecolor = "none")
-                                linewidth = 1, marker= "o", facecolor = "black", zorder = 2, alpha = 0.5, edgecolor = "none")
+                                   linewidth = 1, marker= "o", facecolor = "cmap_plot[i]", zorder = 2, alpha = 0.5, edgecolor = "none")
+                                # linewidth = 1, marker= "o", facecolor = "black", zorder = 2, alpha = 0.5, edgecolor = "none")
                 
             # for powerpoint title slide:
             # ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = "#009BE6", zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
