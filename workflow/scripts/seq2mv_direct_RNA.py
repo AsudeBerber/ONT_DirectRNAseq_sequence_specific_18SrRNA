@@ -213,7 +213,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
         # for powerpoint slide:
         fig, ax = plt.subplots(figsize=(18, 12))
                 
-        viridis = colormaps["Set2"].resampled(range_bp*2 +1)
+        viridis = colormaps["tab20"].resampled(range_bp*2 +1)
 
         # fig, ax = plt.subplots(figsize=(18, 4))
         #
