@@ -181,8 +181,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                 pass
             else:
                 raise Exception ("range_var has to be bases or time")
-        #
-        #   
             #
             if full_read == True:
                 start = 1
@@ -201,7 +199,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             # Plot using matplotlib
             fig, ax = plt.subplots(figsize=(18, 12))
             #
-            ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
+            ax.plot (time_slice, signal_slice,linewidth = 1, color = "black", zorder = 1)
             for i, base in enumerate(range(start_b, end_b +1)):
                         # like slice above, just for every base -> signal per base can be colored differently
                         base_start = int(seq2mv[base][0])
