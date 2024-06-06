@@ -154,6 +154,9 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
     start = pos_read - range_bp
     end = pos_read + range_bp
 
+    start_b = start
+    end_b = end
+
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
         with p5.Reader(pod5_file) as reader:
