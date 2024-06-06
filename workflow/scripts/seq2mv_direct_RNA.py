@@ -154,8 +154,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
     start = pos_read - range
     end = pos_read + range
 
-    start_base = start
-    end_base = end
+    start_b = start
+    end_b = end
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
         with p5.Reader(pod5_file) as reader:
@@ -198,8 +198,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range, sequencer, full
             fig, ax = plt.subplots(figsize=(18, 12))
             #
             ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
-            print(range(start_base, end_base))
-            for i, base in enumerate(range(start_base, end_base +1)):
+            print(range(start_b, end_b))
+            for i, base in enumerate(range(start_b, end_b +1)):
                         ax.scatter(time_slice, signal_slice,linewidth = 1, marker= "o", facecolor = i,cmap = cmap, zorder = 2, alpha = 0.5, edgecolor = "none")
                 
             # for powerpoint title slide:
