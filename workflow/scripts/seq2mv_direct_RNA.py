@@ -200,9 +200,12 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             #
             ax.plot (time_slice, signal_slice,linewidth = 1, color = "#4F849E", zorder = 1)
             for i, base in enumerate(range(start_b, end_b +1)):
-                        print(time_slice[int(seq2mv[base][0]): int(seq2mv[base][1])])
-                        ax.scatter(time_slice[int(seq2mv[base][0]): int(seq2mv[base][1])], 
-                                   signal_slice[int(seq2mv[base][0]): int(seq2mv[base][1])],
+                        # like slice above, just for every base -> signal per base can be colored differently
+                        base_start = seq2mv[base][0]
+                        base_end = seq2mv[base][1]
+                        signal_slice_base = signal[base_start:base_end]
+                        time_slice_base = time [base_start:base_end]
+                        ax.scatter(time_slice_base, signal_slice_base,
                                    linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
                 
             # for powerpoint title slide:
