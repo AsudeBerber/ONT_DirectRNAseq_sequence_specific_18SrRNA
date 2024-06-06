@@ -9,7 +9,7 @@ import argparse
 import sys
 
 
-# pod5_file = "data/pod5/PAQ77977_pass_barcode01_362f656f_255b3204_0.pod5"
+# pod5_file = "data/pod5/p2s/"
 # bam_file = "data/mapped/PAQ77977_pass_barcode01_362f656f_255b3204_0.bam"
 # motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 # window_size = 21

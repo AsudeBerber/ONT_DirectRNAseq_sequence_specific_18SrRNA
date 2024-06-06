@@ -55,11 +55,6 @@ def bam_aligned(sample, read_ids, region, pos):
 
             ref_seq = read.get_reference_sequence()
             ref_seq = ref_seq[::-1]
-            print(ref_seq)
-
-        
-
-            aln_pairs = read.get_aligned_pairs(with_seq = True)
             
             # creates pairs of base positions (query, reference) -> looks up position in alignment sequence for corresponding reference base position
             for pair in aln_pairs:
@@ -68,7 +63,7 @@ def bam_aligned(sample, read_ids, region, pos):
                 
             # print(read.get_tags())
             # print(f"ts:{ts}; {read_ID}") 
-            return(seq, mv, ts, pos_read)
+            return(seq, mv, ts, pos_read, ref_seq)
         else: 
             #removing the else part makes the code only 1s faster
             i = i+1
@@ -83,7 +78,7 @@ def bam_aligned(sample, read_ids, region, pos):
 # assigns individual bases in sequence to corresponding part of signal through movetable information
 def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, pos=42):
     if fetch == True:
-        seq, mv, ts, pos_read = bam_aligned(sample, reads_ids, region, pos)
+        seq, mv, ts, pos_read, ref_seq = bam_aligned(sample, reads_ids, region, pos)
     
     print(pos_read)
     s = mv[0] #stride length
@@ -91,8 +86,8 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
     x = 0 #number of additional strides (stride amount - 1)
     start = ts + 1
 
-    seq2mv = np.array([[1, ts, "-"]])
-    for base in seq:
+    seq2mv = np.array([[1, ts, "-", "-"]])
+    for i, base in enumerate(seq):
         # print (base)
         while p < len(mv)-1 and mv[p + 1] == 0: #last movetable index(p): mv[p+1] doesn't exist, would cause error
             x = x + 1 #counts 0's
@@ -103,7 +98,8 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
         # print(f"x={x}")
         end = start + (s-1) + (x*s) #stride 1: start + 4 (as start number is already first position in stride), all further strides: additional +5
         x = 0 #resets number of additional strides
-        seq2mv = np.append(values=[[start, end, base]], arr=seq2mv, axis=0) # appends 
+        ref_base = ref_seq [i]
+        seq2mv = np.append(values=[[start, end, base, ref_base]], arr=seq2mv, axis=0) # appends 
         start = end+1 #next base starts 1 after end of previous base
 
     print ("sequence-to-signal alignment finished,", len(seq), "bases, signal length =", end)    
@@ -244,7 +240,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             if x_coord < start:
                 pass
             elif x_coord > start and x_coord < end: 
+                # read seq
                 ax.annotate(base_data[2], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
+                # ref seq
+                ax.annotate(base_data[3], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
                 ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
                 ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
                 xticks.append(int(base_data[0])-0.5)
