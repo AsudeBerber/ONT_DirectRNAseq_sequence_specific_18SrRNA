@@ -11,7 +11,7 @@ import os
 import pdb
 
 
-pod5_file = "resources/pod5/p2s/PAW35875_9fd38647_68d05f77_0.pod5"
+pod5_file = "resources/pod5/p2s/"
 bam_file = "resources/alignments/p2s_aligned_sorted.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
@@ -94,7 +94,7 @@ def get_loci(read, pairs, motif, wd, ml):
 
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
-    # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml-1]
+    # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.query_length - wd - ml-1]
 
     return loci
@@ -117,6 +117,7 @@ def main(argv=sys.argv[1:]):
     with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
+        per_site_qual, per_site_query_seq, per_site_ref_seq = [], [], []
 
         for read in tqdm(bam):
             if read.is_unmapped:
@@ -133,14 +134,17 @@ def main(argv=sys.argv[1:]):
             fail = []
             # extract features from bam file
             try:
-                per_site_qual = np.array([list(read.query_qualities[locus-extra_window: locus+motif_length+extra_window]) for locus in loci], dtype= "object")
-                per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci], dtype= "object")
+                per_site_qual.append([list(read.query_qualities[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
+                # per_site_qual = np.array([list(read.query_qualities[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
+                # per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
+                per_site_query_seq.append([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
                 seq_dict = dict((x, z) for x, y, z in aligned_pairs)
-                per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci], dtype= "object")
+                per_site_ref_seq.append([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
+                # per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
             except:
                 breakpoint()
                 pass
-                fail.append([read, loci])
+                
 
 
             # extract features from pod5 file
@@ -165,11 +169,6 @@ def main(argv=sys.argv[1:]):
                         id.append(per_site_id)
                     except:
                         continue
-
-        print(f"the following reads threw an error and were discarded: {fail}")
-
-                
-
 
     features = np.vstack(features)
     qual = np.vstack(qual)
