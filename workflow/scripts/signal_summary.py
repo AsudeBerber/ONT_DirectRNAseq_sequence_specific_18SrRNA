@@ -139,7 +139,7 @@ def main(argv=sys.argv[1:]):
                 per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
             except:
                 breakpoint
-                fail.append(read, locus)
+                fail.append(read, loci)
 
 
             # extract features from pod5 file
@@ -165,7 +165,7 @@ def main(argv=sys.argv[1:]):
                     except:
                         continue
 
-        print(fail)
+        print(f"the following reads threw an error and were discarded: {fail}")
 
                 
 
