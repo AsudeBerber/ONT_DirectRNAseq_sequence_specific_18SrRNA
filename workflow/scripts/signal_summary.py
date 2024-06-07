@@ -11,7 +11,7 @@ import os
 import pdb
 
 
-pod5_file = "resources/pod5/p2s/"
+pod5_file = "resources/pod5/p2s/PAW35875_9fd38647_68d05f77_0.pod5"
 bam_file = "resources/alignments/p2s_aligned_sorted.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
@@ -128,7 +128,8 @@ def main(argv=sys.argv[1:]):
         
             if len(loci) == 0:
                 continue
-
+            
+            fail = []
             # extract features from bam file
             print(list(locus for locus in loci))
             try:
@@ -138,6 +139,8 @@ def main(argv=sys.argv[1:]):
                 per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
             except:
                 breakpoint
+                fail.append(read, locus)
+
 
             # extract features from pod5 file
 
@@ -161,6 +164,8 @@ def main(argv=sys.argv[1:]):
                         id.append(per_site_id)
                     except:
                         continue
+
+            print(fail)
 
                 
 
