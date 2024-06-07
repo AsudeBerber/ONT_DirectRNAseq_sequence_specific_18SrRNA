@@ -166,18 +166,13 @@ def main(argv=sys.argv[1:]):
                     except:
                         continue
 
-        print(f"the following reads threw an error and were discarded: {fail}")
-
-                
-
-
     features = np.vstack(features)
     qual = np.vstack(qual)
     query_seq = np.vstack(query_seq)
     ref_seq = np.vstack(ref_seq)
     id = np.hstack(id)
 
-    # np.savez_compressed(npz_file, features, qual, query_seq, ref_seq, id)
+    np.savez_compressed(npz_file, features, qual, query_seq, ref_seq, id)
     np.savetxt(npz_file, features, qual, query_seq, ref_seq, id)
 
     return 0
