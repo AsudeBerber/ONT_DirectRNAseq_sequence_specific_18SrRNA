@@ -139,6 +139,7 @@ def main(argv=sys.argv[1:]):
                 per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
             except:
                 breakpoint
+                pass
                 fail.append(read, loci)
 
 
