@@ -94,7 +94,8 @@ def get_loci(read, pairs, motif, wd, ml):
 
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
-    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml-1]
+    # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml-1]
+    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.query_length - wd - ml-1]
 
     return loci
 
