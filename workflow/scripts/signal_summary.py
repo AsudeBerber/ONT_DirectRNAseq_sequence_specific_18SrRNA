@@ -7,6 +7,7 @@ from tqdm import tqdm
 import re
 import argparse
 import sys
+import os
 
 
 pod5_file = "resources/pod5/p2s/"
@@ -111,7 +112,7 @@ def main(argv=sys.argv[1:]):
     motif_length = len(motif)
     extra_window = int((window_size - motif_length) / 2)
 
-    with p5.Reader(pod5_file) as pod5, pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
+    with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
 
@@ -135,17 +136,28 @@ def main(argv=sys.argv[1:]):
 
             # extract features from pod5 file
 
-            
-            pod5_record = next(pod5.reads(selection=[read.query_name])) 
-            events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
-            per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
-            per_site_id = np.array([read.query_name + ':' + str(locus) for locus in loci])
+            # with p5.DatasetReader(args.pod5) as dataset:
 
-            features.append(per_site_features)
-            qual.append(per_site_qual)
-            query_seq.append(per_site_query_seq)
-            ref_seq.append(per_site_ref_seq)
-            id.append(per_site_id)
+            for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
+                pod5_file = os.path.join(args.pod5, filename)
+                with p5.Reader(pod5_file) as pod5:
+                    # Read the selected read from the pod5 file
+                    # next() is required here as Reader.reads() returns a Generator
+                    try:
+                        pod5_record = next(pod5.reads(selection=[read.query_name])) 
+                        events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
+                        per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
+                        per_site_id = np.array([read.query_name + ':' + str(locus) for locus in loci])
+
+                        features.append(per_site_features)
+                        qual.append(per_site_qual)
+                        query_seq.append(per_site_query_seq)
+                        ref_seq.append(per_site_ref_seq)
+                        id.append(per_site_id)
+                    except:
+                        continue
+
+                
 
 
     features = np.vstack(features)
