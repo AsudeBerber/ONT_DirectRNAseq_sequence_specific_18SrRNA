@@ -9,6 +9,7 @@ import argparse
 import sys
 import os
 import pdb
+import time
 
 
 pod5_file = "resources/pod5/p2s/"
@@ -121,7 +122,7 @@ def main(argv=sys.argv[1:]):
         for read in tqdm(bam):
             if read.is_unmapped:
                 continue
-
+            time_st_bam = time.process_time
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True)
             pairs_dict = dict((y-read.reference_start, x) for x, y, z in aligned_pairs if y is not None)
@@ -140,13 +141,13 @@ def main(argv=sys.argv[1:]):
             except:
                 breakpoint()
                 pass
-                
-
+            
+            print (f"time read loop: {time.process_time - time_st_bam}")
 
             # extract features from pod5 file
 
             # with p5.DatasetReader(args.pod5) as dataset:
-
+            time_st = time.process_time
             for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
                 pod5_file = os.path.join(args.pod5, filename)
                 with p5.Reader(pod5_file) as pod5:
@@ -165,6 +166,7 @@ def main(argv=sys.argv[1:]):
                         id.append(per_site_id)
                     except:
                         continue
+            print (f"time pod5 loop: {time.process_time - time_st}")
 
     features = np.vstack(features)
     qual = np.vstack(qual)
