@@ -131,7 +131,6 @@ def main(argv=sys.argv[1:]):
             
             fail = []
             # extract features from bam file
-            print(list(locus for locus in loci))
             try:
                 per_site_qual = np.array([list(read.qual[locus-extra_window: locus+motif_length+extra_window]) for locus in loci], dtype= "object")
                 per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci], dtype= "object")
