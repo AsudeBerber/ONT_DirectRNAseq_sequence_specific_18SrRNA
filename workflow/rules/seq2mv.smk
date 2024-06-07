@@ -19,10 +19,10 @@ rule seq2mv_single_read:
         "../envs/seq2mv.yaml"
     shell:
      """python workflow/scripts/seq2mv_direct_RNA.py \
-        {wildcards.sequencer} \
-        {input.bam} \
-        {wildcards.read_id} \
-        {wildcards.pos} {wildcards.range} \
+        --sequencer {wildcards.sequencer} \
+        --sample {input.bam} \
+        --readID {wildcards.read_id} \
+        --pos {wildcards.pos} --range {wildcards.range} \
         --pod5_dir resources/pod5/{wildcards.sequencer} \
         --region {params.region}"""
      

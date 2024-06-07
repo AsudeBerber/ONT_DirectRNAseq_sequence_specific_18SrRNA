@@ -294,11 +294,11 @@ def main(argv = sys.argv[1:]):
 
 def cmd_parser(argv):
     parser = argparse.ArgumentParser(description="plots electric current/timepoint with corresponding basecalled base for given Read_ID")
-    parser.add_argument("sequencer", help= "name of sequencer (p2i/p2s)")
-    parser.add_argument("sample", help= "Name of sample bam file w/o .bam ending", action="store")
-    parser.add_argument("readID", help= "Sample ID in bam and pod5 file", action="store")
-    parser.add_argument("pos", help= "position/index of base in middle, start with 0", type=int, action="store")
-    parser.add_argument("range", help= "bases to display the left/right of middle base", type=int, action="store")
+    parser.add_argument("--sequencer", help= "name of sequencer (p2i/p2s)")
+    parser.add_argument("--sample", help= "Name of sample bam file w/o .bam ending", action="store")
+    parser.add_argument("--readID", help= "Sample ID in bam and pod5 file", action="store")
+    parser.add_argument("--pos", help= "position/index of base in middle, start with 0", type=int, action="store")
+    parser.add_argument("--range", help= "bases to display the left/right of middle base", type=int, action="store")
     parser.add_argument("--no_fetch", help= "Disables fetching mv, ts, seq from readID - requieres --mv, --ts, --seq", action="store_true")
     parser.add_argument("--seq", help= "complete sequence of read", action="store_true")
     parser.add_argument("--mv", help= "movetable", action="store_true")
