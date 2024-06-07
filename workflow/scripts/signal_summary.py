@@ -155,8 +155,8 @@ def main(argv=sys.argv[1:]):
                     try:
                         pod5_record = next(pod5.reads(selection=[read.query_name])) 
                         events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
-                        per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
-                        per_site_id = np.array([read.query_name + ':' + str(locus) for locus in loci])
+                        per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
+                        per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
 
                         features.append(per_site_features)
                         qual.append(per_site_qual)
