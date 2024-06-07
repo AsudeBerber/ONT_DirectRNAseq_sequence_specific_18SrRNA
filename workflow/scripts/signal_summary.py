@@ -123,6 +123,7 @@ def main(argv=sys.argv[1:]):
             if read.is_unmapped:
                 continue
             time_st_bam = time.process_time
+
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True)
             pairs_dict = dict((y-read.reference_start, x) for x, y, z in aligned_pairs if y is not None)
@@ -141,8 +142,8 @@ def main(argv=sys.argv[1:]):
             except:
                 breakpoint()
                 pass
-            
-            print (f"time read loop: {time.process_time - time_st_bam}")
+            time_bam = time.process_time - time_st_bam
+            print (f"time read loop: {time_bam}")
 
             # extract features from pod5 file
 
@@ -166,7 +167,8 @@ def main(argv=sys.argv[1:]):
                         id.append(per_site_id)
                     except:
                         continue
-            print (f"time pod5 loop: {time.process_time - time_st}")
+            time_pod = time.process_time - time_st
+            print (f"time pod5 loop: {time_pod}")
 
     features = np.vstack(features)
     qual = np.vstack(qual)
