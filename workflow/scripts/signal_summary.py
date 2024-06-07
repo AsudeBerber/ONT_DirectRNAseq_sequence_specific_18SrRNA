@@ -7,10 +7,12 @@ from tqdm import tqdm
 import re
 import argparse
 import sys
+import os
+import pdb
 
 
-pod5_file = "resources/pod5/p2s/"
-bam_file = "resources/alignment/p2s_aligned_sorted.bam"
+pod5_file = "resources/pod5/p2s/PAW35875_9fd38647_68d05f77_0.pod5"
+bam_file = "resources/alignments/p2s_aligned_sorted.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
 npz_file = f"resources/results/p2s/{motif}_window_{window_size}.txt"
@@ -92,7 +94,8 @@ def get_loci(read, pairs, motif, wd, ml):
 
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
-    loci = [locus for locus in loci if locus is not None and locus > wd and locus < read.alen - wd - ml]
+    # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml-1]
+    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.query_length - wd - ml-1]
 
     return loci
 
@@ -111,7 +114,7 @@ def main(argv=sys.argv[1:]):
     motif_length = len(motif)
     extra_window = int((window_size - motif_length) / 2)
 
-    with p5.Reader(pod5_file) as pod5, pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
+    with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
 
@@ -126,26 +129,46 @@ def main(argv=sys.argv[1:]):
         
             if len(loci) == 0:
                 continue
-
+            
+            fail = []
             # extract features from bam file
-            per_site_qual = np.array([list(read.qual[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
-            per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
-            seq_dict = dict((x, z) for x, y, z in aligned_pairs)
-            per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
+            try:
+                per_site_qual = np.array([list(read.query_qualities[locus-extra_window: locus+motif_length+extra_window]) for locus in loci], dtype= "object")
+                per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci], dtype= "object")
+                seq_dict = dict((x, z) for x, y, z in aligned_pairs)
+                per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci], dtype= "object")
+            except:
+                breakpoint()
+                pass
+                fail.append([read, loci])
+
 
             # extract features from pod5 file
 
-            
-            pod5_record = next(pod5.reads(selection=[read.query_name])) 
-            events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
-            per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
-            per_site_id = np.array([read.query_name + ':' + str(locus) for locus in loci])
+            # with p5.DatasetReader(args.pod5) as dataset:
 
-            features.append(per_site_features)
-            qual.append(per_site_qual)
-            query_seq.append(per_site_query_seq)
-            ref_seq.append(per_site_ref_seq)
-            id.append(per_site_id)
+            for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
+                pod5_file = os.path.join(args.pod5, filename)
+                with p5.Reader(pod5_file) as pod5:
+                    # Read the selected read from the pod5 file
+                    # next() is required here as Reader.reads() returns a Generator
+                    try:
+                        pod5_record = next(pod5.reads(selection=[read.query_name])) 
+                        events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
+                        per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
+                        per_site_id = np.array([read.query_name + ':' + str(locus) for locus in loci])
+
+                        features.append(per_site_features)
+                        qual.append(per_site_qual)
+                        query_seq.append(per_site_query_seq)
+                        ref_seq.append(per_site_ref_seq)
+                        id.append(per_site_id)
+                    except:
+                        continue
+
+        print(f"the following reads threw an error and were discarded: {fail}")
+
+                
 
 
     features = np.vstack(features)
