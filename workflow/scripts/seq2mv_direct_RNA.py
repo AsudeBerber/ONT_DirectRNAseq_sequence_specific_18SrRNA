@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colormaps
 import numpy as np
 import pysam as ps
+import sys
 
 #creates textfile with all read_ids within bam file
 def read_id_list_bam(sample=None):
