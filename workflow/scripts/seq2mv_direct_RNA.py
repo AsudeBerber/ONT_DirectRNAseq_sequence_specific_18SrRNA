@@ -268,8 +268,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
 def main(argv = sys.argv[1:]):
     cmd_parser(argv= argv)
 
-    seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
-                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos)  
+    seq2mv, pos_read = seq_to_mv(reads_ids = argv.readID, region = argv.region, sample = argv.sample,
+                    seq = argv.seq, mv = argv.mv, ts = argv.ts, fetch = fetch, pos = argv.pos)  
 
 
     # as RNA is sequenced 3' -> 5', but convention + basecalled sequence is 5' -> 3' the seq2mv has to be "turned around" 
@@ -278,8 +278,8 @@ def main(argv = sys.argv[1:]):
 
 
     #plots array to signal
-    plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos = args.pos, pos_read = pos_read,
-                        range_bp = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
+    plot_signal_plus_seq(rev_seq2mv, read_ids = argv.readID, pos = argv.pos, pos_read = pos_read,
+                        range_bp = argv.range, sequencer = argv.sequencer, full_read=False, pod5_dir = argv.pod5_dir)
 
 
 ##########################################################################################################################################################
