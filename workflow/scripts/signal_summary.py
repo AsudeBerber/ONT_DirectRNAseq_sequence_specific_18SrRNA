@@ -133,14 +133,14 @@ def main(argv=sys.argv[1:]):
             # extract features from bam file
             print(list(locus for locus in loci))
             try:
-                per_site_qual = np.array([list(read.qual[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
-                per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
+                per_site_qual = np.array([list(read.qual[locus-extra_window: locus+motif_length+extra_window]) for locus in loci], dtype= "object")
+                per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci], dtype= "object")
                 seq_dict = dict((x, z) for x, y, z in aligned_pairs)
-                per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
+                per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci], dtype= "object")
             except:
-                breakpoint
+                breakpoint()
                 pass
-                fail.append(read, loci)
+                fail.append([read, loci])
 
 
             # extract features from pod5 file
