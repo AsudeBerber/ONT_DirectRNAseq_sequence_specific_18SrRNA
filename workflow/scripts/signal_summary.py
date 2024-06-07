@@ -9,11 +9,11 @@ import argparse
 import sys
 
 
-# pod5_file = "data/pod5/p2s/"
-# bam_file = "data/mapped/PAQ77977_pass_barcode01_362f656f_255b3204_0.bam"
-# motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
-# window_size = 21
-# npz_file = ""
+pod5_file = "resources/pod5/p2s/"
+bam_file = "resources/alignment/p2s_aligned_sorted.bam"
+motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
+window_size = 21
+npz_file = f"resources/results/p2s/{motif}_window_{window_size}.txt"
 
 # phred={}
 # for x in range(0,94):
@@ -101,11 +101,11 @@ def main(argv=sys.argv[1:]):
 
     args = parse_args(argv=argv)
 
-    pod5_file = args.pod5
-    bam_file = args.bam
-    motif = args.motif
-    window_size = args.window
-    npz_file = args.output
+    # pod5_file = args.pod5
+    # bam_file = args.bam
+    # motif = args.motif
+    # window_size = args.window
+    # npz_file = args.output
 
     compiled_motif = re.compile(motif)
     motif_length = len(motif)
@@ -134,6 +134,8 @@ def main(argv=sys.argv[1:]):
             per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
 
             # extract features from pod5 file
+
+            
             pod5_record = next(pod5.reads(selection=[read.query_name])) 
             events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
             per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
