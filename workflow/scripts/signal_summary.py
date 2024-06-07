@@ -117,7 +117,6 @@ def main(argv=sys.argv[1:]):
     with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
-        per_site_qual, per_site_query_seq, per_site_ref_seq = [], [], []
 
         for read in tqdm(bam):
             if read.is_unmapped:
@@ -134,13 +133,10 @@ def main(argv=sys.argv[1:]):
             fail = []
             # extract features from bam file
             try:
-                per_site_qual.append([list(read.query_qualities[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
-                # per_site_qual = np.array([list(read.query_qualities[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
-                # per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
-                per_site_query_seq.append([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
+                per_site_qual = np.array([list(read.query_qualities[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
+                per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
                 seq_dict = dict((x, z) for x, y, z in aligned_pairs)
-                per_site_ref_seq.append([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
-                # per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
+                per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
             except:
                 breakpoint()
                 pass
@@ -169,6 +165,11 @@ def main(argv=sys.argv[1:]):
                         id.append(per_site_id)
                     except:
                         continue
+
+        print(f"the following reads threw an error and were discarded: {fail}")
+
+                
+
 
     features = np.vstack(features)
     qual = np.vstack(qual)
