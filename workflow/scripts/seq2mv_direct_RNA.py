@@ -318,7 +318,7 @@ def cmd_parser(argv):
 
 
 if __name__ == "__main__":
-    print(sys.argv)
+    print(sys.argv[1:])
     exit(main())
     # args[0] = current file
     # args[1] = function name
