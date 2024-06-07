@@ -140,7 +140,6 @@ def main(argv=sys.argv[1:]):
 
             for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
                 pod5_file = os.path.join(args.pod5, filename)
-                print(filename)
                 with p5.Reader(pod5_file) as pod5:
                     # Read the selected read from the pod5 file
                     # next() is required here as Reader.reads() returns a Generator
