@@ -12,7 +12,7 @@ import pdb
 import time
 
 
-pod5_file = "resources/pod5/p2s/"
+pod5_file = "resources/pod5/p2s/PAW35875_9fd38647_68d05f77_0.pod5"
 bam_file = "resources/alignments/p2s_aligned_sorted.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
@@ -122,7 +122,6 @@ def main(argv=sys.argv[1:]):
         for read in tqdm(bam):
             if read.is_unmapped:
                 continue
-            time_st_bam = time.process_time()
 
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True)
@@ -142,15 +141,13 @@ def main(argv=sys.argv[1:]):
             except:
                 breakpoint()
                 pass
-            time_bam = time.process_time() - time_st_bam
-            print (f"time read loop: {time_bam}")
 
             # extract features from pod5 file
 
             # with p5.DatasetReader(args.pod5) as dataset:
             time_st = time.process_time()
-            for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
-                pod5_file = os.path.join(args.pod5, filename)
+            # for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
+            #     pod5_file = os.path.join(args.pod5, filename)
                 with p5.Reader(pod5_file) as pod5:
                     # Read the selected read from the pod5 file
                     # next() is required here as Reader.reads() returns a Generator
