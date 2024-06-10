@@ -176,7 +176,7 @@ def main(argv=sys.argv[1:]):
             ref_seq = np.vstack(ref_seq)
             id = np.hstack(id)
 
-    breakpoint()
+    # breakpoint()
 
     # checks if results folder exists, creates otherwise
     # check if plot dir exists, creates it otherwise
