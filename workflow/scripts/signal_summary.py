@@ -150,6 +150,8 @@ def main(argv=sys.argv[1:]):
             #loops through all pod5 files in folder 
             with p5.DatasetReader(pod5_file, threads= 8, recursive= True) as dataset:
                 for read_record in dataset.reads(): 
+                    print (read_record.read_id)
+                    continue
                     # with p5.Reader(pod5_file) as pod5:
                     # Read the selected read from the pod5 file
                     # next() is required here as Reader.reads() returns a Generator
