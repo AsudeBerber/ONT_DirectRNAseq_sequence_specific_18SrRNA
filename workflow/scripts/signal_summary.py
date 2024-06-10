@@ -181,10 +181,9 @@ def main(argv=sys.argv[1:]):
     breakpoint()
 
     # checks if results folder exists, creates otherwise
-    try:
-        a = open(npz_file, "x")
-    except: 
-        pass
+    # check if plot dir exists, creates it otherwise
+    if not os.path.isdir(npz_file): os.makedirs(npz_file)
+        
 
     np.savez_compressed(npz_file, features, qual, query_seq, ref_seq, id)
     np.savetxt(npz_file, features, qual, query_seq, ref_seq, id)
