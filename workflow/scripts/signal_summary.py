@@ -95,6 +95,7 @@ def get_loci(read, pairs, motif, wd, ml):
     ref_loci = []
     for m in ref_pos:
         if (m in pairs): ref_loci.append(m)
+        print(m, pairs)
         
 
     print(pairs,ref_loci)
