@@ -91,10 +91,12 @@ def get_loci(read, pairs, motif, wd, ml):
     """    
     ref_ac1 = range (1335,1338)
     ref_ac2 = range (1840,1843)
-    # for m in motif.finditer(read.get_reference_sequence()):
-    #     ref_loci.append(m.start())
+    ref.loci = []
+    for m in ([ref_ac1], [ref_ac2]):
+        ref_loci.append(m)
+
     print(pairs)
-    loci = [pairs[locus] for locus in [*ref_ac1] + [*ref_ac2]]
+    loci = [pairs[locus] for locus in ref.loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml-1]
