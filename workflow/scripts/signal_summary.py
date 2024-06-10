@@ -154,7 +154,7 @@ def main(argv=sys.argv[1:]):
                 # with p5.Reader(pod5_file) as pod5:
                 # Read the selected read from the pod5 file
                 # next() is required here as Reader.reads() returns a Generator
-                pod5_record = next(dataset.reads())
+                pod5_record = dataset.reads()
                 breakpoint()
                 if (pod5_record.read_id  == read.query_name):
                     events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
