@@ -122,7 +122,7 @@ def main(argv=sys.argv[1:]):
         for read in tqdm(bam):
             if read.is_unmapped:
                 continue
-
+            time_st = time.process_time()
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True)
             pairs_dict = dict((y-read.reference_start, x) for x, y, z in aligned_pairs if y is not None)
@@ -131,7 +131,8 @@ def main(argv=sys.argv[1:]):
             if len(loci) == 0:
                 continue
             
-            fail = []
+
+            
             # extract features from bam file
             try:
                 per_site_qual = [list(read.query_qualities[locus-extra_window: locus+motif_length+extra_window]) for locus in loci]
@@ -141,6 +142,8 @@ def main(argv=sys.argv[1:]):
             except:
                 breakpoint()
                 pass
+            time_pod = time.process_time() - time_st
+                print (f"time loci: {time_pod}")
 
             # extract features from pod5 file
 
@@ -156,7 +159,7 @@ def main(argv=sys.argv[1:]):
                         events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                         per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
                         per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
-                        
+
                         features.append(per_site_features)
                         qual.append(per_site_qual)
                         query_seq.append(per_site_query_seq)
