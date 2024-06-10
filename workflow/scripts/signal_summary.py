@@ -118,6 +118,7 @@ def main(argv=sys.argv[1:]):
     with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
+        per_site_id, per_site_features
 
         for read in tqdm(bam):
             if read.is_unmapped:
@@ -167,12 +168,12 @@ def main(argv=sys.argv[1:]):
             time_pod = time.process_time() - time_st
             print (f"time pod5 loop: {time_pod}")
 
-    breakpoint()
-    features = np.vstack(features)
-    qual = np.vstack(qual)
-    query_seq = np.vstack(query_seq)
-    ref_seq = np.vstack(ref_seq)
-    id = np.hstack(id)
+            breakpoint()
+            features = np.vstack(features)
+            qual = np.vstack(qual)
+            query_seq = np.vstack(query_seq)
+            ref_seq = np.vstack(ref_seq)
+            id = np.hstack(id)
 
     np.savez_compressed(npz_file, features, qual, query_seq, ref_seq, id)
     np.savetxt(npz_file, features, qual, query_seq, ref_seq, id)
