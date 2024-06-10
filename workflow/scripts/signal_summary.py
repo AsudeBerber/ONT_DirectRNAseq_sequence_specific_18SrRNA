@@ -151,32 +151,32 @@ def main(argv=sys.argv[1:]):
             with p5.DatasetReader(pod5_file, threads= 8, recursive= True) as dataset:
                 i = 0
                 k = 0
-                    # with p5.Reader(pod5_file) as pod5:
-                    # Read the selected read from the pod5 file
-                    # next() is required here as Reader.reads() returns a Generator
-                    pod5_record = next(dataset.reads(selection=[read.query_name]))
-                    if (read_record.read_id == read.query_name):
-                        events = get_events(read_record.signal, read.get_tag("mv"), read.get_tag("ts"))
-                        per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
-                        per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
+                # with p5.Reader(pod5_file) as pod5:
+                # Read the selected read from the pod5 file
+                # next() is required here as Reader.reads() returns a Generator
+                pod5_record = next(dataset.reads(selection=[read.query_name]))
+                if (read_record.read_id == read.query_name):
+                    events = get_events(read_record.signal, read.get_tag("mv"), read.get_tag("ts"))
+                    per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
+                    per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
 
-                        features.append(per_site_features)
-                        qual.append(per_site_qual)
-                        query_seq.append(per_site_query_seq)
-                        ref_seq.append(per_site_ref_seq)
-                        id.append(per_site_id)
-                        dataset.clear_readers()
-                        dataset.clear_index()
-                        print("right")
-                        k = k + 1
-                    else:
-                        i = i + 1
-                        dataset.clear_index()
-                        dataset.clear_readers()
-                        print(f"wrong read {i}{k}")
-                        continue
-                time_pod = time.process_time() - time_st
-                print (f"time pod5 loop: {time_pod}")
+                    features.append(per_site_features)
+                    qual.append(per_site_qual)
+                    query_seq.append(per_site_query_seq)
+                    ref_seq.append(per_site_ref_seq)
+                    id.append(per_site_id)
+                    dataset.clear_readers()
+                    dataset.clear_index()
+                    print("right")
+                    k = k + 1
+                else:
+                    i = i + 1
+                    dataset.clear_index()
+                    dataset.clear_readers()
+                    print(f"wrong read {i}{k}")
+                    continue
+            time_pod = time.process_time() - time_st
+            print (f"time pod5 loop: {time_pod}")
 
         breakpoint()
         features = np.vstack(features)
