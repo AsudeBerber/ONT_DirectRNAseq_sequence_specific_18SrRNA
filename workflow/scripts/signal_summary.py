@@ -13,7 +13,7 @@ import time
 
 
 pod5_file = "resources/pod5/p2s/PAW35875_9fd38647_68d05f77_0.pod5"
-bam_file = "resources/alignments/p2s_aligned_slice_n10.bam"
+bam_file = "resources/alignments/p2s_aligned_subsample_00001.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
 npz_file = f"resources/results/p2s/{motif}_window_{window_size}.txt"
