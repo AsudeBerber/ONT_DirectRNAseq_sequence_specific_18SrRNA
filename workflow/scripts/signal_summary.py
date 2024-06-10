@@ -164,6 +164,7 @@ def main(argv=sys.argv[1:]):
                         ref_seq.append(per_site_ref_seq)
                         id.append(per_site_id)
                     else:
+                        dataset.clear_readers()
                         continue
                 time_pod = time.process_time() - time_st
                 print (f"time pod5 loop: {time_pod}")
