@@ -171,12 +171,12 @@ def main(argv=sys.argv[1:]):
                 time_pod = time.process_time() - time_st
                 print (f"time pod5 loop: {time_pod}")
 
-            
-        features = np.vstack(features)
-        qual = np.vstack(qual)
-        query_seq = np.vstack(query_seq)
-        ref_seq = np.vstack(ref_seq)
-        id = np.hstack(id)
+            breakpoint()
+            features = np.vstack(features)
+            qual = np.vstack(qual)
+            query_seq = np.vstack(query_seq)
+            ref_seq = np.vstack(ref_seq)
+            id = np.hstack(id)
 
     breakpoint()
 
