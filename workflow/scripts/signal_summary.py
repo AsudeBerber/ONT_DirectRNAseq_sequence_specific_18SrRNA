@@ -91,9 +91,11 @@ def get_loci(read, pairs, motif, wd, ml):
     """    
     ref_ac1 = range (1335,1338)
     ref_ac2 = range (1840,1843)
+    ref_pos = [*ref_ac1 + ref_ac2]
     ref_loci = []
-    for m in ([*ref_ac1] + [*ref_ac2]):
-        ref_loci.append(m)
+    for m in ref_pos:
+        if (m in pairs): ref_loci.append(m)
+        
 
     print(pairs,ref_loci)
     loci = [pairs[locus] for locus in ref_loci]
