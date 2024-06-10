@@ -155,7 +155,7 @@ def main(argv=sys.argv[1:]):
                     # Read the selected read from the pod5 file
                     # next() is required here as Reader.reads() returns a Generator
                     try:
-                        pod5_record = next(read_record.reads(selection=[read.query_name])) 
+                        pod5_record = next(read_record(selection=[read.query_name])) 
                         events = get_events(read_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                         per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
                         per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
