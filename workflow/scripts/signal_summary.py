@@ -149,13 +149,14 @@ def main(argv=sys.argv[1:]):
             time_st = time.process_time()
             #loops through all pod5 files in folder 
             with p5.DatasetReader(pod5_file, threads= 8) as dataset:
-                for read_record in dataset.reads(selection=[read.query_name]): 
+                for read_record in dataset.reads(): 
                     
                 # with p5.Reader(pod5_file) as pod5:
                     # Read the selected read from the pod5 file
                     # next() is required here as Reader.reads() returns a Generator
                     try:
-                        pod5_record = next(pod5.reads(selection=[read.query_name])) 
+                        pod5_record = get_read(read.query_name)
+                        # pod5_record = next(pod5.reads(selection=[read.query_name])) 
                         events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                         per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
                         per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
