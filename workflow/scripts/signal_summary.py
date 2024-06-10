@@ -176,6 +176,13 @@ def main(argv=sys.argv[1:]):
             id = np.hstack(id)
 
     breakpoint()
+
+    # checks if results folder exists, creates otherwise
+    try:
+        a = open(npz_file, "x")
+    except: 
+        pass
+
     np.savez_compressed(npz_file, features, qual, query_seq, ref_seq, id)
     np.savetxt(npz_file, features, qual, query_seq, ref_seq, id)
 
