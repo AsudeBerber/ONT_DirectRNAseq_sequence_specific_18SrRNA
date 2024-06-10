@@ -118,7 +118,6 @@ def main(argv=sys.argv[1:]):
     with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
-        per_site_id, per_site_features
 
         for read in tqdm(bam):
             if read.is_unmapped:
