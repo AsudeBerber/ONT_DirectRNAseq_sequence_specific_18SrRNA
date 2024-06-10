@@ -148,31 +148,26 @@ def main(argv=sys.argv[1:]):
             time_st = time.process_time()
             for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
                 pod5_file = os.path.join(args.pod5, filename)
-            with p5.Reader(pod5_file) as pod5:
-                # Read the selected read from the pod5 file
-                # next() is required here as Reader.reads() returns a Generator
-                try:
-                    pod5_record = next(pod5.reads(selection=[read.query_name])) 
-                    events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
-                    per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
-                    per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
+                with p5.Reader(pod5_file) as pod5:
+                    # Read the selected read from the pod5 file
+                    # next() is required here as Reader.reads() returns a Generator
+                    try:
+                        pod5_record = next(pod5.reads(selection=[read.query_name])) 
+                        events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
+                        per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
+                        per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
 
-                    breakpoint()
-                    features.append(per_site_features)
-                    qual.append(per_site_qual)
-                    query_seq.append(per_site_query_seq)
-                    ref_seq.append(per_site_ref_seq)
-                    id.append(per_site_id)
+                        breakpoint()
+                        features.append(per_site_features)
+                        qual.append(per_site_qual)
+                        query_seq.append(per_site_query_seq)
+                        ref_seq.append(per_site_ref_seq)
+                        id.append(per_site_id)
 
-                    features = np.vstack(features)
-                    qual = np.vstack(qual)
-                    query_seq = np.vstack(query_seq)
-                    ref_seq = np.vstack(ref_seq)
-                    id = np.hstack(id)
-                except:
-                    continue
-            time_pod = time.process_time() - time_st
-            print (f"time pod5 loop: {time_pod}")
+                    except:
+                        continue
+                time_pod = time.process_time() - time_st
+                print (f"time pod5 loop: {time_pod}")
 
             
             features = np.vstack(features)
