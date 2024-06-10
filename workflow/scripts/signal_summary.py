@@ -148,7 +148,7 @@ def main(argv=sys.argv[1:]):
             # with p5.DatasetReader(args.pod5) as dataset:
             time_st = time.process_time()
             #loops through all pod5 files in folder 
-            with p5.DatasetReader(pod5_file, threads= 8) as dataset:
+            with p5.DatasetReader(pod5_file, threads= 8, recursive= True) as dataset:
                 for read_record in dataset.reads(): 
                     breakpoint()
                 # with p5.Reader(pod5_file) as pod5:
