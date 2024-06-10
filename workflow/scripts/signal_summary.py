@@ -151,6 +151,7 @@ def main(argv=sys.argv[1:]):
             with p5.DatasetReader(pod5_file, threads= 8, recursive= True) as dataset:
                 for read_record in dataset:
                     print(read_record.read_id)
+                    dataset.clear_readers()
                 i = 0
                 k = 0
                 # with p5.Reader(pod5_file) as pod5:
