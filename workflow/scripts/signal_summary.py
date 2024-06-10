@@ -90,10 +90,10 @@ def get_loci(read, pairs, motif, wd, ml):
     find positions that match motif
     """    
     ref_loci = []
-    for m in motif.finditer(read.get_reference_sequence()):
-        ref_loci.append(m.start())
+    # for m in motif.finditer(read.get_reference_sequence()):
+    #     ref_loci.append(m.start())
 
-    loci = [pairs[locus] for locus in ref_loci]
+    loci = [pairs[locus]]
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.query_length - wd - ml-1]
@@ -128,7 +128,7 @@ def main(argv=sys.argv[1:]):
             ac_ccg= list(filter(lambda x: x[1] in range(1335,1338) or x[1] in range (1840,1843), aligned_pairs))
             breakpoint()
 
-            pairs_dict = dict((y-read.reference_start, x) for x, y, z in ac_ccg if y is not None)
+            pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
             loci = get_loci(read, pairs_dict, compiled_motif, extra_window, motif_length)
         
             if len(loci) == 0:
