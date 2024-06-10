@@ -95,10 +95,7 @@ def get_loci(read, pairs, motif, wd, ml):
     ref_loci = []
     for m in ref_pos:
         if (m in pairs): ref_loci.append(m)
-        print(m, pairs)
-        
 
-    print(pairs,ref_loci)
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
@@ -163,6 +160,7 @@ def main(argv=sys.argv[1:]):
                     try:
                         pod5_record = next(pod5.reads(selection=[read.query_name])) 
                         events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
+                        breakpoint()
                         per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
                         per_site_id = np.array([read.query_name + ':' + str(locus) for locus in loci])
 
@@ -191,7 +189,7 @@ def main(argv=sys.argv[1:]):
         
 
     np.savez_compressed(npz_file, features, qual, query_seq, ref_seq, id)
-    np.savetxt('resources/results/p2s/summary.txt', features, qual, query_seq, ref_seq, id)
+    np.savetxt('resources/results/p2s/summary.txt', (features, qual, query_seq, ref_seq, id))
 
     return 0
 
