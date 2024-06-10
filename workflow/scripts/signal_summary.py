@@ -165,15 +165,8 @@ def main(argv=sys.argv[1:]):
                     query_seq.append(per_site_query_seq)
                     ref_seq.append(per_site_ref_seq)
                     id.append(per_site_id)
-                    dataset.clear_readers()
-                    dataset.clear_index()
-                    print("right")
-                    k = k + 1
                 else:
                     i = i + 1
-                    dataset.clear_index()
-                    dataset.clear_readers()
-                    print(f"wrong read {i}{k}")
                     continue
             time_pod = time.process_time() - time_st
             print (f"time pod5 loop: {time_pod}")
