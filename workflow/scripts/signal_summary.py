@@ -156,12 +156,12 @@ def main(argv=sys.argv[1:]):
                         events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                         per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
                         per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
-
-                        features.append(features, per_site_features)
-                        qual.append(qual, per_site_qual)
-                        query_seq.append(query_seq, per_site_query_seq)
-                        ref_seq.append(ref_seq, per_site_ref_seq)
-                        id.append(id, per_site_id)
+                        breakpoint()
+                        features.append(per_site_features)
+                        qual.append(per_site_qual)
+                        query_seq.append(per_site_query_seq)
+                        ref_seq.append(per_site_ref_seq)
+                        id.append(per_site_id)
 
                     except RuntimeError:
                         continue
