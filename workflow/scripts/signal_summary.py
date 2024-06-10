@@ -148,31 +148,24 @@ def main(argv=sys.argv[1:]):
             # with p5.DatasetReader(args.pod5) as dataset:
             time_st = time.process_time()
             #loops through all pod5 files in folder 
-            with p5.DatasetReader(pod5_file, threads= 8, recursive= True) as dataset:
-                for read_record in dataset:
-                    print(read_record.read_id)
-                    dataset.clear_readers()
-                i = 0
-                k = 0
-                # with p5.Reader(pod5_file) as pod5:
-                # Read the selected read from the pod5 file
-                # next() is required here as Reader.reads() returns a Generator
-                pod5_record = next(dataset.reads())
-                breakpoint()
-                if (pod5_record.read_id  == read.query_name):
-                    events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
-                    per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
-                    per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
+            for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
+                pod5_file = os.path.join(args.pod5, filename)
+                with p5.Reader(pod5_file) as pod5:
+                    # Read the selected read from the pod5 file
+                    # next() is required here as Reader.reads() returns a Generator
+                    try:
+                        pod5_record = next(pod5.reads(selection=[read.query_name])) 
+                        events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
+                        per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
+                        per_site_id = np.array([read.query_name + ':' + str(locus) for locus in loci])
 
-                    features.append(per_site_features)
-                    qual.append(per_site_qual)
-                    query_seq.append(per_site_query_seq)
-                    ref_seq.append(per_site_ref_seq)
-                    id.append(per_site_id)
-                    breakpoint()
-                else:
-                    i = i + 1
-                    continue
+                        features.append(per_site_features)
+                        qual.append(per_site_qual)
+                        query_seq.append(per_site_query_seq)
+                        ref_seq.append(per_site_ref_seq)
+                        id.append(per_site_id)
+                    except:
+                        continue
             time_pod = time.process_time() - time_st
             print (f"time pod5 loop: {time_pod}")
 
