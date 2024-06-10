@@ -155,6 +155,7 @@ def main(argv=sys.argv[1:]):
                 # Read the selected read from the pod5 file
                 # next() is required here as Reader.reads() returns a Generator
                 pod5_record = next(dataset.reads())
+                breakpoint()
                 if (pod5_record.read_id  == read.query_name):
                     events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                     per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
