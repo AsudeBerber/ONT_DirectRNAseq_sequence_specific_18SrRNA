@@ -125,6 +125,7 @@ def main(argv=sys.argv[1:]):
             
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True)
+            breakpoint()
             pairs_dict = dict((y-read.reference_start, x) for x, y, z in aligned_pairs if y is not None)
             loci = get_loci(read, pairs_dict, compiled_motif, extra_window, motif_length)
         
