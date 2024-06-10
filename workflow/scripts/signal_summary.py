@@ -89,14 +89,15 @@ def get_loci(read, pairs, motif, wd, ml):
     """
     find positions that match motif
     """    
-    ref_loci = []
+    ref_ac1 = range (1335,1338)
+    ref_ac2 = range (1840,1843)
     # for m in motif.finditer(read.get_reference_sequence()):
     #     ref_loci.append(m.start())
 
-    loci = [pairs[locus]]
+    loci = [pairs[locus] for locus in [*ref_ac1] + [*ref_ac2]]
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
-    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.query_length - wd - ml-1]
+    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml-1]
 
     return loci
 
@@ -135,7 +136,6 @@ def main(argv=sys.argv[1:]):
                 continue
             
 
-            
             # extract features from bam file
             try:
                 per_site_qual = [list(read.query_qualities[locus-extra_window: locus+motif_length+extra_window]) for locus in loci]
