@@ -95,7 +95,7 @@ def get_loci(read, pairs, motif, wd, ml):
     for m in ([*ref_ac1] + [*ref_ac2]):
         ref_loci.append(m)
 
-    print(pairs)
+    print(pairs,ref_loci)
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
