@@ -125,7 +125,7 @@ def main(argv=sys.argv[1:]):
             
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True)
-            ac_ccg= list(filter(lambda x: x[1] in range(1335,1338) or in range (1840,1843), aligned_pairs))
+            ac_ccg= list(filter(lambda x: x[1] in range(1335,1338) or x[1] in range (1840,1843), aligned_pairs))
 
             pairs_dict = dict((y-read.reference_start, x) for x, y, z in ac_ccg if y is not None)
             loci = get_loci(read, pairs_dict, compiled_motif, extra_window, motif_length)
