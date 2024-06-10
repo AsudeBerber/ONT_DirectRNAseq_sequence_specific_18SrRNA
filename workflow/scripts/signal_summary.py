@@ -143,7 +143,7 @@ def main(argv=sys.argv[1:]):
                 breakpoint()
                 pass
             time_pod = time.process_time() - time_st
-                print (f"time loci: {time_pod}")
+            print (f"time loci: {time_pod}")
 
             # extract features from pod5 file
 
