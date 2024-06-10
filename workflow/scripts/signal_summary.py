@@ -168,7 +168,7 @@ def main(argv=sys.argv[1:]):
                         id.append(per_site_id)
                         dataset.clear_readers()
                         dataset.clear_index()
-                        print("right")¨
+                        print("right")
                         k = k + 1
                     else:
                         i = i + 1
