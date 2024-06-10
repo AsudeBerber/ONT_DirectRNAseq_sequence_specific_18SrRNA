@@ -156,7 +156,7 @@ def main(argv=sys.argv[1:]):
                         events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                         per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
                         per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
-                        breakpoint()
+                        
                         features.append(per_site_features)
                         qual.append(per_site_qual)
                         query_seq.append(per_site_query_seq)
@@ -169,11 +169,11 @@ def main(argv=sys.argv[1:]):
                 print (f"time pod5 loop: {time_pod}")
 
             
-            features = np.vstack(features)
-            qual = np.vstack(qual)
-            query_seq = np.vstack(query_seq)
-            ref_seq = np.vstack(ref_seq)
-            id = np.hstack(id)
+        features = np.vstack(features)
+        qual = np.vstack(qual)
+        query_seq = np.vstack(query_seq)
+        ref_seq = np.vstack(ref_seq)
+        id = np.hstack(id)
 
     breakpoint()
 
