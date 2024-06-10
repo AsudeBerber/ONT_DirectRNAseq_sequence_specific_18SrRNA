@@ -165,18 +165,19 @@ def main(argv=sys.argv[1:]):
                     query_seq.append(per_site_query_seq)
                     ref_seq.append(per_site_ref_seq)
                     id.append(per_site_id)
+                    breakpoint()
                 else:
                     i = i + 1
                     continue
             time_pod = time.process_time() - time_st
             print (f"time pod5 loop: {time_pod}")
 
-        breakpoint()
-        features = np.vstack(features)
-        qual = np.vstack(qual)
-        query_seq = np.vstack(query_seq)
-        ref_seq = np.vstack(ref_seq)
-        id = np.hstack(id)
+            breakpoint()
+            features = np.vstack(features)
+            qual = np.vstack(qual)
+            query_seq = np.vstack(query_seq)
+            ref_seq = np.vstack(ref_seq)
+            id = np.hstack(id)
 
     breakpoint()
 
