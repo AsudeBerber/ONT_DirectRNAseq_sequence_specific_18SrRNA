@@ -149,8 +149,10 @@ def main(argv=sys.argv[1:]):
             time_st = time.process_time()
             #loops through all pod5 files in folder 
             with p5.DatasetReader(pod5_file, threads= 8, recursive= True) as dataset:
+                i = 0
+                k = 0
                 for read_record in dataset.reads(): 
-                    i = 0
+                    
                     # with p5.Reader(pod5_file) as pod5:
                     # Read the selected read from the pod5 file
                     # next() is required here as Reader.reads() returns a Generator
@@ -166,12 +168,13 @@ def main(argv=sys.argv[1:]):
                         id.append(per_site_id)
                         dataset.clear_readers()
                         dataset.clear_index()
-                        print("right")
+                        print("right")¨
+                        k = k + 1
                     else:
-                        i += 1
+                        i = i + 1
                         dataset.clear_index()
                         dataset.clear_readers()
-                        print(f"wrong read {i}")
+                        print(f"wrong read {i}{k}")
                         continue
                 time_pod = time.process_time() - time_st
                 print (f"time pod5 loop: {time_pod}")
