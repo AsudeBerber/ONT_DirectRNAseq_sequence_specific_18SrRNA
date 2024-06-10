@@ -157,7 +157,6 @@ def main(argv=sys.argv[1:]):
                         per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
                         per_site_id = [read.query_name + ':' + str(locus) for locus in loci]
 
-                        breakpoint()
                         features.append(per_site_features)
                         qual.append(per_site_qual)
                         query_seq.append(per_site_query_seq)
