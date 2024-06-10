@@ -154,8 +154,7 @@ def main(argv=sys.argv[1:]):
                     # with p5.Reader(pod5_file) as pod5:
                     # Read the selected read from the pod5 file
                     # next() is required here as Reader.reads() returns a Generator
-                    try:
-                        read_record.read_id == read.query_name
+                    if (read_record.read_id == read.query_name):
                         breakpoint() 
                         events = get_events(read_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                         per_site_features = [events[locus-extra_window: locus+motif_length+extra_window] for locus in loci]
@@ -166,8 +165,7 @@ def main(argv=sys.argv[1:]):
                         query_seq.append(per_site_query_seq)
                         ref_seq.append(per_site_ref_seq)
                         id.append(per_site_id)
-
-                    except RuntimeError:
+                    else:
                         continue
                 time_pod = time.process_time() - time_st
                 print (f"time pod5 loop: {time_pod}")
