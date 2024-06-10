@@ -122,7 +122,7 @@ def main(argv=sys.argv[1:]):
         for read in tqdm(bam):
             if read.is_unmapped:
                 continue
-            time_st = time.process_time()
+            
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True)
             pairs_dict = dict((y-read.reference_start, x) for x, y, z in aligned_pairs if y is not None)
@@ -142,16 +142,16 @@ def main(argv=sys.argv[1:]):
             except:
                 breakpoint()
                 pass
-            time_pod = time.process_time() - time_st
-            print (f"time loci: {time_pod}")
 
             # extract features from pod5 file
 
             # with p5.DatasetReader(args.pod5) as dataset:
             time_st = time.process_time()
-            for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
-                pod5_file = os.path.join(args.pod5, filename)
-                with p5.Reader(pod5_file) as pod5:
+            #loops through all pod5 files in folder 
+            with p5.DatasetReader(pod5_file) as dataset:
+                for read_record in dataset.reads(selection=[read.query_name]): 
+                    
+                # with p5.Reader(pod5_file) as pod5:
                     # Read the selected read from the pod5 file
                     # next() is required here as Reader.reads() returns a Generator
                     try:
