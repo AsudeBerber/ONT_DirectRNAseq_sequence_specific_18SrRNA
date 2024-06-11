@@ -180,15 +180,14 @@ def main(argv=sys.argv[1:]):
     ref_seq = np.vstack(ref_seq)
     id = np.hstack(id)
 
-    breakpoint()
-
     # checks if results folder exists, creates otherwise
     # check if plot dir exists, creates it otherwise
     if not os.path.isdir(npz_file): os.makedirs(npz_file)
         
+    
 
     np.savez_compressed(npz_file, (features, qual, query_seq, ref_seq, id))
-    np.savetxt('resources/results/p2s/summary.txt', (features, qual, query_seq, ref_seq, id))
+    # np.savetxt('resources/results/p2s/summary.txt', (features, qual, query_seq, ref_seq, id))
 
     return 0
 
