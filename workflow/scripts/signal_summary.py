@@ -91,7 +91,7 @@ def get_loci(read, pairs, motif, wd, ml):
     """    
     ref_ac1 = 1336
     ref_ac2 = 1842
-    ref_pos = ref_ac1 + ref_ac2
+    ref_pos = [ref_ac1] + [ref_ac2]
     ref_loci = []
     for m in ref_pos:
         if (m in pairs): ref_loci.append(m)
