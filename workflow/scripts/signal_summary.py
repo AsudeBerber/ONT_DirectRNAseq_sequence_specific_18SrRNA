@@ -182,6 +182,8 @@ def main(argv=sys.argv[1:]):
 
     # checks if results folder exists, creates otherwise
     # check if plot dir exists, creates it otherwise
+    print(os.path.dirname(npz_file))
+    npz_dir = os.path.dirname(npz_file)
     if not os.pardir.isdir(npz_file): os.makedirs(npz_file)
     
     breakpoint()
