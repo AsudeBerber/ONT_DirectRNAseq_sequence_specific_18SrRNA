@@ -182,8 +182,8 @@ def main(argv=sys.argv[1:]):
 
     # checks if results folder exists, creates otherwise
     # check if plot dir exists, creates it otherwise
-    npz_dir = os.path.dirname(npz_file)
-    if not os.pardir.isdir(npz_dir): os.makedirs(npz_file)
+    npz_dir = os.path.dirname(npz_file) 
+    if not os.path.isdir(npz_dir): os.makedirs(npz_file)
     
     breakpoint()
     # None's in query seq convert array to object type, which is not liked by np.load (loading of npz file), Nones are converted to string therfore
