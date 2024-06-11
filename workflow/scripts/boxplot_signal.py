@@ -2,11 +2,8 @@ __author__ = "Jens Martin"
 __email__ = "jens.martin@outlook.com"
 
 import argparse
-import pod5 as p5
 import matplotlib.pyplot as plt
 import numpy as np
-import os
-# import pysam as ps
 
 motif = "CCG"
 window_size = 21
@@ -21,7 +18,7 @@ def slice_bases(event, arround):
     whole_window = len(query[0])
     middle = whole_window //2
     index_bases = np.arange(0,whole_window) [middle-arround:middle+arround+1]
-    sliced_event = features[:,index_bases,5]
+    sliced_event = features[:,index_bases,event]
     return index_bases, sliced_event
     
 
@@ -45,8 +42,9 @@ id = loaded["id"]
 
 mean_signal_int = features[:,:,5]
 
-event = 5 # mean intensity
+event = 7 # mean intensity
 index_bases, sliced_event = slice_bases(event=event, arround=arround)
 
 fig, ax = plt.subplots()
+ax.violinplot(sliced_event, showmeans = False, showextrema = False)
 ax.boxplot(sliced_event)

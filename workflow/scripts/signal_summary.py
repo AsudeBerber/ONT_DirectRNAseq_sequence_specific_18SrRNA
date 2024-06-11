@@ -89,8 +89,8 @@ def get_loci(read, pairs, motif, wd, ml):
     """
     find positions that match motif
     """    
-    ref_ac1 = range (1335,1338)
-    ref_ac2 = range (1840,1843)
+    ref_ac1 = 1336
+    ref_ac2 = 1842
     ref_pos = [*ref_ac1] + [*ref_ac2]
     ref_loci = []
     for m in ref_pos:
@@ -101,7 +101,7 @@ def get_loci(read, pairs, motif, wd, ml):
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml-1]
 
-    return loci
+    return loci, ref_loci
 
 
 def main(argv=sys.argv[1:]):
@@ -161,7 +161,7 @@ def main(argv=sys.argv[1:]):
                         pod5_record = next(pod5.reads(selection=[read.query_name])) 
                         events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                         per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
-                        per_site_id = np.array([read.query_name + ':' + str(locus) for locus in loci])
+                        per_site_id = np.array([read.query_name + ':' + str(locus) for locus in ref_loci])
 
                         features.append(per_site_features)
                         qual.append(per_site_qual)
