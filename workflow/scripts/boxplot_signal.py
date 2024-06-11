@@ -1,3 +1,6 @@
+__author__ = "Jens Martin"
+__email__ = "jens.martin@outlook.com"
+
 import argparse
 import pod5 as p5
 import matplotlib.pyplot as plt
@@ -7,7 +10,7 @@ import os
 
 motif = "CCG"
 window_size = 21
-npz_file = f"resources/results/p2s/{motif}_window_21.npz"
+npz_file = f"../../resources/results/p2s/{motif}_window_21.npz"
 arround=3
 
 loaded = np.load(npz_file)
@@ -46,4 +49,4 @@ event = 5 # mean intensity
 index_bases, sliced_event = slice_bases(event=event, arround=arround)
 
 fig, ax = plt.subplots()
-    ax.boxplot()
+ax.boxplot(sliced_event)
