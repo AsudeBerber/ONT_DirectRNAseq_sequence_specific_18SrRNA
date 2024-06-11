@@ -102,7 +102,7 @@ def get_loci(read, pairs, motif, wd, ml):
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     # wd -1 because one more base after ref position that is not in wd, second -1: index is 0-based
-    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - 1 -1]
+    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - 1]
 
     if len(loci) != len(ref_loci):
         breakpoint()
@@ -167,7 +167,7 @@ def main(argv=sys.argv[1:]):
                         pod5_record = next(pod5.reads(selection=[read.query_name])) 
                         events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                         per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
-                        per_site_id = np.array([read.query_name + ':' + str(locus) for locus in ref_loci])
+                        per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
 
                         features.append(per_site_features)
                         qual.append(per_site_qual)
