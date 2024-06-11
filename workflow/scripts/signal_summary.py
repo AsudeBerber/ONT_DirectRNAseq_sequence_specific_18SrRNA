@@ -105,7 +105,7 @@ def get_loci(read, pairs, wd, ml):
     loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen + read.reference_start- wd - 1]
 
     if len(loci) != len(ref_loci):
-        breakpoint()
+        ref_loci = [ref_locus for ref_locus in loci ]
         raise Exception
     return loci, ref_loci
 
