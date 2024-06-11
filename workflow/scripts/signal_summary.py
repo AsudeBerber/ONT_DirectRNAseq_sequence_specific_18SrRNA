@@ -103,6 +103,9 @@ def get_loci(read, pairs, motif, wd, ml):
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml-1]
 
+    if len(loci) != len(ref_loci):
+        breakpoint()
+        reaise Exception
     return loci, ref_loci
 
 

@@ -4,6 +4,7 @@ __email__ = "jens.martin@outlook.com"
 import argparse
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 motif = "CCG"
 window_size = 21
@@ -40,11 +41,19 @@ query = loaded["query"]
 ref = loaded["ref"]
 id = loaded["id"]
 
+pos = []
+for read in id:
+    pos.append(read[-4:])
+
 mean_signal_int = features[:,:,5]
 
 event = 7 # mean intensity
 index_bases, sliced_event = slice_bases(event=event, arround=arround)
 
+df = pd.DataFrame((sliced_event, pos), columns = list(range(1,8)) + ["pos"])
+df = pd.DataFrame()
+
+
 fig, ax = plt.subplots()
-ax.violinplot(sliced_event, showmeans = False, showextrema = False)
-ax.boxplot(sliced_event)
+ax.violinplot(sliced_event, showmeans = False, showextrema = False, group = pos)
+# ax.boxplot(sliced_event)
