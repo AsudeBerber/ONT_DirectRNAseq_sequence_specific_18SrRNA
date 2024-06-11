@@ -105,7 +105,7 @@ def get_loci(read, pairs, motif, wd, ml):
 
     if len(loci) != len(ref_loci):
         breakpoint()
-        reaise Exception
+        raise Exception
     return loci, ref_loci
 
 
