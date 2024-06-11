@@ -186,8 +186,8 @@ def main(argv=sys.argv[1:]):
         
     
 
-    np.savez_compressed(npz_file, (features, qual, query_seq, ref_seq, id))
-    # np.savetxt('resources/results/p2s/summary.txt', (features, qual, query_seq, ref_seq, id))
+    np.savez_compressed(npz_file, feat = features, qual = qual, query = query_seq, ref = ref_seq, id = id)
+    # np.savetxt('resources/results/p2s/summary.txt', features, qual, query_seq, ref_seq, id))
 
     return 0
 
