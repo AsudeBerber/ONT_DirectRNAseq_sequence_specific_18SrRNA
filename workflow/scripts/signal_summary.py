@@ -93,6 +93,8 @@ def get_loci(read, pairs, motif, wd, ml):
     ref_ac2 = 1842
     ref_pos = [ref_ac1] + [ref_ac2]
     ref_loci = []
+
+
     for m in ref_pos:
         if (m in pairs): ref_loci.append(m)
 
@@ -131,7 +133,7 @@ def main(argv=sys.argv[1:]):
             ac_ccg= list(filter(lambda x: x[1] in range(1335,1338) or x[1] in range (1840,1843), aligned_pairs))
 
             pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
-            loci = get_loci(read, pairs_dict, compiled_motif, extra_window, motif_length)
+            loci, ref_loci = get_loci(read, pairs_dict, compiled_motif, extra_window, motif_length)
         
             if len(loci) == 0:
                 continue
