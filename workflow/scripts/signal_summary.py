@@ -185,7 +185,6 @@ def main(argv=sys.argv[1:]):
     npz_dir = os.path.dirname(npz_file) 
     if not os.path.isdir(npz_dir): os.makedirs(npz_file)
     
-    breakpoint()
     # None's in query seq convert array to object type, which is not liked by np.load (loading of npz file), Nones are converted to string therfore
     ref_seq = np.array(ref_seq, dtype="U")
     np.savez_compressed(npz_file, feat = features, qual = qual, query = query_seq, ref = ref_seq, id = id)
