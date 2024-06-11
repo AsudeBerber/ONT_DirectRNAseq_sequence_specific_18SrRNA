@@ -102,7 +102,7 @@ def get_loci(read, pairs, motif, wd, ml):
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     # wd -1 because one more base after ref position that is not in wd
-    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - 1]
+    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen + read.reference_start- wd - 1]
 
     if len(loci) != len(ref_loci):
         breakpoint()
@@ -135,7 +135,7 @@ def main(argv=sys.argv[1:]):
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = True)
             ac_ccg= list(filter(lambda x: x[1] in [1336, 1842], aligned_pairs))
-
+            breakpoint()
             pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
             loci, ref_loci = get_loci(read, pairs_dict, compiled_motif, extra_window, motif_length)
         
