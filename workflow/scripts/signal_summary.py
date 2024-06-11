@@ -101,7 +101,8 @@ def get_loci(read, pairs, motif, wd, ml):
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
-    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml-1]
+    # wd -1 because one more base after ref position that is not in wd, second -1: index is 0-based
+    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - 1 -1]
 
     if len(loci) != len(ref_loci):
         breakpoint()
