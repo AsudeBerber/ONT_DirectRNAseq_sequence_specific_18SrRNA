@@ -16,7 +16,7 @@ pod5_file = "resources/pod5/p2s/"
 bam_file = "resources/alignments/p2s_aligned_subsample_000001.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
-npz_file = f"resources/results/p2s/{motif}_window_{window_size}.txt"
+npz_file = f"resources/results/p2s/{motif}_window_{window_size}"
 
 # phred={}
 # for x in range(0,94):
