@@ -141,9 +141,6 @@ def main(argv=sys.argv[1:]):
             try:
                 per_site_qual = np.array([list(read.qual[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
                 per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
-                if per_site_query_seq.dtype == "object":
-                    breakpoint()
-                    pass
                 seq_dict = dict((x, z) for x, y, z in aligned_pairs)
                 per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
             except:
@@ -180,7 +177,7 @@ def main(argv=sys.argv[1:]):
     features = np.vstack(features)
     qual = np.vstack(qual)
     query_seq = np.vstack(query_seq)
-    ref_seq = np.vstack(ref_seq, dtype="U")
+    ref_seq = np.vstack(ref_seq)
     id = np.hstack(id)
 
     # checks if results folder exists, creates otherwise
@@ -189,6 +186,8 @@ def main(argv=sys.argv[1:]):
         
     
     breakpoint()
+    # None's in query seq convert array to object type, which is not liked by np.load (loading of npz file), Nones are converted to string therfore
+    query_seq = np.array(ref_seq, dtype="U")
     np.savez_compressed(npz_file, feat = features, qual = qual, query = query_seq, ref = ref_seq, id = id)
 
     # it should be somehow possible to convert this to a txt file, however the dimensions of the array have to be reduced for this, maybe via for loop?
