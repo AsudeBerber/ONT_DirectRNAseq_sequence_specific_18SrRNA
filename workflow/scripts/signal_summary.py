@@ -185,8 +185,11 @@ def main(argv=sys.argv[1:]):
     if not os.path.isdir(npz_file): os.makedirs(npz_file)
         
     
-
+    breakpoint()
     np.savez_compressed(npz_file, feat = features, qual = qual, query = query_seq, ref = ref_seq, id = id)
+
+    # it should be somehow possible to convert this to a txt file, however the dimensions of the array have to be reduced for this, maybe via for loop?
+    # does not work so far
     # np.savetxt('resources/results/p2s/summary.txt', features, qual, query_seq, ref_seq, id))
 
     return 0
