@@ -169,7 +169,7 @@ def main(argv=sys.argv[1:]):
                         features.append(per_site_features)
                         qual.append(per_site_qual)
                         query_seq.append(per_site_query_seq)
-                        ref_seq.append(per_site_ref_seq, dtype = "U")
+                        ref_seq.append(per_site_ref_seq)
                         id.append(per_site_id)
                     except:
                         continue
@@ -180,7 +180,7 @@ def main(argv=sys.argv[1:]):
     features = np.vstack(features)
     qual = np.vstack(qual)
     query_seq = np.vstack(query_seq)
-    ref_seq = np.vstack(ref_seq)
+    ref_seq = np.vstack(ref_seq, dtype="U")
     id = np.hstack(id)
 
     # checks if results folder exists, creates otherwise
