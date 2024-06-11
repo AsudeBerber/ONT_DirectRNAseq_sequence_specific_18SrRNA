@@ -169,7 +169,7 @@ def main(argv=sys.argv[1:]):
                         features.append(per_site_features)
                         qual.append(per_site_qual)
                         query_seq.append(per_site_query_seq)
-                        ref_seq.append(per_site_ref_seq)
+                        ref_seq.append(per_site_ref_seq, dtype = "U")
                         id.append(per_site_id)
                     except:
                         continue
