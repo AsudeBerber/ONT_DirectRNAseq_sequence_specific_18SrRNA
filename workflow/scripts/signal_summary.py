@@ -143,6 +143,7 @@ def main(argv=sys.argv[1:]):
                 per_site_query_seq = np.array([list(read.query_sequence[locus-extra_window: locus+motif_length+extra_window]) for locus in loci])
                 if per_site_query_seq.dtype == "object":
                     breakpoint()
+                    pass
                 seq_dict = dict((x, z) for x, y, z in aligned_pairs)
                 per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
             except:
