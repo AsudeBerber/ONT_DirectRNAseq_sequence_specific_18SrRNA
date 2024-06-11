@@ -173,7 +173,7 @@ def main(argv=sys.argv[1:]):
             time_pod = time.process_time() - time_st
             print (f"time pod5 loop: {time_pod}")
 
-            
+
     features = np.vstack(features)
     qual = np.vstack(qual)
     query_seq = np.vstack(query_seq)
@@ -187,7 +187,7 @@ def main(argv=sys.argv[1:]):
     
     breakpoint()
     # None's in query seq convert array to object type, which is not liked by np.load (loading of npz file), Nones are converted to string therfore
-    query_seq = np.array(ref_seq, dtype="U")
+    ref_seq = np.array(ref_seq, dtype="U")
     np.savez_compressed(npz_file, feat = features, qual = qual, query = query_seq, ref = ref_seq, id = id)
 
     # it should be somehow possible to convert this to a txt file, however the dimensions of the array have to be reduced for this, maybe via for loop?

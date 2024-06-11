@@ -17,4 +17,4 @@ query = loaded["query"]
 ref = loaded["ref"]
 id = loaded["id"]
 
-os.path.dirname(npz_file)
+ref
