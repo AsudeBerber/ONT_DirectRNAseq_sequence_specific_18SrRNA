@@ -102,7 +102,7 @@ def get_loci(read, pairs, wd, ml):
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     # wd -1 because one more base after ref position that is not in wd
-    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen + read.reference_start- wd - 1]
+    loci = [locus for locus in ref_loci if locus is not None and locus > wd-1 and locus < read.alen + read.reference_start- wd - 1]
 
     if len(loci) != len(ref_loci):
         breakpoint()
