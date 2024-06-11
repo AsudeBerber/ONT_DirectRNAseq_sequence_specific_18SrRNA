@@ -89,7 +89,7 @@ def get_loci(read, pairs, motif, wd, ml):
     """
     find positions that match motif
     """    
-    ref_ac1 = 1336
+    ref_ac1 = 1136 #basepos: 1337
     ref_ac2 = 1842
     ref_pos = [ref_ac1] + [ref_ac2]
     ref_loci = []
@@ -101,7 +101,7 @@ def get_loci(read, pairs, motif, wd, ml):
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
-    # wd -1 because one more base after ref position that is not in wd, second -1: index is 0-based
+    # wd -1 because one more base after ref position that is not in wd
     loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - 1]
 
     if len(loci) != len(ref_loci):
@@ -133,8 +133,8 @@ def main(argv=sys.argv[1:]):
                 continue
             
             # get loci on the reference matching the motif
-            aligned_pairs = read.get_aligned_pairs(with_seq=True)
-            ac_ccg= list(filter(lambda x: x[1] in range(1335,1338) or x[1] in range (1840,1843), aligned_pairs))
+            aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = True)
+            ac_ccg= list(filter(lambda x: x[1] in [1336, 1842], aligned_pairs))
 
             pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
             loci, ref_loci = get_loci(read, pairs_dict, compiled_motif, extra_window, motif_length)
