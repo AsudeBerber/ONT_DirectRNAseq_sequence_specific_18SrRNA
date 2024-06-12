@@ -8,7 +8,7 @@ import pandas as pd
 
 motif = "CCG"
 window_size = 21
-npz_file = f"../../resources/results/p2s/{motif}_window_21.npz"
+npz_file = f"../../resources/results/p2s/{motif}_window_21_subsample_00001.npz"
 arround=3
 
 loaded = np.load(npz_file)
@@ -20,7 +20,8 @@ def slice_bases(event, arround):
     middle = whole_window //2
     index_bases = np.arange(0,whole_window) [middle-arround:middle+arround+1]
     sliced_event = features[:,index_bases,event]
-    return index_bases, sliced_event
+    sliced_refseq = ref[:,index_bases]
+    return index_bases, sliced_event, sliced_refseq
     
 
 """
@@ -47,13 +48,29 @@ for read in id:
 
 mean_signal_int = features[:,:,5]
 
-event = 6 # mean intensity
-index_bases, sliced_event = slice_bases(event=event, arround=arround)
+event = 5 # mean intensity
+index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, arround=arround)
 
-# df = pd.DataFrame((sliced_event, pos), columns = list(range(1,8)) + ["pos"])
-df = pd.DataFrame()
+df_event = pd.DataFrame((sliced_event), columns = list(range(1,8)))
+df_id = pd.DataFrame(id)
+df_pos = pd.DataFrame(pos, columns = ["pos"])
+
+df_event_pos = pd.concat([df_event, df_pos], axis=1)
+
+def filter_by_pos(pos):
+    df = df_event_pos
+    df_filtered = df[df["pos"] == str(pos)]
+    df_plot = df_filtered.iloc[:,:7]
+    return df_plot
+
+#1337 | 1843
+pos = 1843
+df_event_filtered = filter_by_pos(pos)
 
 
-fig, ax = plt.subplots()
-ax.violinplot(sliced_event, showmeans = False, showextrema = False)
-ax.boxplot(sliced_event)
+fig, (ax1, ax2) = plt.subplots(1,2)
+ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
+ax1.boxplot(filter_by_pos(1337))
+
+ax2.violinplot(filter_by_pos(1843), showmeans = False, showextrema = False)
+ax2.boxplot(filter_by_pos(1843))
