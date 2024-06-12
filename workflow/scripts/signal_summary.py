@@ -90,7 +90,7 @@ def get_loci(read, pairs, wd, ml):
     find positions that match motif
     """    
     #basepos: 1337
-    ref_ac1 = 1136
+    ref_ac1 = 1336
     ref_ac2 = 1842
     ref_pos = [ref_ac1] + [ref_ac2]
     ref_loci = []
@@ -99,7 +99,7 @@ def get_loci(read, pairs, wd, ml):
     for i, pos in enumerate(ref_pos):
         breakpoint()
         if (pos in pairs[:,1]): ref_loci.append(pos)
-        print(np.where(pairs[:,1] == str(pos)))
+        print(np.where(pairs[:,1] == pos))
  
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
