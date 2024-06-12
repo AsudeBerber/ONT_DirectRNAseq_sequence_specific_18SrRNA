@@ -89,7 +89,8 @@ def get_loci(read, pairs, wd, ml):
     """
     find positions that match motif
     """    
-    ref_ac1 = 1136 #basepos: 1337
+    #basepos: 1337
+    ref_ac1 = 1136 
     ref_ac2 = 1842
     ref_pos = [ref_ac1] + [ref_ac2]
     ref_loci = []
@@ -97,7 +98,7 @@ def get_loci(read, pairs, wd, ml):
     #pairs[0]: query pos; [1]: ref pos; [2] ref base
     for i, pos in enumerate(ref_pos):
         breakpoint()
-        if (str(pos) in pairs[:,1]): ref_loci.append(pos)
+        if (pos in pairs[:,1]): ref_loci.append(pos)
         print(np.where(pairs[:,1] == str(pos)))
  
     loci = [pairs[locus] for locus in ref_loci]
