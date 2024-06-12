@@ -4,7 +4,6 @@ import numpy as np
 import pod5 as p5
 import pysam
 from tqdm import tqdm
-import re
 import argparse
 import sys
 import os
@@ -18,9 +17,10 @@ motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
 npz_file = f"resources/results/p2s/{motif}_window_{window_size}.npz"
 
-# phred={}
-# for x in range(0,94):
-#     phred.update({(chr(x+33).encode('ascii').decode("utf-8")): x}) 
+# different positions can be set here, index is 0-based
+ref_ac1 = 1336
+ref_ac2 = 1842
+ref_pos = [ref_ac1] + [ref_ac2]
 
 
 # handle sys args
@@ -85,14 +85,10 @@ def get_events(signal, moves, offset):
     return data
 
 
-def get_loci(read, pairs, wd, ml):
+def get_loci(read, pairs, wd):
     """
     find positions that match motif
     """    
-    #basepos: 1337
-    ref_ac1 = 1336
-    ref_ac2 = 1842
-    ref_pos = [ref_ac1] + [ref_ac2]
     ref_loci = []
     ref_loci_index = []
 
@@ -116,7 +112,7 @@ def get_loci(read, pairs, wd, ml):
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     # wd -1 because one more base after ref position that is not in wd
-    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen + read.reference_start- wd - 1]
+    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen + read.reference_start- wd]
     ref_loci = [ref_loci[index] for index in ref_loci_index if pairs[index, 0] != None and pairs[index,0] in loci]
     if len(loci) != len(ref_loci):
         breakpoint()
@@ -134,8 +130,7 @@ def main(argv=sys.argv[1:]):
     # window_size = args.window
     # npz_file = args.output
 
-    motif_length = len(motif)
-    extra_window = int((window_size - motif_length) / 2)
+    extra_window = int((window_size - 1) / 2)
 
     with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
@@ -147,7 +142,7 @@ def main(argv=sys.argv[1:]):
             
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = False)
-            ac_ccg= np.array(list(filter(lambda x: x[1] in [1336, 1842], aligned_pairs)), dtype= "object")
+            ac_ccg= np.array(list(filter(lambda x: x[1] in ref_pos, aligned_pairs)), dtype= "object")
             # pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
             loci, ref_loci = get_loci(read, ac_ccg, extra_window, motif_length)
         
