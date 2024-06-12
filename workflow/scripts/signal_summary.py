@@ -98,7 +98,6 @@ def get_loci(read, pairs, wd, ml):
 
     #pairs[0]: query pos; [1]: ref pos; [2] ref base
     for i, pos in enumerate(ref_pos):
-        breakpoint()
         if (pos in pairs[:,1]): ref_loci.append(pos)
         try:
             ref_loci_index.append(np.where(pairs[:,1] == pos)[0][0])
