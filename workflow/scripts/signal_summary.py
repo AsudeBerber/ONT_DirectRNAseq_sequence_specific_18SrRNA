@@ -96,9 +96,10 @@ def get_loci(read, pairs, wd, ml):
 
     #pairs[0]: query pos; [1]: ref pos; [2] ref base
     for i, pos in enumerate(ref_pos):
+        breakpoint()
         if (pos in pairs[i][1]): ref_loci.append(i)
         print(pairs[i][1].index(pos))
-
+ 
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
