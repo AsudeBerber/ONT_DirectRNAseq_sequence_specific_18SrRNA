@@ -97,7 +97,7 @@ def get_loci(read, pairs, wd, ml):
     #pairs[0]: query pos; [1]: ref pos; [2] ref base
     for i, pos in enumerate(ref_pos):
         breakpoint()
-        if (pos in pairs[i][1]): ref_loci.append(i)
+        if (pos in pairs[:,1]): ref_loci.append(pos)
         print(pairs[i][1].index(pos))
  
     loci = [pairs[locus] for locus in ref_loci]
@@ -135,8 +135,7 @@ def main(argv=sys.argv[1:]):
             
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = True)
-            ac_ccg= np.array(filter(lambda x: x[1] in [1336, 1842], aligned_pairs))
-            breakpoint()
+            ac_ccg= np.array(list(filter(lambda x: x[1] in [1336, 1842], aligned_pairs)))
             # pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
             loci, ref_loci = get_loci(read, ac_ccg, extra_window, motif_length)
         
