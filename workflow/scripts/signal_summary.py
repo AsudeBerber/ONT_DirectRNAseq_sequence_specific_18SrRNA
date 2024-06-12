@@ -111,7 +111,6 @@ def get_loci(read, pairs, wd, ml):
             breakpoint()
             pass
         if index_pos.shape == (0,):
-            print("nothing to see here")
             continue
         else:
             ref_loci_index.append(index_pos[0])
