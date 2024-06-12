@@ -100,7 +100,10 @@ def get_loci(read, pairs, wd, ml):
     for i, pos in enumerate(ref_pos):
         breakpoint()
         if (pos in pairs[:,1]): ref_loci.append(pos)
-        ref_loci_index.append(np.where(pairs[:,1] == pos)[0][0])
+        try:
+            ref_loci_index.append(np.where(pairs[:,1] == pos)[0][0])
+        except IndexError: 
+            continue
  
     loci = [pairs[locus, 0] for locus in ref_loci_index]
     # Remove loci that are not present on the query or too close to the ends of the alignment
