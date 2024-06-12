@@ -94,9 +94,10 @@ def get_loci(read, pairs, wd, ml):
     ref_pos = [ref_ac1] + [ref_ac2]
     ref_loci = []
 
-
-    for m in ref_pos:
-        if (m in pairs): ref_loci.append(m)
+    #pairs[0]: query pos; [1]: ref pos; [2] ref base
+    for i, pos in enumerate(ref_pos):
+        if (pos in pairs[i][1]): ref_loci.append(i)
+        print(pairs[i][1].index(pos))
 
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
@@ -105,7 +106,7 @@ def get_loci(read, pairs, wd, ml):
     loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen + read.reference_start- wd - 1]
 
     if len(loci) != len(ref_loci):
-        ref_loci = [ref_locus for ref_locus in loci ]
+        ref_loci = [ref_locus for ref_locus in ref_loci if ]
         raise Exception
     return loci, ref_loci
 
@@ -134,8 +135,8 @@ def main(argv=sys.argv[1:]):
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = True)
             ac_ccg= list(filter(lambda x: x[1] in [1336, 1842], aligned_pairs))
-            pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
-            loci, ref_loci = get_loci(read, pairs_dict, extra_window, motif_length)
+            # pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
+            loci, ref_loci = get_loci(read, ac_ccg, extra_window, motif_length)
         
             if len(loci) == 0:
                 continue
