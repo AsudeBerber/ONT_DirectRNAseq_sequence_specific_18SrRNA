@@ -63,14 +63,28 @@ def filter_by_pos(pos):
     df_plot = df_filtered.iloc[:,:7]
     return df_plot
 
-#1337 | 1843
-pos = 1843
+#1337 | 1842
+pos = 1842
 df_event_filtered = filter_by_pos(pos)
 
+df_refseq = pd.DataFrame(ref, columns = list(range(1,22)))
+df_refseq = pd.concat([df_refseq, df_pos], axis=1)
+
+df_refseq_1337 = df_refseq[df_refseq["pos"] == "1337"]
+df_refseq_1842 = df_refseq[df_refseq["pos"] == "1842"]
+df_refseq_1337_sliced = df_refseq_1337.iloc[:,7:14]
+df_refseq_1842_sliced = df_refseq_1842.iloc[:,7:14]
 
 fig, (ax1, ax2) = plt.subplots(1,2)
 ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
 ax1.boxplot(filter_by_pos(1337))
+for i, base in enumerate(df_refseq_1337_sliced.iloc[0]):
+    print(i, base)
+    ax1.annotate(base, xy = (i+1, -2))
 
-ax2.violinplot(filter_by_pos(1843), showmeans = False, showextrema = False)
-ax2.boxplot(filter_by_pos(1843))
+
+ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
+ax2.boxplot(filter_by_pos(1842))
+for i, base in enumerate(df_refseq_1842_sliced.iloc[0]):
+    print(i, base)
+    ax2.annotate(base, xy = (i+1, -2))

@@ -19,7 +19,7 @@ npz_file = f"resources/results/p2s/{motif}_window_{window_size}.npz"
 
 # different positions can be set here,  index is 0-based
 ref_ac1 = 1336
-ref_ac2 = 1842
+ref_ac2 = 1841
 ref_pos = [ref_ac1] + [ref_ac2]
 motif_length = 1
 
