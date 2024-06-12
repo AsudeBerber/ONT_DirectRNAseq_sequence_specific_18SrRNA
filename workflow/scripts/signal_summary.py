@@ -94,14 +94,15 @@ def get_loci(read, pairs, wd, ml):
     ref_ac2 = 1842
     ref_pos = [ref_ac1] + [ref_ac2]
     ref_loci = []
+    ref_loci_index = []
 
     #pairs[0]: query pos; [1]: ref pos; [2] ref base
     for i, pos in enumerate(ref_pos):
         breakpoint()
         if (pos in pairs[:,1]): ref_loci.append(pos)
-        print(np.where(pairs[:,1] == pos))
+        ref_loci_index.append(np.where(pairs[:,1] == pos)[0][0])
  
-    loci = [pairs[locus] for locus in ref_loci]
+    loci = [pairs[locus, 0] for locus in ref_loci_index]
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     # wd -1 because one more base after ref position that is not in wd
