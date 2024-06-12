@@ -17,10 +17,11 @@ motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
 npz_file = f"resources/results/p2s/{motif}_window_{window_size}.npz"
 
-# different positions can be set here, index is 0-based
+# different positions can be set here,  index is 0-based
 ref_ac1 = 1336
 ref_ac2 = 1842
 ref_pos = [ref_ac1] + [ref_ac2]
+motif_length = 1
 
 
 # handle sys args
@@ -112,7 +113,7 @@ def get_loci(read, pairs, wd):
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     # wd -1 because one more base after ref position that is not in wd
-    loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen + read.reference_start- wd]
+    loci = [locus for locus in loci if locus is not None and locus > wd -1 and locus < read.alen + read.reference_start - wd]
     ref_loci = [ref_loci[index] for index in ref_loci_index if pairs[index, 0] != None and pairs[index,0] in loci]
     if len(loci) != len(ref_loci):
         breakpoint()
