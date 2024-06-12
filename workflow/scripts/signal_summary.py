@@ -90,7 +90,7 @@ def get_loci(read, pairs, wd, ml):
     find positions that match motif
     """    
     #basepos: 1337
-    ref_ac1 = 1136 
+    ref_ac1 = 1136
     ref_ac2 = 1842
     ref_pos = [ref_ac1] + [ref_ac2]
     ref_loci = []
