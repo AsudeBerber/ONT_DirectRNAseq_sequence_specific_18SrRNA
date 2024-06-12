@@ -100,7 +100,7 @@ def get_loci(read, pairs, wd, ml):
     for i, pos in enumerate(ref_pos):
         try:
             if (pos in pairs[:,1]): ref_loci.append(pos)
-        else:
+        except:
             breakpoint()
             pass
         
