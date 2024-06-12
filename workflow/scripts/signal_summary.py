@@ -98,9 +98,15 @@ def get_loci(read, pairs, wd, ml):
 
     #pairs[0]: query pos; [1]: ref pos; [2] ref base
     for i, pos in enumerate(ref_pos):
-        if (pos in pairs[:,1]): ref_loci.append(pos)
+        try:
+            if (pos in pairs[:,1]): ref_loci.append(pos)
+        else:
+            breakpoint()
+            pass
+        
         try:
             ref_loci_index.append(np.where(pairs[:,1] == pos)[0][0])
+        # in cases where a read neither aligns to any of the ref positions, ref_loci_index wants to append [], which raises an index error
         except IndexError: 
             continue
  
