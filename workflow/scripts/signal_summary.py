@@ -106,15 +106,15 @@ def get_loci(read, pairs, wd, ml):
     
         # in cases where a read neither aligns to any of the ref positions, ref_loci_index would append [], which raises an index error
         try:
-            index_pos = np.where(pairs[:,1] == pos)[0][0]
+            index_pos = np.where(pairs[:,1] == pos)[0]
         except:
             breakpoint()
             pass
-        if index_pos == []:
+        if index_pos.shape == (0,):
             print("nothing to see here")
             continue
         else:
-            ref_loci_index.append(index_pos)
+            ref_loci_index.append(index_pos[0])
             
  
     loci = [pairs[locus, 0] for locus in ref_loci_index]
