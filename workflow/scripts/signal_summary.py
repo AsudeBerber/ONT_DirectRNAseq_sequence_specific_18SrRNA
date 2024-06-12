@@ -98,7 +98,7 @@ def get_loci(read, pairs, wd, ml):
     for i, pos in enumerate(ref_pos):
         breakpoint()
         if (pos in pairs[:,1]): ref_loci.append(pos)
-        print(pairs[:,1].index(pos))
+        print(np.where(pairs[:,1] == pos))
  
     loci = [pairs[locus] for locus in ref_loci]
     # Remove loci that are not present on the query or too close to the ends of the alignment
