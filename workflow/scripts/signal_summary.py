@@ -1,5 +1,6 @@
 # Code mostly written by Christoph Engelhardt
 
+from numba import jit
 import numpy as np
 import pod5 as p5
 import pysam
@@ -42,7 +43,7 @@ def parse_args(argv):
 
     return args
 
-
+@jit
 def get_events(signal, moves, offset):
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
@@ -87,7 +88,7 @@ def get_events(signal, moves, offset):
 
     return data
 
-
+@jit
 def get_loci(read, pairs, wd, motif_length):
     """
     find positions that match motif
