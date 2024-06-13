@@ -165,8 +165,13 @@ def main(argv=sys.argv[1:]):
                 pass
 
             pod5_path = "resources/pod5/p2s/"
-
-            pod5_file = pod5_index[read.query_name]
+            # dorado sometimes splits reads (https://github.com/nanoporetech/dorado/blob/release-v0.6/documentation/SAM.md#split-read-tags),
+            # it doesn't seem possible to align these back to one original read id
+            try:
+                pod5_file = pod5_index[read.query_name]
+            except:
+                continue
+                
 
             with p5.Reader(pod5_file) as pod5:
                 # Read the selected read from the pod5 file
