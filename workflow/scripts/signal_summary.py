@@ -179,7 +179,9 @@ def main(argv=sys.argv[1:]):
                 # next() is required here as Reader.reads() returns a Generator
                 try:
                     pod5_record = next(pod5.reads(selection=[read.query_name], preload="samples")) 
-                    events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
+                    mv_tag = read.get_tag("mv")
+                    ts_tag = read.get_tag("ts")
+                    events = get_events(pod5_record.signal, mv_tag, ts_tag)
                     per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
 
