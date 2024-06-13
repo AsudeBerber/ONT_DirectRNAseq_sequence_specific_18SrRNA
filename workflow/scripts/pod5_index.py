@@ -11,7 +11,7 @@ def get_file_names(base_path):
     read_filename_dict={}
     
     if os.path.isdir(base_path):
-        files=path(base_path).rglob('*.pod5')
+        files=os.path(base_path).rglob('*.pod5')
     else:
         files=[base_path]
     for read_path in files:
