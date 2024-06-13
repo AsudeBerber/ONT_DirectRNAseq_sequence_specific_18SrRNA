@@ -1,8 +1,9 @@
-import pod5
+import pod5 as p5
 import json
+import os
 import pdb
 
-pod5_file = "resources/pod5/p2s/PAW35875_9fd38647_68d05f77_0.pod5"
+pod5_file = "resources/pod5/p2s/"
 
 
 ##### copied from https://github.com/WGLab/DeepMod2/blob/main/plot_utils/plot.py, Copyright (c) 2022 Wang Genomics Lab
@@ -22,7 +23,7 @@ def get_file_names(base_path):
     return read_filename_dict
 
 try:
-    pod5_path_dict = get_file_names(base_path=base_path)
+    pod5_path_dict = get_file_names(base_path=pod5_file)
 except:
     breakpoint()
     pass
