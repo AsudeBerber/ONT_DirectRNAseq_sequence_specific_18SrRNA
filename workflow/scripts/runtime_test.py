@@ -14,7 +14,7 @@ pod5_file = pod5_index[read_ID]
 
 time_st = time.process_time()
 #loops through all pod5 files in folder 
-with p5.Reader(pod5_file)) as pod5:
+with p5.Reader(pod5_file) as pod5:
         # Read the selected read from the pod5 file
         # next() is required here as Reader.reads() returns a Generator
         try:
