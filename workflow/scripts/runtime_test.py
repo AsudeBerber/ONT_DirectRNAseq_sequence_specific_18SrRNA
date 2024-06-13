@@ -22,7 +22,8 @@ with p5.Reader(os.path.join(pod5_path, pod5_file)) as pod5:
             idk = (pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
             print(pod5_record.read_id)
         except:
-            continue
+            breakpoint()
+            pass
 time_index = time.process_time() - time_st
 
 
