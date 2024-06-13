@@ -88,7 +88,6 @@ def get_events(signal, moves, offset):
 
     return data
 
-@jit
 def get_loci(read, pairs, wd, motif_length):
     """
     find positions that match motif
