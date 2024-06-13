@@ -13,11 +13,10 @@ import time
 
 
 pod5_file = "resources/pod5/p2s/"
-subsample = "subsample_0001"
-bam_file = f"resources/alignments/p2s_aligned_{subsample}.bam"
+bam_file = f"resources/alignments/p2s_aligned_sorted.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
-npz_file = f"resources/results/p2s/{motif}_window_{window_size}_{subsample}.npz"
+npz_file = f"resources/results/p2s/{motif}_window_{window_size}_all_reads.npz"
 
 # different positions can be set here,  index is 0-based
 ref_ac1 = 1336
@@ -177,7 +176,7 @@ def main(argv=sys.argv[1:]):
                 # Read the selected read from the pod5 file
                 # next() is required here as Reader.reads() returns a Generator
                 try:
-                    pod5_record = next(pod5.reads(selection=[read.query_name], preload="sample_count")) 
+                    pod5_record = next(pod5.reads(selection=[read.query_name])) 
                     events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                     per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
