@@ -168,7 +168,7 @@ def main(argv=sys.argv[1:]):
             # it doesn't seem possible to align these back to one original read id --> these reads are ignored
             try:
                 pod5_file = pod5_index[read.query_name]
-            except:
+            except KeyError:
                 continue
                 
 
