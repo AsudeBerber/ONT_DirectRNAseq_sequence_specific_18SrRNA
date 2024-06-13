@@ -43,7 +43,7 @@ def parse_args(argv):
 
     return args
 
-
+@jit
 def get_events(signal, moves, offset):
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
