@@ -12,7 +12,6 @@ rule seq2mv_single_read:
         # thousand seperators have to be removed (e.g. 1.868 -> 1868); special characters like "|" have to be written with escape sign ("|" -> "\|")
         region = r"gi\|1154491913\|ref\|NR_003286.4\|:16-1869"
         # :15-1868"
-
     wildcard_constraints:
         sequencer = "p2i|p2s"
     conda:
