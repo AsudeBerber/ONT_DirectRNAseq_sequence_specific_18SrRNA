@@ -18,7 +18,7 @@ with p5.Reader(pod5_file) as pod5:
         # Read the selected read from the pod5 file
         # next() is required here as Reader.reads() returns a Generator
         try:
-            pod5_record = next(pod5.reads(selection=[read.query_name])) 
+            pod5_record = next(pod5.reads(selection=[read_ID])) 
             idk = (pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
             print(pod5_record.read_id)
         except:
