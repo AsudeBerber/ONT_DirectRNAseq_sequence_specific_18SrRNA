@@ -39,8 +39,7 @@ for filename in os.listdir(pod5_path): #loops through all pod5 files in folder
                 idk = (pod5_record.signal)
                 print(pod5_record.read_id, idk)
             except:
-                breakpoint()
-                pass
+                continue
 time_index = time.process_time() - time_st
 
 time_loop = time.process_time() - time_st
