@@ -1,5 +1,6 @@
 import pod5 as p5
 import json
+from pathlib import Path
 import os
 import pdb
 
