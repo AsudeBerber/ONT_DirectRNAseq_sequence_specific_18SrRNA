@@ -138,7 +138,8 @@ def main(argv=sys.argv[1:]):
     with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
-
+        with open('resources/results/p2s/pod5.json', "r") as f:
+            pod5_index= json.load(f)
         for read in tqdm(bam):
             if read.is_unmapped:
                 continue
@@ -163,9 +164,6 @@ def main(argv=sys.argv[1:]):
                 pass
 
             pod5_path = "resources/pod5/p2s/"
-
-            with open('resources/results/p2s/pod5.json', "r") as f:
-                pod5_index= json.load(f)
 
             pod5_file = pod5_index[read.query_name]
 
