@@ -20,13 +20,15 @@ time_st = time.process_time()
 with p5.Reader(pod5_file) as pod5:
         # Read the selected read from the pod5 file
         # next() is required here as Reader.reads() returns a Generator
-        try:
-            pod5_record = next(pod5.reads(selection=[read_ID])) 
-            idk = (pod5_record.signal)
-            print(pod5_record.read_id, idk)
-        except:
-            breakpoint()
-            pass
+        with p5.Reader(read_path) as reader:
+            for rname in reader.read_ids:
+            try:
+                pod5_record = next(pod5.reads(selection=[read_ID])) 
+                idk = (pod5_record.signal)
+                print(pod5_record.read_id, idk)
+            except:
+                breakpoint()
+                pass
 time_index = time.process_time() - time_st
 
 
@@ -34,14 +36,7 @@ time_st = time.process_time()
 for filename in os.listdir(pod5_path): #loops through all pod5 files in folder 
     pod5_file = os.path.join(pod5_path, filename)
     with p5.Reader(pod5_file) as pod5:
-            # Read the selected read from the pod5 file
-            # next() is required here as Reader.reads() returns a Generator
-            try:
-                pod5_record = next(pod5.reads(selection=[read_ID])) 
-                idk = (pod5_record.signal)
-                print(pod5_record.read_id, idk)
-            except:
-                continue
+            read_ID = pod5.query_name
 
 time_loop = time.process_time() - time_st
 
