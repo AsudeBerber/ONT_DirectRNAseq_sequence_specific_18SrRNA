@@ -162,31 +162,29 @@ def main(argv=sys.argv[1:]):
                 breakpoint()
                 pass
 
-            # extract features from pod5 file
+            pod5_path = "resources/pod5/p2s/"
 
-            # with p5.DatasetReader(args.pod5) as dataset:
-            time_st = time.process_time()
-            #loops through all pod5 files in folder 
-            for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
-                pod5_file = os.path.join(args.pod5, filename)
-                with p5.Reader(pod5_file) as pod5:
-                    # Read the selected read from the pod5 file
-                    # next() is required here as Reader.reads() returns a Generator
-                    try:
-                        pod5_record = next(pod5.reads(selection=[read.query_name])) 
-                        events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
-                        per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
-                        per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
+            with open('resources/results/p2s/pod5.json', "r") as f:
+                pod5_index= json.load(f)
 
-                        features.append(per_site_features)
-                        qual.append(per_site_qual)
-                        query_seq.append(per_site_query_seq)
-                        ref_seq.append(per_site_ref_seq)
-                        id.append(per_site_id)
-                    except:
-                        continue
-            time_pod = time.process_time() - time_st
-            print (f"time pod5 loop: {time_pod}")
+            pod5_file = pod5_index[read_ID]
+
+            with p5.Reader(pod5_file) as pod5:
+                # Read the selected read from the pod5 file
+                # next() is required here as Reader.reads() returns a Generator
+                try:
+                    pod5_record = next(pod5.reads(selection=[read.query_name])) 
+                    events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
+                    per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
+                    per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
+
+                    features.append(per_site_features)
+                    qual.append(per_site_qual)
+                    query_seq.append(per_site_query_seq)
+                    ref_seq.append(per_site_ref_seq)
+                    id.append(per_site_id)
+                except:
+                    continue
 
 
     features = np.vstack(features)
