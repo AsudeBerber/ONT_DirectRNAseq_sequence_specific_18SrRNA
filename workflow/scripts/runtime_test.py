@@ -29,8 +29,8 @@ time_index = time.process_time() - time_st
 
 
 time_st = time.process_time()
-for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
-    pod5_file = os.path.join(args.pod5, filename)
+for filename in os.listdir(pod5_path): #loops through all pod5 files in folder 
+    pod5_file = os.path.join(pod5_path, filename)
     with p5.Reader(pod5_file) as pod5:
             # Read the selected read from the pod5 file
             # next() is required here as Reader.reads() returns a Generator
