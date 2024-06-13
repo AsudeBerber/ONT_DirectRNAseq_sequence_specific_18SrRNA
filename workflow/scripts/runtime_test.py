@@ -40,7 +40,6 @@ for filename in os.listdir(pod5_path): #loops through all pod5 files in folder
                 print(pod5_record.read_id, idk)
             except:
                 continue
-time_index = time.process_time() - time_st
 
 time_loop = time.process_time() - time_st
 
