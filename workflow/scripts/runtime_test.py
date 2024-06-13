@@ -13,7 +13,9 @@ with open('resources/results/p2s/pod5.json', "r") as f:
 
 pod5_file = pod5_index[read_ID]
 
+time_index_load = time.process_time() - time_st
 
+time_st = time.process_time()
 #loops through all pod5 files in folder 
 with p5.Reader(pod5_file) as pod5:
         # Read the selected read from the pod5 file
@@ -43,4 +45,4 @@ for filename in os.listdir(pod5_path): #loops through all pod5 files in folder
 
 time_loop = time.process_time() - time_st
 
-print (f"time index: {time_index} \n time loop: {time_loop}")
+print (f"time index: {time_index_load}, {time_index} \n time loop: {time_loop}")
