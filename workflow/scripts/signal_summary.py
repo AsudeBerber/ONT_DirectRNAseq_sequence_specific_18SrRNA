@@ -167,7 +167,7 @@ def main(argv=sys.argv[1:]):
             with open('resources/results/p2s/pod5.json', "r") as f:
                 pod5_index= json.load(f)
 
-            pod5_file = pod5_index[read_ID]
+            pod5_file = pod5_index[read.query_name]
 
             with p5.Reader(pod5_file) as pod5:
                 # Read the selected read from the pod5 file
