@@ -29,9 +29,6 @@ except:
     breakpoint()
     pass
 
-# with open('resources/results/p2s/pod5.json', "r") as f:
-#     test= json.load(f)
-
 with open('resources/results/p2s/pod5.json', 'w') as fp:
     json.dump(pod5_path_dict, fp, sort_keys=True, separators=[",\n",":"], allow_nan=False, default=str)
 
