@@ -165,8 +165,9 @@ def main(argv=sys.argv[1:]):
                 pass
 
             pod5_path = "resources/pod5/p2s/"
+
             # dorado sometimes splits reads (https://github.com/nanoporetech/dorado/blob/release-v0.6/documentation/SAM.md#split-read-tags),
-            # it doesn't seem possible to align these back to one original read id
+            # it doesn't seem possible to align these back to one original read id --> these reads are ignored
             try:
                 pod5_file = pod5_index[read.query_name]
             except:
@@ -177,7 +178,7 @@ def main(argv=sys.argv[1:]):
                 # Read the selected read from the pod5 file
                 # next() is required here as Reader.reads() returns a Generator
                 try:
-                    pod5_record = next(pod5.reads(selection=[read.query_name])) 
+                    pod5_record = next(pod5.ReadRecord(selection=[read.query_name])) 
                     events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                     per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
