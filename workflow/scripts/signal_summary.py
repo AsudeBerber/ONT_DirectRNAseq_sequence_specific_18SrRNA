@@ -16,7 +16,7 @@ subsample = "subsample_0001"
 bam_file = f"resources/alignments/p2s_aligned_{subsample}.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
-npz_file = f"resources/results/p2s/{motif}_window_{window_size}.npz"
+npz_file = f"resources/results/p2s/{motif}_window_{window_size}_{subsample}.npz"
 
 # different positions can be set here,  index is 0-based
 ref_ac1 = 1336

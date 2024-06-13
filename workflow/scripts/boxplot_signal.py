@@ -8,7 +8,7 @@ import pandas as pd
 
 motif = "CCG"
 window_size = 21
-npz_file = f"../../resources/results/p2s/{motif}_window_21_subsample_00001.npz"
+npz_file = f"../../resources/results/p2s/{motif}_window_21_subsample_0001.npz"
 arround=3
 
 loaded = np.load(npz_file)
@@ -81,6 +81,8 @@ ax1.boxplot(filter_by_pos(1337))
 for i, base in enumerate(df_refseq_1337_sliced.iloc[0]):
     print(i, base)
     ax1.annotate(base, xy = (i+1, -2))
+ax1.set_yscale("symlog")
+ax1.set_title(f"Pos {1337} ± {arround} bp")
 
 
 ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
@@ -88,3 +90,5 @@ ax2.boxplot(filter_by_pos(1842))
 for i, base in enumerate(df_refseq_1842_sliced.iloc[0]):
     print(i, base)
     ax2.annotate(base, xy = (i+1, -2))
+ax2.set_yscale("symlog")
+ax2.set_title(f"Pos 1842 ± {arround} bp")
