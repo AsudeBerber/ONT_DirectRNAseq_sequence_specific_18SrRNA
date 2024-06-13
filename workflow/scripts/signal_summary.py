@@ -140,6 +140,7 @@ def main(argv=sys.argv[1:]):
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
         with open('resources/results/p2s/pod5.json', "r") as f:
             pod5_index= json.load(f)
+
         for read in tqdm(bam):
             if read.is_unmapped:
                 continue
@@ -182,6 +183,7 @@ def main(argv=sys.argv[1:]):
                     ref_seq.append(per_site_ref_seq)
                     id.append(per_site_id)
                 except:
+                    breakpoint()
                     continue
 
 
