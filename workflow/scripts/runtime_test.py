@@ -49,7 +49,5 @@ with p5.Reader(pod5_file) as pod5:
                 breakpoint()
                 pass
 time_index = time.process_time() - time_st
-print(time_index, time)
-
 
 print (f"time index: {time_index}, {time_index_unsrt}, {time_index_srt}" )
