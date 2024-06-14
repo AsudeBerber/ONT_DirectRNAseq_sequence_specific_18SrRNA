@@ -178,6 +178,7 @@ def main(argv=sys.argv[1:]):
                 try:
                     pod5_record = next(pod5.reads(selection=[read.query_name])) 
                     time_st= time.process_time()
+                    breakpoint()
                     events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                     time_events = time.process_time - time_st
                     per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
