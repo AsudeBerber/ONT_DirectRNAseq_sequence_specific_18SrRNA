@@ -117,7 +117,6 @@ def get_loci(read, pairs, wd, motif_length):
     loci = [locus for locus in loci if locus is not None and locus > wd -1 and locus < read.query_length - wd - (motif_length -1) ]
     ref_loci = [ref_loci[index] for index in ref_loci_index if pairs[index, 0] != None and pairs[index,0] in loci]
     if len(loci) != len(ref_loci):
-        breakpoint()
         raise Exception ("length of reference and query sequence index not matching")
     return loci, ref_loci
 

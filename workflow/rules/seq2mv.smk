@@ -1,7 +1,7 @@
 rule seq2mv_single_read:
     input: 
         bam = "resources/alignments/test.bam",
-        # bai = "resources/alignments/test.bam"
+        bai = "resources/alignments/test.bam"
     output:
         "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
     params:
