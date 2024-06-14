@@ -16,7 +16,7 @@ pod5_file = "resources/pod5/p2s/"
 bam_file = f"resources/alignments/p2s_aligned_subsample_000001.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 11
-npz_file = f"resources/results/p2s/{motif}_window_{window_size}_all_reads.npz"
+npz_file = f"resources/results/p2s/{motif}_window_{window_size}_test.npz"
 
 # different positions can be set here,  index is 0-based
 ref_ac1 = 1336
@@ -215,7 +215,7 @@ def main(argv=sys.argv[1:]):
     # does not work so far
     # np.savetxt('resources/results/p2s/summary.txt', features, qual, query_seq, ref_seq, id))
     
-    print(time_events, time_append)
+    print(time_events)
     return 0
 
 
