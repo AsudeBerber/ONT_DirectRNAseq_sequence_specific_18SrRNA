@@ -34,7 +34,6 @@ pod5_file = pod5_index_sd[read_ID]
 time_index_srt = time.process_time_ns() - time_st
 
 
-time_index_load = time.process_time() - time_st
 
 breakpoint()
 time_st = time.process_time()
@@ -53,12 +52,4 @@ time_index = time.process_time() - time_st
 print(time_index, time)
 
 
-time_st = time.process_time()
-for filename in os.listdir(pod5_path): #loops through all pod5 files in folder 
-    pod5_file = os.path.join(pod5_path, filename)
-    with p5.Reader(pod5_file) as pod5:
-            read_ID = pod5.query_name
-
-time_loop = time.process_time() - time_st
-
-print (f"time index: {time_index_load}, {time_index} \n time loop: {time_loop}")
+print (f"time index: {time_index}, {time_index_unsrt}, {time_index_srt}" )
