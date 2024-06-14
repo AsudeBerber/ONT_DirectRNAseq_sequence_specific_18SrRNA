@@ -177,19 +177,20 @@ def main(argv=sys.argv[1:]):
                 # next() is required here as Reader.reads() returns a Generator
                 try:
                     pod5_record = next(pod5.reads(selection=[read.query_name])) 
-                    time_st= time.process_time()
+                    
+                    # events: 0.01 s = 100/s
                     events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
-                    time_events = time.process_time() - time_st
+                    time_st= time.process_time()
                     per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
+                    time_events = time.process_time() - time_st
 
-                    time_st= time.process_time()
+                    #appending is very fast (1E-6 s)
                     features.append(per_site_features)
                     qual.append(per_site_qual)
                     query_seq.append(per_site_query_seq)
                     ref_seq.append(per_site_ref_seq)
                     id.append(per_site_id)
-                    time_append = time.process_time() -time_st
                 except:
                     breakpoint()
                     continue
