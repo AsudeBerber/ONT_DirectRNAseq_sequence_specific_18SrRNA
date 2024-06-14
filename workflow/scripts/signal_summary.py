@@ -144,7 +144,7 @@ def main(argv=sys.argv[1:]):
         for read in tqdm(bam):
             if read.is_unmapped:
                 continue
-            time_st= time.process_time()
+            
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = False)
             ac_ccg= np.array(list(filter(lambda x: x[1] in ref_pos, aligned_pairs)), dtype= "object")
@@ -163,9 +163,7 @@ def main(argv=sys.argv[1:]):
             except:
                 breakpoint()
                 pass
-            time_events = time.process_time() - time_st
-            
-
+        
             # dorado sometimes splits reads (https://github.com/nanoporetech/dorado/blob/release-v0.6/documentation/SAM.md#split-read-tags),
             # it doesn't seem possible to align these back to one original read id --> these reads are ignored
             try:
@@ -220,7 +218,6 @@ def main(argv=sys.argv[1:]):
     # does not work so far
     # np.savetxt('resources/results/p2s/summary.txt', features, qual, query_seq, ref_seq, id))
     
-    print(time_events)
     return 0
 
 
