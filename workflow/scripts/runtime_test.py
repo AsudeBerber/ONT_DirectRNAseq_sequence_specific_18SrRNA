@@ -27,11 +27,11 @@ pod5_file = pod5_index[read_ID]
 time_index_unsrt = time.time_ns() - time_st
 
 
-time_st = time.time_ns()
+time_st = time.process_time_ns()
 
 pod5_file = pod5_index_sd[read_ID]
 
-time_index_srt = time.time_ns() - time_st
+time_index_srt = time.process_ns() - time_st
 
 
 time_index_load = time.process_time() - time_st
@@ -42,7 +42,6 @@ time_st = time.process_time()
 with p5.Reader(pod5_file) as pod5:
         # Read the selected read from the pod5 file
         # next() is required here as Reader.reads() returns a Generator
-    with p5.Reader(read_path) as reader:
             try:
                 pod5_record = next(pod5.reads(selection=[read_ID])) 
                 idk = (pod5_record.signal)
@@ -51,7 +50,7 @@ with p5.Reader(pod5_file) as pod5:
                 breakpoint()
                 pass
 time_index = time.process_time() - time_st
-print(time_index)
+print(time_index, time)
 
 
 time_st = time.process_time()
