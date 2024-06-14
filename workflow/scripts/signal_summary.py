@@ -49,9 +49,8 @@ def pop_moves(moves):
 
 # this part is from https://github.com/WGLab/DeepMod2/blob/main/src/detect.py
 @jit(nopython=True)
-def get_events(signal, moves, offset):
+def get_events(signal, moves, stride, offset):
 
-    moves, stride = pop_moves(moves=moves)
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
     following values for each called based:
@@ -190,7 +189,10 @@ def main(argv=sys.argv[1:]):
                     pod5_record = next(pod5.reads(selection=[read.query_name])) 
 
                     # events: 0.01 s = 100/s
-                    events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
+                    moves = read.get_tag("mv")
+                    stride = moves.pop(0)
+                    
+                    events = get_events(pod5_record.signal, moves, stride, read.get_tag("ts"))
                     
                     per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
