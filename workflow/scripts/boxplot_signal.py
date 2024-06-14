@@ -65,7 +65,7 @@ def filter_by_pos(pos):
 
 #1337 | 1842
 pos = 1842
-window_plot = 5
+window_plot = 4
 range_window_plot = ref.shape[1] 
 df_event_filtered = filter_by_pos(pos)
 

@@ -33,7 +33,7 @@ def read_id_list_bam(sample=None):
 #gets movetable (mv), ts and corresponding base sequence (seq) for given read id
 def bam_aligned(sample, read_ids, region, pos):
 
-    samfile = ps.AlignmentFile(f"{sample}")
+    samfile = ps.AlignmentFile(f"{sample}", until_eof=True)
 
     max_reads = samfile.mapped
     i = 0
