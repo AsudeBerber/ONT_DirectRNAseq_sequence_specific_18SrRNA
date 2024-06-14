@@ -42,9 +42,16 @@ def parse_args(argv):
 
     return args
 
+def pop_moves(moves):
+    stride = moves.pop(0)
+    return moves, stride
+
+
 # this part is from https://github.com/WGLab/DeepMod2/blob/main/src/detect.py
 @jit(nopython=True)
 def get_events(signal, moves, offset):
+
+    moves, stride = pop_moves(moves=moves)
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
     following values for each called based:
@@ -61,7 +68,7 @@ def get_events(signal, moves, offset):
     mad = np.median(np.abs(signal-median))
     signal=(signal-median)/mad
     
-    stride = moves.pop(0)
+    # stride = moves.pop(0)
     move_index = np.where(moves)[0]
     rlen = len(move_index)
     
