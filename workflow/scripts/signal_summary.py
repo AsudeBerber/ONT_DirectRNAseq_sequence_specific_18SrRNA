@@ -43,10 +43,7 @@ def parse_args(argv):
     return args
 
 # this part is from https://github.com/WGLab/DeepMod2/blob/main/src/detect.py
-@jit(nopython=True)
 def get_events(signal, moves, offset):
-
-    moves = 
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
     following values for each called based:
