@@ -1,11 +1,11 @@
 rule seq2mv_single_read:
     input: 
-        bam = "resources/alignments/test.bam",
-        # bai = "resources/alignments/test.bam"
+        bam = "p2s_aligned_sorted.bam",
+        bai = "resources/alignments/p2s_aligned_sorted.bam.bai"
     output:
         "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
     params:
-        # read = "7be77036-bcfb-4493-a95a-dd58b6975e5b", 
+        read = "7be77036-bcfb-4493-a95a-dd58b6975e5b", 
         # site 1: 1337	ac4C 79%
         # site 2: 1842	ac4C 99%
         # region = reference span (in IGV read description)
