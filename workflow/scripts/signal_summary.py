@@ -121,6 +121,10 @@ def get_loci(read, pairs, wd, motif_length):
         raise Exception ("length of reference and query sequence index not matching")
     return loci, ref_loci
 
+# for getting position in signal (goes 3' to 5')
+def rev_locus(locus):
+    locus_rev = read.query_length -1 - locus
+
 
 def main(argv=sys.argv[1:]):
 
@@ -183,9 +187,12 @@ def main(argv=sys.argv[1:]):
 
                     # events: 0.01 s = 100/s
                     #events is inverted as the signal goes from 3' -> 5', but sequence from 5' -> 3'
-                    events = get_events(pod5_record.signal[::-1] , read.get_tag("mv"), read.get_tag("ts"))
+                    events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                     
-                    per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
+                    # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
+                    
+                    breakpoint()
+                    per_site_features = np.array([events[locus_rev(locus)-extra_window: locus_rev(locus)+motif_length+extra_window] for locus in loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
                     
 
