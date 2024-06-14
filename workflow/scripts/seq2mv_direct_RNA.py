@@ -41,7 +41,8 @@ def bam_aligned(sample, read_ids, region, pos):
     # starts at position 0
     pos = pos -1 
 
-    for read in samfile.fetch(region = region,  until_eof=True):
+    # if index file present, fetch(region = region)
+    for read in samfile.fetch(until_eof=True):
         if read.query_name == read_ids:
             read_ID = read.query_name
             seq = read.query_alignment_sequence
