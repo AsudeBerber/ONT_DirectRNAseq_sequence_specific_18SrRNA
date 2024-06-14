@@ -138,11 +138,13 @@ def main(argv=sys.argv[1:]):
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
         with open('resources/results/p2s/pod5.json', "r") as f:
             pod5_index= json.load(f)
-        
+
+        pod5_path = "resources/pod5/p2s/"
+
         for read in tqdm(bam):
             if read.is_unmapped:
                 continue
-            
+            time_st= time.process_time()
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = False)
             ac_ccg= np.array(list(filter(lambda x: x[1] in ref_pos, aligned_pairs)), dtype= "object")
@@ -161,8 +163,8 @@ def main(argv=sys.argv[1:]):
             except:
                 breakpoint()
                 pass
-
-            pod5_path = "resources/pod5/p2s/"
+            time_events = time.process_time() - time_st
+            
 
             # dorado sometimes splits reads (https://github.com/nanoporetech/dorado/blob/release-v0.6/documentation/SAM.md#split-read-tags),
             # it doesn't seem possible to align these back to one original read id --> these reads are ignored
@@ -197,13 +199,13 @@ def main(argv=sys.argv[1:]):
                     breakpoint()
                     continue
 
-    time_st= time.process_time()
+    
     features = np.vstack(features)
     qual = np.vstack(qual)
     query_seq = np.vstack(query_seq)
     ref_seq = np.vstack(ref_seq)
     id = np.hstack(id)
-    time_events = time.process_time() - time_st
+    
 
     # checks if results folder exists, creates otherwise
     # check if plot dir exists, creates it otherwise
