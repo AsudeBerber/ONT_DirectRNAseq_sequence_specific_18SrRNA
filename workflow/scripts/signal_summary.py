@@ -63,7 +63,6 @@ def get_events(signal, moves, stride, offset):
     mad = np.median(np.abs(signal-median))
     signal=(signal-median)/mad
     
-    # stride = moves.pop(0)
     move_index = np.where(moves)[0]
     rlen = len(move_index)
     
