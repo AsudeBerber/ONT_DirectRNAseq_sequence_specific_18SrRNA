@@ -51,6 +51,7 @@ with p5.Reader(pod5_file) as pod5:
                 breakpoint()
                 pass
 time_index = time.process_time() - time_st
+print(time_index)
 
 
 time_st = time.process_time()
