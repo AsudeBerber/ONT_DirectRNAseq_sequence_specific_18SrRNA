@@ -192,7 +192,7 @@ def main(argv=sys.argv[1:]):
                     # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
                     
                     breakpoint()
-                    per_site_features = np.array([events[rev_locus(locus, read)-extra_window: rev_locus(locus, read)+motif_length+extra_window] for locus in loci])
+                    per_site_features = np.array([events[rev_locus(locus, read)+extra_window: rev_locus(locus, read)+motif_length-extra_window:-1] for locus in loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
                     
 
