@@ -183,8 +183,7 @@ def main(argv=sys.argv[1:]):
 
                     # events: 0.01 s = 100/s
                     #events is inverted as the signal goes from 3' -> 5', but sequence from 5' -> 3'
-                    events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))[::-1] 
-                    breakpoint()
+                    events = get_events(pod5_record.signal[::-1] , read.get_tag("mv"), read.get_tag("ts"))
                     
                     per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
