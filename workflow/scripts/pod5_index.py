@@ -2,7 +2,6 @@ import pod5 as p5
 import json
 from pathlib import Path
 import os
-from sortedcontainers import SortedDict
 import pdb
 
 pod5_file = "resources/pod5/p2s/"
@@ -23,21 +22,7 @@ def get_file_names(base_path):
                 read_filename_dict[rname]=read_path
                 
     return read_filename_dict
-
-def get_file_names_sorted_dict(base_path):
-    read_filename_sd=SortedDict()
-    
-    if os.path.isdir(base_path):
-        files=Path(base_path).rglob('*.pod5')
-    else:
-        files=[base_path]
-    for read_path in files:
-        read_path=str(read_path)
-        with p5.Reader(read_path) as reader:
-            for rname in reader.read_ids:
-                read_filename_sd[rname]=read_path
                 
-    return read_filename_dict
 try:
     pod5_path_dict = get_file_names(base_path=pod5_file)
 except:
