@@ -10,13 +10,12 @@ import os
 import json
 import pdb
 import time
-from numba import jit
 
 
 pod5_file = "resources/pod5/p2s/"
-bam_file = f"resources/alignments/p2s_aligned_subsample_000001.bam"
+bam_file = f"resources/alignments/test.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
-window_size = 11
+window_size = 21
 npz_file = f"resources/results/p2s/{motif}_window_{window_size}_test.npz"
 
 # different positions can be set here,  index is 0-based
@@ -183,7 +182,9 @@ def main(argv=sys.argv[1:]):
                     pod5_record = next(pod5.reads(selection=[read.query_name])) 
 
                     # events: 0.01 s = 100/s
-                    events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
+                    #events is inverted as the signal goes from 3' -> 5', but sequence from 5' -> 3'
+                    events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))[::-1] 
+                    breakpoint()
                     
                     per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
