@@ -176,9 +176,10 @@ def main(argv=sys.argv[1:]):
                 # Read the selected read from the pod5 file
                 # next() is required here as Reader.reads() returns a Generator
                 try:
-                    time_st= time.process_time()
+                    
+                    # lookup is very fast (1E-4 s)
                     pod5_record = next(pod5.reads(selection=[read.query_name])) 
-                    time_events = time.process_time() - time_st
+
                     # events: 0.01 s = 100/s
                     events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
                     
@@ -196,12 +197,13 @@ def main(argv=sys.argv[1:]):
                     breakpoint()
                     continue
 
-
+    time_st= time.process_time()
     features = np.vstack(features)
     qual = np.vstack(qual)
     query_seq = np.vstack(query_seq)
     ref_seq = np.vstack(ref_seq)
     id = np.hstack(id)
+    time_events = time.process_time() - time_st
 
     # checks if results folder exists, creates otherwise
     # check if plot dir exists, creates it otherwise
