@@ -31,7 +31,7 @@ time_st = time.process_time_ns()
 
 pod5_file = pod5_index_sd[read_ID]
 
-time_index_srt = time.process_ns() - time_st
+time_index_srt = time.process_time_ns() - time_st
 
 
 time_index_load = time.process_time() - time_st
