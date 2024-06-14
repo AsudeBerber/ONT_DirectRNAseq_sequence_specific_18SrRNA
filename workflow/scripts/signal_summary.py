@@ -13,7 +13,7 @@ import time
 
 
 pod5_file = "resources/pod5/p2s/"
-bam_file = f"resources/alignments/p2s_aligned_sorted.bam"
+bam_file = f"p2s_aligned_subsample_000001.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 11
 npz_file = f"resources/results/p2s/{motif}_window_{window_size}_all_reads.npz"
@@ -139,7 +139,7 @@ def main(argv=sys.argv[1:]):
         with open('resources/results/p2s/pod5.json', "r") as f:
             pod5_index= json.load(f)
         
-        for read in tqdm(bam[14]):
+        for read in tqdm(bam):
             if read.is_unmapped:
                 continue
             
