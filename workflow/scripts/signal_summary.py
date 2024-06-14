@@ -10,6 +10,7 @@ import os
 import json
 import pdb
 import time
+from numba import jit
 
 
 pod5_file = "resources/pod5/p2s/"
@@ -41,7 +42,8 @@ def parse_args(argv):
 
     return args
 
-    @jit(nopython=True)
+# this part is from https://github.com/WGLab/DeepMod2/blob/main/src/detect.py
+@jit(nopython=True)
 def get_events(signal, moves, offset):
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
