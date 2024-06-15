@@ -263,7 +263,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
             os.makedirs(f"resources/mapped/signal/{sequencer}/plots/{read_ids}")
 
-        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{pos}-pm{range_bp}.svg", dpi = 300)           
+        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{pos+1}-pm{range_bp}.svg", dpi = 300)           
         plt.show()
 
 def main(argv = sys.argv[1:]):
