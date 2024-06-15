@@ -48,7 +48,7 @@ for read in id:
 
 mean_signal_int = features[:,:,5]
 
-event = 4 # mean intensity
+event = 7 # mean intensity
 index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, arround=arround)
 
 df_event = pd.DataFrame((sliced_event), columns = list(range(1,8)))

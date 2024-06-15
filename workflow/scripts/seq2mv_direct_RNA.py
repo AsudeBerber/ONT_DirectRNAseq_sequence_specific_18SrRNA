@@ -270,7 +270,7 @@ def main(argv = sys.argv[1:]):
     args, fetch = cmd_parser(argv= argv)
 
     seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
-                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos)  
+                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos-1)  
 
 
     # as RNA is sequenced 3' -> 5', but convention + basecalled sequence is 5' -> 3' the seq2mv has to be "turned around" 
@@ -279,7 +279,7 @@ def main(argv = sys.argv[1:]):
 
 
     #plots array to signal
-    plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos = args.pos, pos_read = pos_read,
+    plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos = args.pos-1, pos_read = pos_read,
                         range_bp = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
 
 
@@ -298,7 +298,7 @@ def cmd_parser(argv):
     parser.add_argument("--sequencer", help= "name of sequencer (p2i/p2s)")
     parser.add_argument("--sample", help= "Name of sample bam file w/o .bam ending", action="store")
     parser.add_argument("--readID", help= "Sample ID in bam and pod5 file", action="store")
-    parser.add_argument("--pos", help= "position/index of base in middle, start with 0", type=int, action="store")
+    parser.add_argument("--pos", help= "position/index of base in middle, 1-based", type=int, action="store")
     parser.add_argument("--range", help= "bases to display the left/right of middle base", type=int, action="store")
     parser.add_argument("--no_fetch", help= "Disables fetching mv, ts, seq from readID - requieres --mv, --ts, --seq", action="store_true")
     parser.add_argument("--seq", help= "complete sequence of read", action="store_true")
