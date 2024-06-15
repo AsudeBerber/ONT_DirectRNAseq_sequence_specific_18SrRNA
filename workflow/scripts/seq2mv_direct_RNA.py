@@ -37,9 +37,6 @@ def bam_aligned(sample, read_ids, region, pos):
 
     max_reads = samfile.mapped
     i = 0
-    
-    # starts at position 0
-    pos = pos -1 
 
     # if index file present, fetch(region = region)
     for read in samfile.fetch(region = region):
@@ -233,7 +230,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
         ax.margins(0.05, 0.1)
         ax.set(xlabel = "base", ylabel = "signal (pA)")
         plt.title(str("Read ID: "+ read_ids))
-        ax.annotate(f"18S RNA transcript - position {pos} ± {range_bp} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
+        ax.annotate(f"18S RNA transcript - position {pos+1} ± {range_bp} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
 #
         #annotation of bases to signal plot
         i = -range_bp
@@ -270,7 +267,7 @@ def main(argv = sys.argv[1:]):
     args, fetch = cmd_parser(argv= argv)
 
     seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
-                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos-1)  
+                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos)  
 
 
     # as RNA is sequenced 3' -> 5', but convention + basecalled sequence is 5' -> 3' the seq2mv has to be "turned around" 
@@ -279,7 +276,7 @@ def main(argv = sys.argv[1:]):
 
 
     #plots array to signal
-    plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos = args.pos-1, pos_read = pos_read,
+    plot_signal_plus_seq(rev_seq2mv, read_ids = args.readID, pos = args.pos, pos_read = pos_read,
                         range_bp = args.range, sequencer = args.sequencer, full_read=False, pod5_dir = args.pod5_dir)
 
 
@@ -308,6 +305,9 @@ def cmd_parser(argv):
     parser.add_argument("--region", type= str, action= "store")
     parser.add_argument("--pod5_dir", type= str, action= "store")
     args = parser.parse_args()
+
+    # starts at pos 0
+    args.pos = args.pos - 1
 
     if args.get_readids == True:
         read_id_list_bam(args.sequencer, args.sample)
