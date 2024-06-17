@@ -73,7 +73,6 @@ def get_events(signal, moves, offset, rev_loci):
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
     for i, locus in enumerate(rev_loci):
-        data_tmp = []
         prev = move_index[locus]*stride+offset
         sig_end = move_index[locus+1]*stride+offset
         
