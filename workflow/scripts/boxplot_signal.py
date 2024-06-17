@@ -13,6 +13,16 @@ arround=3
 
 loaded = np.load(npz_file)
 
+def parse_args(argv):
+    """Read arguments from command line."""
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-f", "--feature", type=str)
+
+    args = parser.parse_args()
+
+    return args
 
 #arround: #bases to plot arround ac4C
 def slice_bases(event, arround):
@@ -23,7 +33,13 @@ def slice_bases(event, arround):
     sliced_refseq = ref[:,index_bases]
     return index_bases, sliced_event, sliced_refseq
     
+def filter_by_pos(pos):
+    df = df_event_pos
+    df_filtered = df[df["pos"] == str(pos)]
+    df_plot = df_filtered.iloc[:,:7]
+    return df_plot
 
+args = parse_args()
 """
 FEATURES:
 3D array in shape (read,base,event[0:8])
@@ -44,11 +60,10 @@ id = loaded["id"]
 
 pos = []
 for read in id:
-    pos.append(read[-4:])
+    pos.append(read.rsplit(":"))
 
-mean_signal_int = features[:,:,5]
 
-event = 7 # mean intensity
+event = args.feature
 index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, arround=arround)
 
 df_event = pd.DataFrame((sliced_event), columns = list(range(1,8)))
@@ -57,11 +72,7 @@ df_pos = pd.DataFrame(pos, columns = ["pos"])
 
 df_event_pos = pd.concat([df_event, df_pos], axis=1)
 
-def filter_by_pos(pos):
-    df = df_event_pos
-    df_filtered = df[df["pos"] == str(pos)]
-    df_plot = df_filtered.iloc[:,:7]
-    return df_plot
+
 
 #1337 | 1842
 pos = 1842
@@ -85,13 +96,13 @@ for i, base in enumerate(df_refseq_1842_sliced.iloc[0]):
     ax.annotate(base, xy = (i+1, -2))
 ax.set_title(f"Pos 1842 ± {arround} bp")
 
-# fig, (ax1, ax2) = plt.subplots(1,2)
-# ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
-# ax1.boxplot(filter_by_pos(1337))
-# for i, base in enumerate(df_refseq_1337_sliced.iloc[0]):
-#     ax1.annotate(base, xy = (i+1, -2))
-# ax1.set_yscale("symlog")
-# ax1.set_title(f"Pos {1337} ± {arround} bp")
+fig, (ax1, ax2) = plt.subplots(1,2)
+ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
+ax1.boxplot(filter_by_pos(1337))
+for i, base in enumerate(df_refseq_1337_sliced.iloc[0]):
+    ax1.annotate(base, xy = (i+1, -2))
+ax1.set_yscale("symlog")
+ax1.set_title(f"Pos {1337} ± {arround} bp")
 
 
 ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
@@ -102,3 +113,4 @@ for i, base in enumerate(df_refseq_1842_sliced.iloc[0]):
 ax2.set_yscale("symlog")
 ax2.set_title(f"Pos 1842 ± {arround} bp")
 
+plt.savefig(f"", dpi = 300)

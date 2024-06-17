@@ -1,0 +1,72 @@
+__author__ = "Jens Martin"
+__email__ = "jens.martin@outlook.com"
+
+import argparse
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+motif = "CCG"
+window_size = 21
+npz_file = f"../../resources/results/p2s/CCG_window_21_subsample_0001.npz"
+arround=3
+
+loaded = np.load(npz_file)
+
+#arround: #bases to plot arround ac4C
+def slice_bases(event, arround):
+    whole_window = len(query[0])
+    middle = whole_window //2
+    index_bases = np.arange(0,whole_window) [middle-arround:middle+arround+1]
+    sliced_event = features[:,index_bases,event]
+    sliced_refseq = ref[:,index_bases]
+    return index_bases, sliced_event, sliced_refseq
+
+features = loaded["feat"]
+qual = loaded["qual"]
+query = loaded["query"]
+# ref contains "None" strings, in cases where deletions occured
+ref = loaded["ref"]
+id = loaded["id"]
+
+pos, read_id = [], []
+for read in id:
+    id_split = read.rsplit(":",1)
+    pos.append(id_split[1])
+    read_id.append(id_split[0])
+
+a = "".join(query[1])
+
+b = "".join(qual[1])
+
+
+"""
+FEATURES:
+3D array in shape (read,base,event[0:8])
+EVENTS:
+4: log10 signal length
+5: mean signal intensity
+6: standard deviation of signal intensity
+7: median signal intensity
+8: median absolute deviation of signal intensity
+0-3: mean signal intensity for each quartile
+"""
+
+df_event = pd.DataFrame((features), columns = list(range(1,9)))
+df_id = pd.DataFrame(id)
+df_pos = pd.DataFrame(pos, columns = ["pos"])
+
+df_event_pos = pd.concat([df_event, df_pos], axis=1)
+
+# splits features in individual variables
+for read in range(features.shape[0]):
+    for event in range(features.shape[1]):
+        bases_flat = str(features[read,:,event])
+        bases_flat = bases_flat.replace("\n", "")
+        features[read,:,event] = bases_flat
+
+mean_q1, mean_q2, mean_q3, mean_q4 = features[:,:,0], features[:,:,1], features[:,:,2], features[:,:,3]
+log10_len, mean, sd = features[:,:,4], features[:,:,5], features[:,:,6]
+mdn, mdn_sd = features[:,:,7], features[:,:,8]
+
+df_test = pd.DataFrame([mean_q1, mean_q2, mean_q3, mean_q4])
