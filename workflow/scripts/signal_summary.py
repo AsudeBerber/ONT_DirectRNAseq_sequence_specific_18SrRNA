@@ -16,7 +16,7 @@ import time
 
 
 pod5_file = "resources/pod5/p2s/"
-bam_file = f"resources/alignments/test.bam"
+bam_file = f"resources/alignments/p2s_aligned_subsample_0001.bam.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
 npz_file = f"resources/results/p2s/{motif}_window_{window_size}_{Path(bam_file).stem}.npz"
@@ -71,7 +71,6 @@ def get_events(signal, moves, offset, rev_loci, motif_length, extra_window):
     dict_events = {}
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
-    breakpoint()
     pos_get_signal = [np.arange((locus - extra_window), locus + motif_length+extra_window) for locus in rev_loci]
     pos_get_signal = np.reshape(pos_get_signal, -1)
     
@@ -96,7 +95,6 @@ def get_events(signal, moves, offset, rev_loci, motif_length, extra_window):
                 data_tmp[j]+=signal[t+prev]
                 tmp_cnt+=1
             data_tmp[j]=data_tmp[j]/tmp_cnt
-        breakpoint()
         dict_events.update({locus:data_tmp})
     print(dict_events)
     return dict_events
