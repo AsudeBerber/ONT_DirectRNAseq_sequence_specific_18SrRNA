@@ -1,5 +1,7 @@
 # Code mostly written by Christoph Engelhardt
 
+############### Run time for 4x10^7 reads: ~2 days; memory usage piles up over time up to ~50%/ 30 GB RAM in the end
+
 import numpy as np
 import pod5 as p5
 import pysam
