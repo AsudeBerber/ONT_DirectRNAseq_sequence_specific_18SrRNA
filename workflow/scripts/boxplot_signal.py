@@ -5,6 +5,7 @@ import argparse
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import sys
 
 motif = "CCG"
 window_size = 21
@@ -39,7 +40,7 @@ def filter_by_pos(pos):
     df_plot = df_filtered.iloc[:,:7]
     return df_plot
 
-args = parse_args()
+args = parse_args(argv=sys.argv[1:])
 """
 FEATURES:
 3D array in shape (read,base,event[0:8])
