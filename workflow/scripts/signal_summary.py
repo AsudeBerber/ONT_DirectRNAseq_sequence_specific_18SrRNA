@@ -127,7 +127,7 @@ def get_loci(read, pairs, wd, motif_length):
         raise Exception ("length of reference and query sequence index not matching")
     
     for locus in loci:
-        rev_loci.append(rev_locus(locus))
+        rev_loci.append(rev_locus(locus, read))
     return loci, ref_loci, rev_loci
 
 # for getting position in signal (goes 3' to 5')
