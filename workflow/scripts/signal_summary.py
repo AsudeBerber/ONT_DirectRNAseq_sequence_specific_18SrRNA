@@ -46,7 +46,7 @@ def parse_args(argv):
     return args
 
 # this part is from https://github.com/WGLab/DeepMod2/blob/main/src/detect.py
-def get_events(signal, moves, offset):
+def get_events(signal, moves, offset, rev_loci):
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
     following values for each called based:
@@ -68,29 +68,33 @@ def get_events(signal, moves, offset):
     rlen = len(move_index)
     
     data = np.zeros((rlen,9))
-    
+    dict_events = {}
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
-    for i in range(rlen-1):
+    for i in rev_loci:
+        data_tmp = []
         prev = move_index[i]*stride+offset
         sig_end = move_index[i+1]*stride+offset
         
         sig_len = sig_end-prev
-        data[i, 4]=np.log10(sig_len)
-        data[i, 5]=np.mean(signal[prev:sig_end])
-        data[i, 6]=np.std(signal[prev:sig_end])
-        data[i, 7]=np.median(signal[prev:sig_end])
-        data[i, 8]=np.median(np.abs(signal[prev:sig_end]-data[i, 4]))
+        data_tmp[i, 4]=np.log10(sig_len)
+        data_tmp[i, 5]=np.mean(signal[prev:sig_end])
+        data_tmp[i, 6]=np.std(signal[prev:sig_end])
+        data_tmp[i, 7]=np.median(signal[prev:sig_end])
+        data_tmp[i, 8]=np.median(np.abs(signal[prev:sig_end]-data_tmp[i, 4]))
         
         # get the mean signal for each quarter of the base signal
         for j in range(4):
             tmp_cnt=0
             for t in range(j*sig_len//4,min(sig_len, (j+1)*sig_len//4)):
-                data[i, j]+=signal[t+prev]
+                data_tmp[i, j]+=signal[t+prev]
                 tmp_cnt+=1
-            data[i, j]=data[i, j]/tmp_cnt
+            data_tmp[i, j]=data_tmp[i, j]/tmp_cnt
 
-    return data
+    dict_events.update({i:data_tmp})
+    breakpoint()
+    print(dict_events)
+    return dict_events
 
 def get_loci(read, pairs, wd, motif_length):
     """
