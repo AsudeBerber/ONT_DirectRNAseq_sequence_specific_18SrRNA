@@ -60,6 +60,7 @@ query = loaded["query"]
 ref = loaded["ref"]
 id = loaded["id"]
 
+breakpoint()
 pos = []
 for read in id:
     pos.append(read.rsplit(":")[1])
@@ -77,7 +78,6 @@ df_event_pos = pd.concat([df_event, df_pos], axis=1)
 
 
 #1337 | 1842
-pos = 1842
 window_plot = 4
 range_window_plot = ref.shape[1] 
 df_event_filtered = filter_by_pos(pos)
