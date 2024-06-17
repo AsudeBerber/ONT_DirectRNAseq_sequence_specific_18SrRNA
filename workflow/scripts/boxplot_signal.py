@@ -113,4 +113,4 @@ for i, base in enumerate(df_refseq_1842_sliced.iloc[0]):
 ax2.set_yscale("symlog")
 ax2.set_title(f"Pos 1842 ± {arround} bp")
 
-plt.savefig(f"", dpi = 300)
+plt.savefig(f"signal_summary_event_{args.feature}.svg", dpi = 300)
