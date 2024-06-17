@@ -155,6 +155,7 @@ def main(argv=sys.argv[1:]):
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = False)
             ac_ccg= np.array(list(filter(lambda x: x[1] in ref_pos, aligned_pairs)), dtype= "object")
+            breakpoint()
             # pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
             loci, ref_loci = get_loci(read, ac_ccg, extra_window, motif_length)
         
