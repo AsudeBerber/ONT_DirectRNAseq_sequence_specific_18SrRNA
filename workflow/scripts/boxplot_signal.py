@@ -61,7 +61,7 @@ id = loaded["id"]
 
 pos = []
 for read in id:
-    pos.append(read.rsplit(":"))
+    pos.append(read.rsplit(":")[1])
 
 
 event = args.feature
@@ -89,13 +89,6 @@ df_refseq_1842 = df_refseq[df_refseq["pos"] == "1842"]
 df_refseq_1337_sliced = df_refseq_1337.iloc[:,index_bases]
 df_refseq_1842_sliced = df_refseq_1842.iloc[:,index_bases]
 
-fig, ax = plt.subplots()
-ax.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
-ax.boxplot(filter_by_pos(1842))
-ax.boxplot(filter_by_pos(508))
-for i, base in enumerate(df_refseq_1842_sliced.iloc[0]):
-    ax.annotate(base, xy = (i+1, -2))
-ax.set_title(f"Pos 1842 ± {arround} bp")
 
 fig, (ax1, ax2) = plt.subplots(1,2)
 ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
