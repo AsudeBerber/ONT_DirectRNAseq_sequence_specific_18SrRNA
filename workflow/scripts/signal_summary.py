@@ -98,6 +98,8 @@ def get_loci(read, pairs, wd, motif_length):
     """    
     ref_loci = []
     ref_loci_index = []
+    # reversed loci, for operations from 3' end
+    rev_loci = []
 
     #pairs[0]: query pos; [1]: ref pos; [2] ref base
     for i, pos in enumerate(ref_pos):
@@ -123,7 +125,10 @@ def get_loci(read, pairs, wd, motif_length):
     ref_loci = [pairs[index, 1] for index in ref_loci_index if pairs[index, 0] != None and pairs[index,0] in loci]
     if len(loci) != len(ref_loci):
         raise Exception ("length of reference and query sequence index not matching")
-    return loci, ref_loci
+    
+    for locus in loci:
+        rev_loci.append(rev_locus(locus))
+    return loci, ref_loci, rev_loci
 
 # for getting position in signal (goes 3' to 5')
 def rev_locus(locus, read):
@@ -159,7 +164,7 @@ def main(argv=sys.argv[1:]):
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = False)
             ac_ccg= np.array(list(filter(lambda x: x[1] in ref_pos, aligned_pairs)), dtype= "object")
             # pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
-            loci, ref_loci = get_loci(read, ac_ccg, extra_window, motif_length)
+            loci, ref_loci, rev_loci = get_loci(read, ac_ccg, extra_window, motif_length)
         
             if len(loci) == 0:
                 continue
@@ -196,7 +201,7 @@ def main(argv=sys.argv[1:]):
                     
                     # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
                     
-                    per_site_features = np.array([events[rev_locus(locus, read)+extra_window: rev_locus(locus, read)+motif_length-extra_window:-1] for locus in loci])
+                    per_site_features = np.array([events[locus +extra_window: locus +motif_length-extra_window:-1] for locus in rev_loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
                     
 
