@@ -83,8 +83,9 @@ def get_events(signal, moves, offset, rev_loci):
             data_tmp[5]=np.mean(signal[prev:sig_end])
             data_tmp[6]=np.std(signal[prev:sig_end])
             data_tmp[7]=np.median(signal[prev:sig_end])
-            data_tmp[8]=np.median(np.abs(signal[prev:sig_end]-data_tmp[i, 4]))
             breakpoint()
+            data_tmp[8]=np.median(np.abs(signal[prev:sig_end]-data_tmp[i, 4]))
+            
             # get the mean signal for each quarter of the base signal
             for j in range(4):
                 tmp_cnt=0
