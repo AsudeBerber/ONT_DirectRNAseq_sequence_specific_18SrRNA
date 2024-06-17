@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import sys
+import pdb
 
 motif = "CCG"
 window_size = 21
@@ -89,6 +90,7 @@ df_refseq_1842 = df_refseq[df_refseq["pos"] == "1842"]
 df_refseq_1337_sliced = df_refseq_1337.iloc[:,index_bases]
 df_refseq_1842_sliced = df_refseq_1842.iloc[:,index_bases]
 
+breakpoint()
 
 fig, (ax1, ax2) = plt.subplots(1,2)
 ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
