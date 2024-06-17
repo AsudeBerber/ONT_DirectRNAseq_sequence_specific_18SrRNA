@@ -23,7 +23,7 @@ npz_file = f"resources/results/p2s/{motif}_window_{window_size}_test.npz"
 # different positions can be set here,  index is 0-based
 ref_ac1 = 1336
 ref_ac2 = 1841
-ref_no_ac = 507
+ref_no_ac = 430 #unacetylated CCG with similar sequence as 1336/1841 (TTCCG)
 ref_pos = [ref_ac1] + [ref_ac2] + [ref_no_ac]
 motif_length = 1
 
@@ -68,6 +68,8 @@ def get_events(signal, moves, offset):
     
     data = np.zeros((rlen,9))
     
+
+    # code would be faster if this was a dictionary with only relevant positions ({locus: event})
     for i in range(rlen-1):
         prev = move_index[i]*stride+offset
         sig_end = move_index[i+1]*stride+offset
@@ -103,8 +105,8 @@ def get_loci(read, pairs, wd, motif_length):
             continue
         else:
             if (pos in pairs[:,1]): ref_loci.append(pos)
-    
-        # in cases where a read neither aligns to any of the ref positions, ref_loci_index would append [], which raises an index error
+     
+        # in cases where a read neither aligns to any of the ref positions, ref_loci_index would append [], which raises an index error --> solved by checking if array is empty
         index_pos = np.where(pairs[:,1] == pos)[0]
         if index_pos.shape == (0,):
             continue
@@ -113,6 +115,7 @@ def get_loci(read, pairs, wd, motif_length):
             
  
     loci = [pairs[locus, 0] for locus in ref_loci_index]
+    breakpoint()
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     # wd -1 because one more base after ref position that is not in wd
