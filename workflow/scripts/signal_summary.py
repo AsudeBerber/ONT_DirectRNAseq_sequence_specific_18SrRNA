@@ -71,28 +71,29 @@ def get_events(signal, moves, offset, rev_loci):
     dict_events = {}
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
-    for i, locus in enumerate(rev_loci):
+    for locus in rev_loci:
         data_tmp= np.zeros((9))
-        prev = move_index[locus]*stride+offset
-        sig_end = move_index[locus+1]*stride+offset
-        
-        sig_len = sig_end-prev
-        data_tmp[i, 4]=np.log10(sig_len)
-        data_tmp[i, 5]=np.mean(signal[prev:sig_end])
-        data_tmp[i, 6]=np.std(signal[prev:sig_end])
-        data_tmp[i, 7]=np.median(signal[prev:sig_end])
-        data_tmp[i, 8]=np.median(np.abs(signal[prev:sig_end]-data_tmp[i, 4]))
-        
-        # get the mean signal for each quarter of the base signal
-        for j in range(4):
-            tmp_cnt=0
-            for t in range(j*sig_len//4,min(sig_len, (j+1)*sig_len//4)):
-                data_tmp[i, j]+=signal[t+prev]
-                tmp_cnt+=1
-            data_tmp[i, j]=data_tmp[i, j]/tmp_cnt
-        breakpoint()
-        dict_events.update({locus:data_tmp})
-    breakpoint()
+        for i, locus in range(9):
+            
+            prev = move_index[locus]*stride+offset
+            sig_end = move_index[locus+1]*stride+offset
+            
+            sig_len = sig_end-prev
+            data_tmp[i, 4]=np.log10(sig_len)
+            data_tmp[i, 5]=np.mean(signal[prev:sig_end])
+            data_tmp[i, 6]=np.std(signal[prev:sig_end])
+            data_tmp[i, 7]=np.median(signal[prev:sig_end])
+            data_tmp[i, 8]=np.median(np.abs(signal[prev:sig_end]-data_tmp[i, 4]))
+            
+            # get the mean signal for each quarter of the base signal
+            for j in range(4):
+                tmp_cnt=0
+                for t in range(j*sig_len//4,min(sig_len, (j+1)*sig_len//4)):
+                    data_tmp[i, j]+=signal[t+prev]
+                    tmp_cnt+=1
+                data_tmp[i, j]=data_tmp[i, j]/tmp_cnt
+            breakpoint()
+            dict_events.update({locus:data_tmp})
     print(dict_events)
     return dict_events
 
