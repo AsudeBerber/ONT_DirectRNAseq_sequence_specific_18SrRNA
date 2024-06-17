@@ -72,10 +72,10 @@ def get_events(signal, moves, offset, rev_loci):
     dict_events = {}
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
-    for i in rev_loci:
+    for i, locus in enumerate(rev_loci):
         data_tmp = []
-        prev = move_index[i]*stride+offset
-        sig_end = move_index[i+1]*stride+offset
+        prev = move_index[locus]*stride+offset
+        sig_end = move_index[locus+1]*stride+offset
         
         sig_len = sig_end-prev
         data_tmp[i, 4]=np.log10(sig_len)
