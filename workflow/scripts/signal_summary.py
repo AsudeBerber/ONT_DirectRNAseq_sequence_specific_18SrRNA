@@ -71,7 +71,10 @@ def get_events(signal, moves, offset, rev_loci):
     dict_events = {}
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
-    for locus in rev_loci:
+    pos_get_signal = [locus +extra_window: locus +motif_length-extra_window:-1] for locus in rev_loci
+    breakpoint()
+    for locus in pos_get_signal:
+
         data_tmp= np.zeros((9))
             
         prev = move_index[locus]*stride+offset
@@ -202,11 +205,11 @@ def main(argv=sys.argv[1:]):
 
                     # events: 0.01 s = 100/s
                     #events is inverted as the signal goes from 3' -> 5', but sequence from 5' -> 3'
-                    events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), rev_loci)
+                    dict_events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), rev_loci, extra_window, motif_length)
                     
                     # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
                     
-                    per_site_features = np.array([events[locus +extra_window: locus +motif_length-extra_window:-1] for locus in rev_loci])
+                    per_site_features = np.array([dict_events[locus +extra_window: locus +motif_length-extra_window:-1] for locus in rev_loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
                     
 
