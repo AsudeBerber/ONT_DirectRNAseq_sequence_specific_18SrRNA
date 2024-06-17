@@ -72,7 +72,7 @@ def get_events(signal, moves, offset, rev_loci, motif_length, extra_window):
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
     breakpoint()
-    pos_get_signal = [range(locus - extra_window, locus + motif_length+extra_window) for locus in rev_loci]
+    pos_get_signal = list([range(locus - extra_window, locus + motif_length+extra_window) for locus in rev_loci])
     
     for locus in pos_get_signal:
 
