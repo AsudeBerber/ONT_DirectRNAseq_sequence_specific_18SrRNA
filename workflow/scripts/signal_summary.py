@@ -68,7 +68,7 @@ def get_events(signal, moves, offset, rev_loci):
     move_index = np.where(moves)[0]
     rlen = len(move_index)
     
-    data = np.zeros((rlen,9))
+    data_tmp= np.zeros((rlen,9))
     dict_events = {}
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
