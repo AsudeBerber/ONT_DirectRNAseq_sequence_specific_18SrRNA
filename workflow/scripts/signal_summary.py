@@ -63,6 +63,7 @@ def get_events(signal, moves, offset, rev_loci):
     mad = np.median(np.abs(signal-median))
     signal=(signal-median)/mad
     
+    breakpoint()
     stride = moves.pop(0)
     move_index = np.where(moves)[0]
     rlen = len(move_index)
@@ -92,7 +93,7 @@ def get_events(signal, moves, offset, rev_loci):
             data_tmp[i, j]=data_tmp[i, j]/tmp_cnt
 
     dict_events.update({i:data_tmp})
-    breakpoint()
+
     print(dict_events)
     return dict_events
 
