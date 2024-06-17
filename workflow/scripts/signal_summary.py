@@ -72,7 +72,6 @@ def get_events(signal, moves, offset, rev_loci):
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
     for locus in rev_loci:
-        breakpoint()
         data_tmp= np.zeros((9))
         for i in range(9):
             
