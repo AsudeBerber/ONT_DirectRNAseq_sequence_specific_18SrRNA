@@ -90,7 +90,7 @@ def get_events(signal, moves, offset, rev_loci):
                 data_tmp[i, j]+=signal[t+prev]
                 tmp_cnt+=1
             data_tmp[i, j]=data_tmp[i, j]/tmp_cnt
-
+        breakpoint()
         dict_events.update({locus:data_tmp})
     breakpoint()
     print(dict_events)
