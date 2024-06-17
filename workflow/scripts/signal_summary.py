@@ -72,7 +72,7 @@ def get_events(signal, moves, offset, rev_loci, motif_length, extra_window):
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
     breakpoint()
-    pos_get_signal = [np.arange(locus - extra_window, locus + motif_length+extra_window) for locus in rev_loci]
+    pos_get_signal = [np.arange((locus - extra_window), locus + motif_length+extra_window) for locus in rev_loci]
     pos_get_signal = np.reshape(pos_get_signal, -1)
     
     for locus in pos_get_signal:
@@ -206,7 +206,7 @@ def main(argv=sys.argv[1:]):
 
                     # events: 0.01 s = 100/s
                     #events is inverted as the signal goes from 3' -> 5', but sequence from 5' -> 3'
-                    dict_events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), rev_loci, extra_window, motif_length)
+                    dict_events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), rev_loci, motif_length, extra_window)
                     
                     # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
                     
