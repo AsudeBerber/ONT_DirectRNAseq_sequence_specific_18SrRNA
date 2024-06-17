@@ -18,7 +18,7 @@ def parse_args(argv):
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-f", "--feature", type=str)
+    parser.add_argument("-f", "--feature", type=int)
 
     args = parser.parse_args()
 
