@@ -92,7 +92,7 @@ df_refseq_1842_sliced = df_refseq_1842.iloc[:,index_bases]
 
 fig, (ax1, ax2) = plt.subplots(1,2)
 ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
-ax1.boxplot(filter_by_pos(1337))
+ax1.boxplot(filter_by_pos(1337), showfliers = False)
 for i, base in enumerate(df_refseq_1337_sliced.iloc[0]):
     ax1.annotate(base, xy = (i+1, -2))
 ax1.set_yscale("symlog")
@@ -100,8 +100,7 @@ ax1.set_title(f"Pos {1337} ± {arround} bp")
 
 
 ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
-ax2.boxplot(filter_by_pos(1842))
-ax2.boxplot(filter_by_pos(508))
+ax2.boxplot(filter_by_pos(1842), showfliers = False)
 for i, base in enumerate(df_refseq_1842_sliced.iloc[0]):
     ax2.annotate(base, xy = (i+1, -2))
 ax2.set_yscale("symlog")
