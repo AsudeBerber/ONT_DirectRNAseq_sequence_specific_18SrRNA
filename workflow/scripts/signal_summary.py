@@ -96,7 +96,6 @@ def get_events(signal, moves, offset, rev_loci, motif_length, extra_window):
                 tmp_cnt+=1
             data_tmp[j]=data_tmp[j]/tmp_cnt
         dict_events.update({locus:data_tmp})
-    print(dict_events)
     return dict_events
 
 def get_loci(read, pairs, wd, motif_length):
@@ -208,7 +207,7 @@ def main(argv=sys.argv[1:]):
                     
                     # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
                     
-                    per_site_features = np.array([[dict_events[key] for key in range(locus +extra_window, locus +motif_length-extra_window,-1)] for locus in rev_loci])
+                    per_site_features = np.array([[dict_events[key] for key in range(locus +extra_window + motif_length, locus -extra_window,-1)] for locus in rev_loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
                     
 
