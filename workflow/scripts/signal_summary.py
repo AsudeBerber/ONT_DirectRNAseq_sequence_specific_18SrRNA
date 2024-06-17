@@ -115,12 +115,11 @@ def get_loci(read, pairs, wd, motif_length):
             
  
     loci = [pairs[locus, 0] for locus in ref_loci_index]
-    breakpoint()
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
     # wd -1 because one more base after ref position that is not in wd
     loci = [locus for locus in loci if locus is not None and locus > wd -1 and locus < read.query_length - wd - (motif_length -1) ]
-    ref_loci = [ref_loci[index] for index in ref_loci_index if pairs[index, 0] != None and pairs[index,0] in loci]
+    ref_loci = [pairs[index, 1] for index in ref_loci_index if pairs[index, 0] != None and pairs[index,0] in loci]
     if len(loci) != len(ref_loci):
         raise Exception ("length of reference and query sequence index not matching")
     return loci, ref_loci
