@@ -207,7 +207,7 @@ def main(argv=sys.argv[1:]):
                     
                     # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
                     
-                    per_site_features = np.array([[dict_events[key] for key in range(locus +extra_window + motif_length, locus -extra_window,-1)] for locus in rev_loci])
+                    per_site_features = np.array([[dict_events[key] for key in reversed(range(locus - extra_window , locus + extra_window + motif_length))] for locus in rev_loci])
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
                     
 
