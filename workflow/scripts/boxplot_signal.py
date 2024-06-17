@@ -12,6 +12,8 @@ motif = "CCG"
 window_size = 21
 npz_file = f"../../resources/results/p2s/CCG_window_21_test.npz"
 arround=3
+event = 5
+# event = args.feature
 
 loaded = np.load(npz_file)
 
@@ -41,7 +43,7 @@ def filter_by_pos(pos):
     df_plot = df_filtered.iloc[:,:7]
     return df_plot
 
-args = parse_args(argv=sys.argv[1:])
+
 """
 FEATURES:
 3D array in shape (read,base,event[0:8])
@@ -60,13 +62,11 @@ query = loaded["query"]
 ref = loaded["ref"]
 id = loaded["id"]
 
-breakpoint()
 pos = []
 for read in id:
     pos.append(read.rsplit(":")[1])
 
 
-event = args.feature
 index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, arround=arround)
 
 df_event = pd.DataFrame((sliced_event), columns = list(range(1,8)))
@@ -90,15 +90,14 @@ df_refseq_1842 = df_refseq[df_refseq["pos"] == "1842"]
 df_refseq_1337_sliced = df_refseq_1337.iloc[:,index_bases]
 df_refseq_1842_sliced = df_refseq_1842.iloc[:,index_bases]
 
-breakpoint()
 
 fig, (ax1, ax2) = plt.subplots(1,2)
-ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
-ax1.boxplot(filter_by_pos(1337), showfliers = False)
-for i, base in enumerate(df_refseq_1337_sliced.iloc[0]):
-    ax1.annotate(base, xy = (i+1, -2))
-ax1.set_yscale("symlog")
-ax1.set_title(f"Pos {1337} ± {arround} bp")
+# ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
+# ax1.boxplot(filter_by_pos(1337), showfliers = False)
+# for i, base in enumerate(df_refseq_1337_sliced.iloc[0]):
+#     ax1.annotate(base, xy = (i+1, -2))
+# ax1.set_yscale("symlog")
+# ax1.set_title(f"Pos {1337} ± {arround} bp")
 
 
 ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
@@ -108,4 +107,8 @@ for i, base in enumerate(df_refseq_1842_sliced.iloc[0]):
 ax2.set_yscale("symlog")
 ax2.set_title(f"Pos 1842 ± {arround} bp")
 
-plt.savefig(f"signal_summary_event_{args.feature}.svg", dpi = 300)
+plt.savefig(f"../../resources/signal_summary_event_{event}.svg", dpi = 300)
+
+# if __name__ == "__main__":
+#     args = parse_args(argv=sys.argv[1:])
+#     # exit(main())
