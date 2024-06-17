@@ -67,11 +67,12 @@ def get_events(signal, moves, offset, rev_loci):
     move_index = np.where(moves)[0]
     rlen = len(move_index)
     
-    data_tmp= np.zeros((len(rev_loci),9))
+    
     dict_events = {}
 
     # code would be faster if this was a dictionary with only relevant positions ({locus: event})
     for i, locus in enumerate(rev_loci):
+        data_tmp= np.zeros((9))
         prev = move_index[locus]*stride+offset
         sig_end = move_index[locus+1]*stride+offset
         
@@ -90,7 +91,7 @@ def get_events(signal, moves, offset, rev_loci):
                 tmp_cnt+=1
             data_tmp[i, j]=data_tmp[i, j]/tmp_cnt
 
-    dict_events.update({locus:data_tmp})
+        dict_events.update({locus:data_tmp})
     breakpoint()
     print(dict_events)
     return dict_events
