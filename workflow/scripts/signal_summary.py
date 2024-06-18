@@ -70,11 +70,11 @@ def get_events(signal, moves, offset, rev_loci, motif_length, extra_window):
     
     dict_events = {}
 
-    # code would be faster if this was a dictionary with only relevant positions ({locus: event})
-    pos_get_signal = [np.arange((locus - extra_window), locus + motif_length+extra_window) for locus in rev_loci]
+    # last position is only to get sig_end
+    pos_get_signal = [np.arange((locus - extra_window), locus + motif_length+extra_window+1) for locus in rev_loci]
     pos_get_signal = np.reshape(pos_get_signal, -1)
     
-    for locus in pos_get_signal:
+    for locus in pos_get_signal[:-1]:
 
         data_tmp= np.zeros((9))
             
