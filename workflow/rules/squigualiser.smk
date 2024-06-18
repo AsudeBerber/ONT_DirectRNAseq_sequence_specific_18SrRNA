@@ -34,7 +34,7 @@ rule pod2slow:
     shell:
         "blue-crab p2s  {input.pod5} -o {output}"
 
-directories, files = glob_wildcards("resources/blow5/p2s/{file}.pod5")
+files = glob_wildcards("resources/blow5/p2s/{file}.pod5")
 
 rule signal2ref:
     input:
