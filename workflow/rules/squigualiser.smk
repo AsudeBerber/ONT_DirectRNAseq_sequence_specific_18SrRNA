@@ -40,7 +40,7 @@ rule signal2ref:
         realigned = "resources/alignments/squigle/{bam_file}_realigned.bam",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
-        "{params.OUTPUT_DIR}/{bam_file}_{start}_{stop}.svg"
+        "{output_dir}/{bam_file}_{start}_{stop}.svg"
     conda:
         "../envs/squigle.yaml"
     params:
@@ -50,5 +50,5 @@ rule signal2ref:
         tag = 'optionA'
     threads: 16
     shell:
-        """squigualiser plot --file ${input.ref} --slow5 ${input.slow5} --alignment ${input.realigned} --output_dir ${params.OUTPUT_DIR} \
+        """squigualiser plot --file ${input.ref} --slow5 ${input.slow5} --alignment ${input.realigned} --output_dir ${wildcards.output_dir} \
          --region ${params.chr}{params.region} --tag_name {params.tag} """
