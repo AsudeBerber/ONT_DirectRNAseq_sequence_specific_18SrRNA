@@ -8,5 +8,6 @@ dependencies:
   - cython = 3.0.10
   - pip
   - pip:
+    - pep517
     - pyslow5==0.2.0a1
     - squigualiser==0.6.3
