@@ -7,5 +7,5 @@ dependencies:
   - pip
   - pip:
     - cython==3.0.10
-    - pyslow5==0.2.0a1
+    - pyslow5==1.1.0
     - squigualiser==0.6.3

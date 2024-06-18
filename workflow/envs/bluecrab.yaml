@@ -4,5 +4,5 @@ channels:
 dependencies:
   - pip
   - pip:
-    - pyslow5==0.2.0a1
+    - pyslow5==1.1.0
     - blue-crab==0.1.0
