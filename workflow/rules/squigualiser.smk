@@ -45,9 +45,10 @@ rule signal2ref:
         "../envs/squigle.yaml"
     params:
         OUTPUT_DIR = "resources/signal/p2s/squigle",
-        region = r"gi\|1154491913\|ref\|NR_003286.4\|1330:1350",
+        chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
+        region = "1330:1350",
         tag = 'optionA'
     threads: 16
     shell:
         """squigualiser plot --file ${input.ref} --slow5 ${input.slow5} --alignment ${input.realigned} --output_dir ${params.OUTPUT_DIR} \
-         --region ${params.region} --tag_name {params.tag} """
+         --region ${params.chr}{params.region} --tag_name {params.tag} """
