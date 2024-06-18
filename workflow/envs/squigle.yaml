@@ -3,10 +3,9 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - python
   - numpy < 2.0.0 #not working with numpy v2.0
   - pip
   - pip:
-    - cython
-    - pyslow5
+    - cython==3.0.10
+    - pyslow5==0.2.0a1
     - squigualiser==0.6.3
