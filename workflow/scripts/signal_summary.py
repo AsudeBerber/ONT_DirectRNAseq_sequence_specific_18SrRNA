@@ -1,5 +1,7 @@
 # Code mostly written by Christoph Engelhardt
 
+############### Run time for 4x10^7 reads: ~2 days; memory usage piles up over time up to ~50%/ 30 GB RAM in the end
+
 import numpy as np
 import pod5 as p5
 import pysam
@@ -7,20 +9,23 @@ from tqdm import tqdm
 import argparse
 import sys
 import os
-import pdb
+import json
+from pathlib import Path
+import ipdb
 import time
 
 
 pod5_file = "resources/pod5/p2s/"
-bam_file = "resources/alignments/p2s_aligned_subsample_00001.bam"
+bam_file = f"resources/alignments/p2s_aligned_subsample_0001.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
-npz_file = f"resources/results/p2s/{motif}_window_{window_size}.npz"
+npz_file = f"resources/results/p2s/{motif}_window_{window_size}_{Path(bam_file).stem}.npz"
 
-# different positions can be set here,  index is 0-based
+# different positions can be set here, ##### index is 0-based  ######
 ref_ac1 = 1336
 ref_ac2 = 1841
-ref_pos = [ref_ac1] + [ref_ac2]
+ref_no_ac = 429 #unacetylated CCG with similar sequence as 1336/1841 (TTCCG)
+ref_pos = [ref_ac1] + [ref_ac2] + [ref_no_ac]
 motif_length = 1
 
 
@@ -40,8 +45,8 @@ def parse_args(argv):
 
     return args
 
-
-def get_events(signal, moves, offset):
+# this part is from https://github.com/WGLab/DeepMod2/blob/main/src/detect.py
+def get_events(signal, moves, offset, rev_loci, motif_length, extra_window):
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
     following values for each called based:
@@ -62,29 +67,36 @@ def get_events(signal, moves, offset):
     move_index = np.where(moves)[0]
     rlen = len(move_index)
     
-    data = np.zeros((rlen,9))
     
-    for i in range(rlen-1):
-        prev = move_index[i]*stride+offset
-        sig_end = move_index[i+1]*stride+offset
+    dict_events = {}
+
+    # last position is only to get sig_end
+    pos_get_signal = [np.arange((locus - extra_window), locus + motif_length+extra_window) for locus in rev_loci]
+    pos_get_signal = np.reshape(pos_get_signal, -1)
+    
+    for locus in pos_get_signal:
+
+        data_tmp= np.zeros((9))
+            
+        prev = move_index[locus]*stride+offset
+        sig_end = move_index[locus+1]*stride+offset
         
         sig_len = sig_end-prev
-        data[i, 4]=np.log10(sig_len)
-        data[i, 5]=np.mean(signal[prev:sig_end])
-        data[i, 6]=np.std(signal[prev:sig_end])
-        data[i, 7]=np.median(signal[prev:sig_end])
-        data[i, 8]=np.median(np.abs(signal[prev:sig_end]-data[i, 4]))
+        data_tmp[4]=np.log10(sig_len)
+        data_tmp[5]=np.mean(signal[prev:sig_end])
+        data_tmp[6]=np.std(signal[prev:sig_end])
+        data_tmp[7]=np.median(signal[prev:sig_end])
+        data_tmp[8]=np.median(np.abs(signal[prev:sig_end]-data_tmp[4]))
         
         # get the mean signal for each quarter of the base signal
         for j in range(4):
             tmp_cnt=0
             for t in range(j*sig_len//4,min(sig_len, (j+1)*sig_len//4)):
-                data[i, j]+=signal[t+prev]
+                data_tmp[j]+=signal[t+prev]
                 tmp_cnt+=1
-            data[i, j]=data[i, j]/tmp_cnt
-
-    return data
-
+            data_tmp[j]=data_tmp[j]/tmp_cnt
+        dict_events.update({locus:data_tmp})
+    return dict_events
 
 def get_loci(read, pairs, wd, motif_length):
     """
@@ -92,6 +104,8 @@ def get_loci(read, pairs, wd, motif_length):
     """    
     ref_loci = []
     ref_loci_index = []
+    # reversed loci, for operations from 3' end
+    rev_loci = []
 
     #pairs[0]: query pos; [1]: ref pos; [2] ref base
     for i, pos in enumerate(ref_pos):
@@ -100,8 +114,8 @@ def get_loci(read, pairs, wd, motif_length):
             continue
         else:
             if (pos in pairs[:,1]): ref_loci.append(pos)
-    
-        # in cases where a read neither aligns to any of the ref positions, ref_loci_index would append [], which raises an index error
+     
+        # in cases where a read neither aligns to any of the ref positions, ref_loci_index would append [], which raises an index error --> solved by checking if array is empty
         index_pos = np.where(pairs[:,1] == pos)[0]
         if index_pos.shape == (0,):
             continue
@@ -111,14 +125,19 @@ def get_loci(read, pairs, wd, motif_length):
  
     loci = [pairs[locus, 0] for locus in ref_loci_index]
     # Remove loci that are not present on the query or too close to the ends of the alignment
-    # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
-    # wd -1 because one more base after ref position that is not in wd
-    loci = [locus for locus in loci if locus is not None and locus > wd -1 and locus < read.query_length - wd - (motif_length -1) ]
-    ref_loci = [ref_loci[index] for index in ref_loci_index if pairs[index, 0] != None and pairs[index,0] in loci]
+    loci = [locus for locus in loci if locus is not None and locus > wd and locus < read.query_length - wd - (motif_length)]
+    ref_loci = [pairs[index, 1] for index in ref_loci_index if pairs[index, 0] != None and pairs[index,0] in loci]
     if len(loci) != len(ref_loci):
-        breakpoint()
         raise Exception ("length of reference and query sequence index not matching")
-    return loci, ref_loci
+    
+    for locus in loci:
+        rev_loci.append(rev_locus(locus, read))
+    return loci, ref_loci, rev_loci
+
+# for getting position in signal (goes 3' to 5')
+def rev_locus(locus, read):
+    locus_rev = read.query_length -1 - locus
+    return locus_rev
 
 
 def main(argv=sys.argv[1:]):
@@ -136,6 +155,10 @@ def main(argv=sys.argv[1:]):
     with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
+        with open('resources/results/p2s/pod5.json', "r") as f:
+            pod5_index= json.load(f)
+
+        pod5_path = "resources/pod5/p2s/"
 
         for read in tqdm(bam):
             if read.is_unmapped:
@@ -145,7 +168,7 @@ def main(argv=sys.argv[1:]):
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = False)
             ac_ccg= np.array(list(filter(lambda x: x[1] in ref_pos, aligned_pairs)), dtype= "object")
             # pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
-            loci, ref_loci = get_loci(read, ac_ccg, extra_window, motif_length)
+            loci, ref_loci, rev_loci = get_loci(read, ac_ccg, extra_window, motif_length)
         
             if len(loci) == 0:
                 continue
@@ -159,39 +182,50 @@ def main(argv=sys.argv[1:]):
             except:
                 breakpoint()
                 pass
+        
+            # dorado sometimes splits reads (https://github.com/nanoporetech/dorado/blob/release-v0.6/documentation/SAM.md#split-read-tags),
+            # it doesn't seem possible to align these back to one original read id --> these reads are ignored
+            try:
+                pod5_file = pod5_index[read.query_name]
+            except KeyError:
+                continue
+                
 
-            # extract features from pod5 file
+            with p5.Reader(pod5_file) as pod5:
+                # Read the selected read from the pod5 file
+                # next() is required here as Reader.reads() returns a Generator
+                try:
+                    
+                    # lookup is very fast (1E-4 s)
+                    pod5_record = next(pod5.reads(selection=[read.query_name])) 
 
-            # with p5.DatasetReader(args.pod5) as dataset:
-            time_st = time.process_time()
-            #loops through all pod5 files in folder 
-            for filename in os.listdir(args.pod5): #loops through all pod5 files in folder 
-                pod5_file = os.path.join(args.pod5, filename)
-                with p5.Reader(pod5_file) as pod5:
-                    # Read the selected read from the pod5 file
-                    # next() is required here as Reader.reads() returns a Generator
-                    try:
-                        pod5_record = next(pod5.reads(selection=[read.query_name])) 
-                        events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"))
-                        per_site_features = np.array([events[locus-extra_window: locus+motif_length+extra_window] for locus in loci])
-                        per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
+                    # events: 0.01 s = 100/s
+                    #events is inverted as the signal goes from 3' -> 5', but sequence from 5' -> 3'
+                    dict_events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), rev_loci, motif_length, extra_window)
+                    
+                    # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
+                    
+                    per_site_features = np.array([[dict_events[key] for key in reversed(range(locus - extra_window , locus + extra_window + motif_length))] for locus in rev_loci])
+                    per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
+                    
 
-                        features.append(per_site_features)
-                        qual.append(per_site_qual)
-                        query_seq.append(per_site_query_seq)
-                        ref_seq.append(per_site_ref_seq)
-                        id.append(per_site_id)
-                    except:
-                        continue
-            time_pod = time.process_time() - time_st
-            print (f"time pod5 loop: {time_pod}")
+                    #appending is very fast (1E-6 s)
+                    features.append(per_site_features)
+                    qual.append(per_site_qual)
+                    query_seq.append(per_site_query_seq)
+                    ref_seq.append(per_site_ref_seq)
+                    id.append(per_site_id)
+                except:
+                    breakpoint()
+                    continue
 
-
+    
     features = np.vstack(features)
     qual = np.vstack(qual)
     query_seq = np.vstack(query_seq)
     ref_seq = np.vstack(ref_seq)
     id = np.hstack(id)
+    
 
     # checks if results folder exists, creates otherwise
     # check if plot dir exists, creates it otherwise
@@ -205,7 +239,7 @@ def main(argv=sys.argv[1:]):
     # it should be somehow possible to convert this to a txt file, however the dimensions of the array have to be reduced for this, maybe via for loop?
     # does not work so far
     # np.savetxt('resources/results/p2s/summary.txt', features, qual, query_seq, ref_seq, id))
-
+    
     return 0
 
 

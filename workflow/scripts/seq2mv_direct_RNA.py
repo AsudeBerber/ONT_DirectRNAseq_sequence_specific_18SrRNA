@@ -37,14 +37,12 @@ def bam_aligned(sample, read_ids, region, pos):
 
     max_reads = samfile.mapped
     i = 0
-    
-    # starts at position 0
-    pos = pos -1 
 
+    # if index file present, fetch(region = region)
     for read in samfile.fetch(region = region):
         if read.query_name == read_ids:
             read_ID = read.query_name
-            seq = read.query_alignment_sequence
+            seq = read.query_sequence
             
 
             # Workaround in cases where two ts tags per read exists:
@@ -232,7 +230,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
         ax.margins(0.05, 0.1)
         ax.set(xlabel = "base", ylabel = "signal (pA)")
         plt.title(str("Read ID: "+ read_ids))
-        ax.annotate(f"18S RNA transcript - position {pos} ± {range_bp} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
+        ax.annotate(f"18S RNA transcript - position {pos+1} ± {range_bp} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
 #
         #annotation of bases to signal plot
         i = -range_bp
@@ -262,7 +260,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
             os.makedirs(f"resources/mapped/signal/{sequencer}/plots/{read_ids}")
 
-        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{pos}-pm{range_bp}.svg", dpi = 300)           
+        plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{pos+1}-pm{range_bp}.svg", dpi = 300)           
         plt.show()
 
 def main(argv = sys.argv[1:]):
@@ -297,7 +295,7 @@ def cmd_parser(argv):
     parser.add_argument("--sequencer", help= "name of sequencer (p2i/p2s)")
     parser.add_argument("--sample", help= "Name of sample bam file w/o .bam ending", action="store")
     parser.add_argument("--readID", help= "Sample ID in bam and pod5 file", action="store")
-    parser.add_argument("--pos", help= "position/index of base in middle, start with 0", type=int, action="store")
+    parser.add_argument("--pos", help= "position/index of base in middle, 1-based", type=int, action="store")
     parser.add_argument("--range", help= "bases to display the left/right of middle base", type=int, action="store")
     parser.add_argument("--no_fetch", help= "Disables fetching mv, ts, seq from readID - requieres --mv, --ts, --seq", action="store_true")
     parser.add_argument("--seq", help= "complete sequence of read", action="store_true")
@@ -307,6 +305,9 @@ def cmd_parser(argv):
     parser.add_argument("--region", type= str, action= "store")
     parser.add_argument("--pod5_dir", type= str, action= "store")
     args = parser.parse_args()
+
+    # starts at pos 0
+    args.pos = args.pos - 1
 
     if args.get_readids == True:
         read_id_list_bam(args.sequencer, args.sample)

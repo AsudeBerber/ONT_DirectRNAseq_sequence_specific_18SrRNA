@@ -5,14 +5,28 @@ import argparse
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import sys
+import pdb
 
 motif = "CCG"
 window_size = 21
-npz_file = f"../../resources/results/p2s/{motif}_window_21_subsample_00001.npz"
-arround=3
+npz_file = f"../../resources/results/p2s/CCG_window_21_p2s_aligned_subsample_0001.npz"
+arround=5
+event = 5
+# event = args.feature
 
-loaded = np.load(npz_file)
+loaded = np.load(npz_file, mmap_mode= "w+")
 
+def parse_args(argv):
+    """Read arguments from command line."""
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-f", "--feature", type=int)
+
+    args = parser.parse_args()
+
+    return args
 
 #arround: #bases to plot arround ac4C
 def slice_bases(event, arround):
@@ -23,6 +37,13 @@ def slice_bases(event, arround):
     sliced_refseq = ref[:,index_bases]
     return index_bases, sliced_event, sliced_refseq
     
+def filter_by_pos(pos):
+    df = df_event_pos
+    df_filtered = df[df["pos"] == str(pos)]
+    df_plot = df_filtered.iloc[:,:arround*2+1]
+    df_plot_flip = np.fliplr(df_plot)
+    return df_plot_flip
+
 
 """
 FEATURES:
@@ -44,47 +65,77 @@ id = loaded["id"]
 
 pos = []
 for read in id:
-    pos.append(read[-4:])
+    pos.append(read.rsplit(":")[1])
 
-mean_signal_int = features[:,:,5]
 
-event = 5 # mean intensity
 index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, arround=arround)
 
-df_event = pd.DataFrame((sliced_event), columns = list(range(1,8)))
+df_event = pd.DataFrame((sliced_event), columns = list(range(1,arround*2+2)))
 df_id = pd.DataFrame(id)
 df_pos = pd.DataFrame(pos, columns = ["pos"])
 
 df_event_pos = pd.concat([df_event, df_pos], axis=1)
 
-def filter_by_pos(pos):
-    df = df_event_pos
-    df_filtered = df[df["pos"] == str(pos)]
-    df_plot = df_filtered.iloc[:,:7]
-    return df_plot
+def boxplot_ann(refseq, axis):
+    for i, base in enumerate(refseq.iloc[0]):
+        if i == arround: 
+            axis.annotate(base, xy = (i+1, 0.96), xycoords=("data", "axes fraction"), ha = "center", color = "darkred")
+        else:
+            axis.annotate(base, xy = (i+1, 0.96), xycoords=("data", "axes fraction"), ha = "center")
+
 
 #1337 | 1842
-pos = 1842
+range_window_plot = ref.shape[1] 
 df_event_filtered = filter_by_pos(pos)
 
-df_refseq = pd.DataFrame(ref, columns = list(range(1,22)))
+df_refseq = pd.DataFrame(np.fliplr(ref), columns = list(range(1,ref.shape[1]+1)))
 df_refseq = pd.concat([df_refseq, df_pos], axis=1)
 
+df_refseq_430 = df_refseq[df_refseq["pos"] == "430"]
 df_refseq_1337 = df_refseq[df_refseq["pos"] == "1337"]
 df_refseq_1842 = df_refseq[df_refseq["pos"] == "1842"]
-df_refseq_1337_sliced = df_refseq_1337.iloc[:,7:14]
-df_refseq_1842_sliced = df_refseq_1842.iloc[:,7:14]
+df_refseq_430_sliced = df_refseq_430.iloc[:,index_bases]
+df_refseq_1337_sliced = df_refseq_1337.iloc[:,index_bases]
+df_refseq_1842_sliced = df_refseq_1842.iloc[:,index_bases]
+
 
 fig, (ax1, ax2) = plt.subplots(1,2)
 ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
-ax1.boxplot(filter_by_pos(1337))
-for i, base in enumerate(df_refseq_1337_sliced.iloc[0]):
-    print(i, base)
-    ax1.annotate(base, xy = (i+1, -2))
+ax1.boxplot(filter_by_pos(1337), showfliers = False)
+boxplot_ann(df_refseq_1337_sliced, ax1)
+ax1.set_yscale("symlog")
+ax1.set_xlabel("time steps")
+ax1.set_title(f"Pos {1337} ± {arround} bp")
 
 
 ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
-ax2.boxplot(filter_by_pos(1842))
-for i, base in enumerate(df_refseq_1842_sliced.iloc[0]):
-    print(i, base)
-    ax2.annotate(base, xy = (i+1, -2))
+ax2.boxplot(filter_by_pos(1842), showfliers = False)
+boxplot_ann(df_refseq_1842_sliced, ax2)
+ax2.set_yscale("symlog")
+ax2.set_title(f"Pos 1842 ± {arround} bp")
+ax2.set_xlabel("time steps")
+
+plt.savefig(f"../../resources/signal_summary_event_{event}.svg", dpi = 300)
+
+fig, (ax1, ax2) = plt.subplots(1,2)
+
+ax1.violinplot(filter_by_pos(430), showmeans = False, showextrema = False)
+ax1.boxplot(filter_by_pos(430), showfliers = False)
+boxplot_ann(df_refseq_430_sliced, ax1)
+ax1.set_yscale("symlog")
+ax1.set_title(f"Pos 430 ± {arround} bp")
+ax1.set_xlabel("time steps")
+
+
+ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
+ax2.boxplot(filter_by_pos(1842), showfliers = False)
+boxplot_ann(df_refseq_1842_sliced,ax2)
+ax2.set_yscale("symlog")
+ax2.set_title(f"Pos 1842 ± {arround} bp")
+ax2.set_xlabel("time steps")
+
+
+
+# if __name__ == "__main__":
+#     args = parse_args(argv=sys.argv[1:])
+#     # exit(main())
