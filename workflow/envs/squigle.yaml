@@ -1,0 +1,13 @@
+name: sort
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - 
+  
+  - pip:
+    # currently not working with numpy v2.0
+    - numpy==1.26
+    - Cython # needed to make squigualiser run
+    - pyslow==0.2.0a1
+    - squigualiser==0.6.3
