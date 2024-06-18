@@ -2,6 +2,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
+  - numpy < 2.0.0
   - pip
   - pip:
     - pyslow5==1.1.0
