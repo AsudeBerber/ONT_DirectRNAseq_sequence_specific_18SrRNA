@@ -26,7 +26,7 @@ rule realign:
 rule pod2slow:
     input:
         pod5 = "resources/pod5/p2s/{pod5_file}.pod5"
-    output:
+    # test.bam: resources/pod5/p2s/PAW35875_9fd38647_68d05f77_211.pod5
         "resources/blow5/p2s/{pod5_file}.blow5"
     conda:
         "../envs/bluecrab.yaml"
