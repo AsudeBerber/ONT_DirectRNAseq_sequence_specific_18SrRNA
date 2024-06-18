@@ -21,10 +21,10 @@ motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
 npz_file = f"resources/results/p2s/{motif}_window_{window_size}_{Path(bam_file).stem}.npz"
 
-# different positions can be set here,  index is 0-based
+# different positions can be set here, ##### index is 0-based  ######
 ref_ac1 = 1336
 ref_ac2 = 1841
-ref_no_ac = 430 #unacetylated CCG with similar sequence as 1336/1841 (TTCCG)
+ref_no_ac = 429 #unacetylated CCG with similar sequence as 1336/1841 (TTCCG)
 ref_pos = [ref_ac1] + [ref_ac2] + [ref_no_ac]
 motif_length = 1
 
