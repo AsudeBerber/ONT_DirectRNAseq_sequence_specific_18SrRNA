@@ -40,7 +40,7 @@ rule signal2ref:
         realigned = "resources/alignments/squigle/{bam_file}_realigned.bam",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
-        "{params.OUTPUT_DIR}/{bamfile}_{start}_stop.svg"
+        "{params.OUTPUT_DIR}/{bamfile}_{start}_{stop}.svg"
     conda:
         "../envs/squigle.yaml"
     params:
