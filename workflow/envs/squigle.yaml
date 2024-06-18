@@ -4,9 +4,10 @@ channels:
   - bioconda
 dependencies:
   - python = 3.10
+    #not working with numpy v2.0
   - numpy = 1.26.4
   - pip
   - pip:
-    # currently not working with numpy v2.0
+    - Cython
     - pyslow5==0.2.0a1
     - squigualiser==0.6.3
