@@ -38,7 +38,7 @@ files = glob_wildcards("resources/blow5/p2s/{file}.blow5")
 
 rule signal2ref:
     input:
-        slow5 = expand("resources/blow5/p2s/{pod5_file}.blow5", zip, pod5_file=files), 
+        slow5 = "resources/blow5/p2s/PAW35875_9fd38647_68d05f77_211.blow5", 
         realigned = "resources/alignments/squigle/{bam_file}_realigned.bam",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
