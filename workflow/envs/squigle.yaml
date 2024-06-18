@@ -5,8 +5,8 @@ channels:
 dependencies:
   - python = 3.10
   - numpy = 1.26.4 #not working with numpy v2.0
+  - cython
   - pip
   - pip:
-    - Cython==3.0.10
     - pyslow5==0.2.0a1
     - squigualiser==0.6.3
