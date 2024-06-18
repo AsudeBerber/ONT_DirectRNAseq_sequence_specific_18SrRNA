@@ -48,7 +48,7 @@ rule signal2ref:
     params:
         OUTPUT_DIR = "resources/signal/p2s/squigle",
         chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
-        region = "{wildcards.start}:{wildcards.stop}",
+        region = "{start}:{stop}",
         tag = 'optionA'
     threads: 16
     shell:
