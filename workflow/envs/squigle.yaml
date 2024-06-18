@@ -1,4 +1,4 @@
-name: sort
+name: squigle
 channels:
   - conda-forge
   - bioconda
