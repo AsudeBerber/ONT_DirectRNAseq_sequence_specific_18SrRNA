@@ -32,7 +32,7 @@ rule pod2slow:
         "../envs/bluecrab.yaml"
     threads: 16
     shell:
-        "blue-crab -v vvv p2s  {input.pod5} -o {output}"
+        "blue-crab -v 3 p2s  {input.pod5} -o {output}"
 
 rule signal2ref:
     input:
