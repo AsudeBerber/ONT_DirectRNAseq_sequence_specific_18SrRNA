@@ -27,6 +27,7 @@ rule pod2slow:
     input:
         pod5 = "resources/pod5/p2s/{pod5_file}.pod5"
     # test.bam: resources/pod5/p2s/PAW35875_9fd38647_68d05f77_211.pod5
+    output:
         "resources/blow5/p2s/{pod5_file}.blow5"
     conda:
         "../envs/bluecrab.yaml"
@@ -51,5 +52,3 @@ rule signal2ref:
     shell:
         """squigualiser plot --file ${input.ref} --slow5 ${input.slow5} --alignment ${input.realigned} --output_dir ${params.OUTPUT_DIR} \
          --region ${params.region} --tag_name {params.tag} """
-
-"
