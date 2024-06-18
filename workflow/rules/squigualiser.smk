@@ -38,7 +38,7 @@ rule signal2ref:
     input:
         slow5 = "resources/blow5/p2s/*", 
         realigned = "resources/alignments/squigle/{bam_file}_realigned.bam",
-        ref = ""
+        ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
         "{params.OUTPUT_DIR}/output"
     conda:
