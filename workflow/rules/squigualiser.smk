@@ -40,13 +40,13 @@ rule signal2ref:
         realigned = "resources/alignments/squigle/{bam_file}_realigned.bam",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
-        "{params.OUTPUT_DIR}/{bamfile}_{params.region}.svg"
+        "{params.OUTPUT_DIR}/{bamfile}_{start}_stop.svg"
     conda:
         "../envs/squigle.yaml"
     params:
         OUTPUT_DIR = "resources/signal/p2s/squigle",
         chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
-        region = "1330:1350",
+        region = "{wildcards.start}:{wildcards.stop}",
         tag = 'optionA'
     threads: 16
     shell:
