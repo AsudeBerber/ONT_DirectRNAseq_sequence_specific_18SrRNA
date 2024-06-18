@@ -8,6 +8,5 @@ dependencies:
   - pip
   - pip:
     # currently not working with numpy v2.0
-    - Cython # needed to make squigualiser run
     - pyslow5==0.2.0a1
     - squigualiser==0.6.3
