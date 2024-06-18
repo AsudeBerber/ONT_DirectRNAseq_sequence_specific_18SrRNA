@@ -36,7 +36,7 @@ rule pod2slow:
 
 rule signal2ref:
     input:
-        slow5 = "resources/blow5/p2s/{pod5_file}.pod5", 
+        slow5 = expand("resources/blow5/p2s/{pod5_file}.pod5)", 
         realigned = "resources/alignments/squigle/{bam_file}_realigned.bam",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
