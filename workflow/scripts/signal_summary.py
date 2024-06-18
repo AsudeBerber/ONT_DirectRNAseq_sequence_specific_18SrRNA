@@ -11,7 +11,7 @@ import sys
 import os
 import json
 from pathlib import Path
-import pdb
+import ipdb
 import time
 
 
@@ -71,10 +71,10 @@ def get_events(signal, moves, offset, rev_loci, motif_length, extra_window):
     dict_events = {}
 
     # last position is only to get sig_end
-    pos_get_signal = [np.arange((locus - extra_window), locus + motif_length+extra_window+1) for locus in rev_loci]
+    pos_get_signal = [np.arange((locus - extra_window), locus + motif_length+extra_window) for locus in rev_loci]
     pos_get_signal = np.reshape(pos_get_signal, -1)
     
-    for locus in pos_get_signal[:-1]:
+    for locus in pos_get_signal:
 
         data_tmp= np.zeros((9))
             
@@ -126,8 +126,7 @@ def get_loci(read, pairs, wd, motif_length):
     loci = [pairs[locus, 0] for locus in ref_loci_index]
     # Remove loci that are not present on the query or too close to the ends of the alignment
     # loci = [locus for locus in loci if locus is not None and locus > wd-1 and locus < read.alen - wd - ml]
-    # wd -1 because one more base after ref position that is not in wd
-    loci = [locus for locus in loci if locus is not None and locus > wd -1 and locus < read.query_length - wd - (motif_length -1) ]
+    loci = [locus for locus in loci if locus is not None and locus > wd -1 and locus < read.query_length - wd - (motif_length) ]
     ref_loci = [pairs[index, 1] for index in ref_loci_index if pairs[index, 0] != None and pairs[index,0] in loci]
     if len(loci) != len(ref_loci):
         raise Exception ("length of reference and query sequence index not matching")
