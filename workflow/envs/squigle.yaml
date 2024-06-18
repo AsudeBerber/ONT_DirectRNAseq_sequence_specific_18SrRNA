@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
+  - python = 3.10
   - pip:
     # currently not working with numpy v2.0
     - numpy==1.26
