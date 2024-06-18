@@ -8,6 +8,6 @@ dependencies:
   - numpy = 1.26.4
   - pip
   - pip:
-    - Cython
+    - Cython==3.0.10
     - pyslow5==0.2.0a1
     - squigualiser==0.6.3
