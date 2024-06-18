@@ -4,8 +4,7 @@ channels:
   - bioconda
 dependencies:
   - python = 3.10
-    #not working with numpy v2.0
-  - numpy = 1.26.4
+  - numpy = 1.26.4 #not working with numpy v2.0
   - pip
   - pip:
     - Cython==3.0.10
