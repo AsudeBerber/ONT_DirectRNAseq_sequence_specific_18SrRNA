@@ -50,4 +50,4 @@ rule signal2ref:
         chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
     threads: 16
     shell:
-        """squigualiser plot --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {params.OUTPUT_DIR}"""
+        """squigualiser plot --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {output.output_dir} --rna"""
