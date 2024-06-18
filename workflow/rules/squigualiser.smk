@@ -37,14 +37,19 @@ rule pod2slow:
 rule signal2ref:
     input:
         slow5 = "", 
-        realigned = "resources/alignments/squigle/{bam_file}_realigned.bam"
+        realigned = "resources/alignments/squigle/{bam_file}_realigned.bam",
+        ref = ""
     output:
         "{OUTPUT_DIR}/output"
     conda:
         "../envs/squigle.yaml"
+    params:
+        OUTPUT_DIR = "",
+        region = "",
+        tag = 'optionA'
     threads: 16
     shell:
-        """squigualiser plot --file ${REF} --slow5 ${input.slow5} --alignment ${input.realigned} --output_dir ${OUTPUT_DIR} \
-         --region ${REGION} --tag_name 'optionA' """
+        """squigualiser plot --file ${input.ref} --slow5 ${input.slow5} --alignment ${input.realigned} --output_dir ${params.OUTPUT_DIR} \
+         --region ${params.region} --tag_name {params.tag} """
 
 "
