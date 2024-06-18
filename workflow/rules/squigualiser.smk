@@ -52,5 +52,5 @@ rule signal2ref:
         tag = 'optionA'
     threads: 16
     shell:
-        """squigualiser plot --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {wildcards.output_dir} \
+        """squigualiser plot --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {params.OUTPUT_DIR} \
          --region {params.chr}{params.region} --tag_name {params.tag} """
