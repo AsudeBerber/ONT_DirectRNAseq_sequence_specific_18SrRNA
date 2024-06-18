@@ -34,11 +34,11 @@ rule pod2slow:
     shell:
         "blue-crab p2s  {input.pod5} -o {output}"
 
-files = glob_wildcards("resources/blow5/p2s/{file}.pod5")
+files = glob_wildcards("resources/blow5/p2s/{file}.blow5")
 
 rule signal2ref:
     input:
-        slow5 = expand("resources/blow5/p2s/{pod5_file}.pod5", pod5_file=files), 
+        slow5 = expand("resources/blow5/p2s/{pod5_file}.blow5", pod5_file=files), 
         realigned = "resources/alignments/squigle/{bam_file}_realigned.bam",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
