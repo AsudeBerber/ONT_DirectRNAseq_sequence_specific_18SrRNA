@@ -36,16 +36,16 @@ rule pod2slow:
 
 rule signal2ref:
     input:
-        slow5 = "", 
+        slow5 = "resources/blow5/p2s/*", 
         realigned = "resources/alignments/squigle/{bam_file}_realigned.bam",
         ref = ""
     output:
-        "{OUTPUT_DIR}/output"
+        "{params.OUTPUT_DIR}/output"
     conda:
         "../envs/squigle.yaml"
     params:
-        OUTPUT_DIR = "",
-        region = "",
+        OUTPUT_DIR = "resources/signal/p2s/squigle",
+        region = r"gi\|1154491913\|ref\|NR_003286.4\|1330:1350",
         tag = 'optionA'
     threads: 16
     shell:
