@@ -1,10 +1,10 @@
 rule samtools_sort:
     input:
         "resources/{dir}/{sample}.bam"
-    conda:  
-        "../envs/sort.yaml"
     output:
         "resources/{dir}/{sample}_sorted.bam"
+    conda:  
+        "../envs/sort.yaml"
     threads:
         16
     shell:
@@ -15,10 +15,10 @@ rule samtools_sort:
 rule samtools_index:
     input:
         "resources/{dir}/{sample}.bam"
-    conda:  
-        "../envs/sort.yaml"
     output:
         "resources/{dir}/{sample}.bam.bai"
+    conda:  
+        "../envs/sort.yaml"
     threads:
         16
     shell:

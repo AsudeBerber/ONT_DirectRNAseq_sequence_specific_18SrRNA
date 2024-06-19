@@ -31,5 +31,3 @@ except:
 
 with open('resources/results/p2s/pod5.json', 'w') as fp:
     json.dump(pod5_path_dict, fp, sort_keys=True, separators=[",\n",":"], allow_nan=False, default=str)
-
-# test = {"ID3": "jkalsdjfk", "ID5": "333", "ID1":"ksdfjlj"}

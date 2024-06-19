@@ -1,0 +1,11 @@
+name: squigle
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - numpy < 2.0.0 #not working with numpy v2.0
+  - pip
+  - pip:
+    - cython==3.0.10
+    - pyslow5==1.1.0
+    - squigualiser==0.6.3

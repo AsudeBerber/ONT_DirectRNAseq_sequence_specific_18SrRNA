@@ -2,10 +2,10 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
+  - samtools = 1.20
   - pip
   - pip:
-    - pod5 == 0.3.10
-    - numpy
-    - samtools=1.20
-    - pysam == 0.22.1
+    - pod5==0.3.10
+    - numpy < 2.0
+    - pysam==0.22.1
     - tqdm==2.2.3
