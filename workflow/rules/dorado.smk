@@ -5,7 +5,7 @@ rule dorado:
         "resources/basecalls/{sample}_basecalls.bam"
     params:
         model = "sup@v5.0.0",
-        modification = "6mA_pseU@v1"
+        modification = "6mA,pseU@v1"
     threads:
         20
     shell:
