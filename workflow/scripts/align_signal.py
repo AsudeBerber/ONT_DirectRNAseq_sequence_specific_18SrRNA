@@ -1,6 +1,8 @@
 __author__ = "Jens Martin"
 __email__ = "jens.martin@outlook.com"
 
+import numpy as np
+
 def get_events(signal, moves, offset, rev_loci, motif_length=1, extra_window=21, signal_stats = False):
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
