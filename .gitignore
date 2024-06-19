@@ -2,3 +2,5 @@ resources/
 results/
 data.json
 .Rproj.user
+.temp*
+.snakemake
