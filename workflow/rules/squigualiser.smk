@@ -47,7 +47,7 @@ rule signal2ref:
         "../envs/squigle.yaml"
     params:
         OUTPUT_DIR = "resources/signal/p2s/squigle",
-        chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
+        chr = "gi\|1154491913\|ref\|NR_003286.4\|",
     threads: 16
     shell:
         """squigualiser plot --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {wildcards.output_dir} \
