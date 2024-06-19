@@ -7,14 +7,12 @@ import numpy as np
 import pandas as pd
 import sys
 import pdb
-import test2
 
 
-test2.test("I'm sorry, the princess is in another python module")
 
 motif = "CCG"
 window_size = 21
-npz_file = f"../../resources/results/p2s/CCG_window_21_p2s_aligned_subsample_0001.npz"
+npz_file = f"resources/results/p2s/CCG_window_21_p2s_aligned_subsample_0001.npz"
 arround=4
 event = 5
 # event = args.feature
@@ -119,7 +117,7 @@ ax2.set_yscale("symlog")
 ax2.set_title(f"Pos 1842 ± {arround} bp")
 ax2.set_xlabel("time steps")
 
-plt.savefig(f"../../resources/signal_summary_event_{event}.svg", dpi = 300)
+plt.savefig(f"resources/signal_summary_event_{event}.svg", dpi = 300)
 
 fig, (ax1, ax2) = plt.subplots(1,2)
 

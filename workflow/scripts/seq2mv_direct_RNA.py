@@ -9,8 +9,10 @@ from matplotlib import colormaps
 import numpy as np
 import pysam as ps
 import sys
-# script in shell has to be activated with "python -m", so import with relative path is possible
-from . import align_signal
+try:
+    import align_signal
+except ImportError: 
+    raise ImportError("Import of module align_signal failed, is align_signal.py in the same folder as this script?")
 
 #creates textfile with all read_ids within bam file
 def read_id_list_bam(sample=None):

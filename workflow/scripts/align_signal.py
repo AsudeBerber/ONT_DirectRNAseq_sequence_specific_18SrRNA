@@ -1,7 +1,7 @@
 __author__ = "Jens Martin"
 __email__ = "jens.martin@outlook.com"
 
-def get_events(signal, moves, offset, rev_loci, motif_length=1, extra_window, signal_stats = False):
+def get_events(signal, moves, offset, rev_loci, motif_length=1, extra_window=21, signal_stats = False):
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
     following values for each called based:
@@ -54,6 +54,6 @@ def get_events(signal, moves, offset, rev_loci, motif_length=1, extra_window, si
         return dict_events
 
     elif signal_stats == False:
-        f
+        pass
 
     else: raise Exception("signal_stats has to be either True or False")

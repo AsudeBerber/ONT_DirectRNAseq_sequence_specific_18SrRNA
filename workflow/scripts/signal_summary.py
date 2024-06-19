@@ -1,6 +1,6 @@
 # Code mostly written by Christoph Engelhardt
 
-############### Run time for 4x10^7 reads: ~2 days; memory usage piles up over time up to ~50%/ 30 GB RAM in the end
+############### Run time for 4x10^7 reads: ~10 h; memory usage piles up over time up to ~50%/ 30 GB RAM in the end
 
 import numpy as np
 import pod5 as p5
@@ -14,9 +14,14 @@ from pathlib import Path
 import ipdb
 import time
 
+try:
+    import align_signal
+except ImportError: 
+    raise ImportError("Import of module align_signal failed, is align_signal.py in the same folder as this script?")
+
 
 pod5_file = "resources/pod5/p2s/"
-bam_file = f"resources/alignments/p2s_aligned_sorted.bam"
+bam_file = f"resources/alignments/test.bam"
 motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
 npz_file = f"resources/results/p2s/{motif}_window_{window_size}_{Path(bam_file).stem}.npz"
@@ -202,7 +207,7 @@ def main(argv=sys.argv[1:]):
 
                     # events: 0.01 s = 100/s
                     #events is inverted as the signal goes from 3' -> 5', but sequence from 5' -> 3'
-                    dict_events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), rev_loci, motif_length, extra_window)
+                    dict_events = align_signal.get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), rev_loci, motif_length, extra_window, signal_stats=True)
                     
                     # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
                     
