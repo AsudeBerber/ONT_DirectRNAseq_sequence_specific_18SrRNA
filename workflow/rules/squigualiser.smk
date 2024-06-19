@@ -40,16 +40,18 @@ rule signal2ref:
     input:
         slow5 = "resources/blow5/p2s/PAW35875_9fd38647_68d05f77_211.blow5", 
         realigned = "resources/alignments/squigle/{bam_file}_realigned.bam",
+        realigned_index = "resources/alignments/squigle/{bam_file}_realigned.bam.bai",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
         "{output_dir}/{bam_file}_{region}.html"
     conda:
         "../envs/squigle.yaml"
     params:
-        OUTPUT_DIR = "resources/signal/p2s/squigle",
+        read_id = "7be77036-bcfb-4493-a95a-dd58b6975e5b"
+        OUTPUT_DIR = "resources/signal/p2s/squigle/{read_id}",
         chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
     threads: 16
     shell:
         """squigualiser plot  --rna --region {params.chr}:{wildcards.region}\
         --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {wildcards.output_dir} \n 
-        mv {wildcards.output_dir}/7be77036-bcfb-4493-a95a-dd58b6975e5b_.html {output}"""
+        mv {wildcards.output_dir}/{params.read_id}_.html {output}"""
