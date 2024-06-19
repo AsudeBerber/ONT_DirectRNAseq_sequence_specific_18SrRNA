@@ -5,10 +5,11 @@ rule dorado:
         "resources/basecalls/{sample}_basecalls.bam"
     params:
         model = "sup@v5.0.0"
+        modification = "6mA, pseU"
     threads:
         20
     shell:
-        "dorado_0.7.1 basecaller {params.model} {input} --emit-moves > {output}"
+        "dorado_0.7.2 basecaller {params.model},{params.modification} {input} --emit-moves > {output}"
 
 
 rule dorado_all:
