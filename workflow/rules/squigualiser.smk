@@ -47,7 +47,7 @@ rule signal2ref:
     conda:
         "../envs/squigle.yaml"
     params:
-        read_id = "7be77036-bcfb-4493-a95a-dd58b6975e5b"
+        read_id = "7be77036-bcfb-4493-a95a-dd58b6975e5b",
         OUTPUT_DIR = "resources/signal/p2s/squigle/{read_id}",
         chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
     threads: 16
