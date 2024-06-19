@@ -7,11 +7,15 @@ import numpy as np
 import pandas as pd
 import sys
 import pdb
+import test2
+
+
+test2.test("I'm sorry, the princess is in another python module")
 
 motif = "CCG"
 window_size = 21
 npz_file = f"../../resources/results/p2s/CCG_window_21_p2s_aligned_subsample_0001.npz"
-arround=5
+arround=4
 event = 5
 # event = args.feature
 

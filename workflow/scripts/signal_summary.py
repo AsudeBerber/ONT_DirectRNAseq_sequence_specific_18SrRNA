@@ -81,6 +81,7 @@ def get_events(signal, moves, offset, rev_loci, motif_length, extra_window):
         prev = move_index[locus]*stride+offset
         sig_end = move_index[locus+1]*stride+offset
         
+        
         sig_len = sig_end-prev
         data_tmp[4]=np.log10(sig_len)
         data_tmp[5]=np.mean(signal[prev:sig_end])
