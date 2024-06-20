@@ -7,4 +7,4 @@ rule bam_single_read:
     shell:
         """samtools view {input} | grep {wildcards.read_ID} > resources/.temp/{read_ID} \n
         samtools view -h {input} | head -n2 | cat - resources/.temp/{wildcards.read_ID} | samtools view -o {output} \n
-        rm resources/temp/{wildcards.read_ID}"""
+        rm resources/.temp/{wildcards.read_ID}"""
