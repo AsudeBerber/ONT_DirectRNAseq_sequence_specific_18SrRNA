@@ -7,6 +7,6 @@ rule bam_single_read:
     conda: "../envs/slice_bam.yaml"
     threads: 8
     shell:
-        """mkdir -p resources/.temp \n
-        samtools view {input} | grep {wildcards.read_ID} > {output.bam_temp} \n
+        """set +eou; mkdir -p resources/.temp ;
+        samtools view {input} | grep {wildcards.read_ID} > {output.bam_temp} ;
         samtools view -h {input} | head -n2 | cat - {output.bam_temp} | samtools view -o {output.bam}"""
