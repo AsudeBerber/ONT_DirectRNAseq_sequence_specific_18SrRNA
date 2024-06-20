@@ -11,4 +11,4 @@ rule bam_single_read:
     shell:
         """mkdir -p resources/.temp resources/alignments/read_ids; \
         samtools view {input} | grep {wildcards.read_ID} > {output.bam_temp} ; \
-        samtools view -h {input} | head -n2 | cat - {output.bam_temp} | samtools view -h -o {output.bam}"""
+        samtools view -h {input} | head -n2 | cat - {output.bam_temp} | samtools view -bh -o {output.bam}"""
