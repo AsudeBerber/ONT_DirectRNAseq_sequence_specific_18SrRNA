@@ -20,7 +20,6 @@ def get_events(signal, moves, offset, rev_loci, motif_length=1, extra_window=21,
     median = np.median(signal)
     mad = np.median(np.abs(signal-median))
     signal=(signal-median)/mad
-    breakpoint()
     
     stride = moves.pop(0)
     move_index = np.where(moves)[0]
