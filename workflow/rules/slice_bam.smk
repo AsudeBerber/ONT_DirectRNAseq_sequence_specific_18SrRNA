@@ -5,4 +5,5 @@ rule bam_single_read:
     conda: "../envs/slice_bam.yaml"
     threads: 8
     shell:
-        "samtools view -h {input} | grep {wildcards.read_ID} | samtools view -h -o {output}"
+        """samtools view {input} | grep {wildcards.read_ID} > resources/temp/{read_ID} \n
+        samtools view {input} | head -n2 | cat - resources/temp/{read_ID} > {output}"""
