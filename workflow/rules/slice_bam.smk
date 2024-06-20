@@ -7,5 +7,4 @@ rule bam_single_read:
     shell:
         """mkdir resources/.temp \n
         samtools view {input} | grep {wildcards.read_ID} > resources/.temp/{wildcards.read_ID} \n
-        samtools view -h {input} | head -n2 | cat - resources/.temp/{wildcards.read_ID} | samtools view -o {output} \n
-        rm resources/.temp/{wildcards.read_ID}"""
+        samtools view -h {input} | head -n2 | cat - resources/.temp/{wildcards.read_ID} | samtools view -o {output}"""
