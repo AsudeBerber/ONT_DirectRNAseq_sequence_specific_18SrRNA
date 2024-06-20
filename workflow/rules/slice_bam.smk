@@ -9,7 +9,7 @@ rule bam_single_read:
         "../envs/slice_bam.yaml"
     threads: 8
     shell:
-        """set +o; mkdir -p resources/.temp resources/alignments/single_reads; \
+        """set -x; mkdir -p resources/.temp resources/alignments/single_reads; \
         samtools view {input} | grep {wildcards.read_ID} > {output.bam_temp} ; \
         echo "temp file created"; \
         samtools view -h {input} | head -n2 | cat - {output.bam_temp} | samtools view -bh -o {output.bam}"""
