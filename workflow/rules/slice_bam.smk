@@ -2,8 +2,9 @@
 rule bam_single_read:
     input: "resources/alignments/p2s_aligned.bam"
     output: 
-        bam = "resources/alignments/{read_ID}.bam",
-        temp_bam = temp("resources/.temp/read_ID")
+        temp("resources/.temp/read_ID"),
+        bam = "resources/alignments/{read_ID}.bam"
+        
     conda: "../envs/slice_bam.yaml"
     threads: 8
     shell:
