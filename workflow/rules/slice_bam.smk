@@ -4,7 +4,6 @@ rule bam_single_read:
     output: 
         temp("resources/.temp/read_ID"),
         bam = "resources/alignments/{read_ID}.bam"
-        
     conda: "../envs/slice_bam.yaml"
     threads: 8
     shell:
