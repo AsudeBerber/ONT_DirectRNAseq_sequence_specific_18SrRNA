@@ -1,4 +1,4 @@
-EVENTS = range(0,9)
+EVENTS = list(range(0,9))
 rule plot_boxplot:
     input: 
         "resources/results/p2s/{dir}.npz"
