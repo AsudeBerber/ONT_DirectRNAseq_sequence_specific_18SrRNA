@@ -87,56 +87,62 @@ def boxplot_ann(refseq, axis):
 
 
 #1337 | 1842
-range_window_plot = ref.shape[1] 
-df_event_filtered = filter_by_pos(pos)
+def make_plot(event):
+    range_window_plot = ref.shape[1] 
+    df_event_filtered = filter_by_pos(pos)
 
-df_refseq = pd.DataFrame(np.fliplr(ref), columns = list(range(1,ref.shape[1]+1)))
-df_refseq = pd.concat([df_refseq, df_pos], axis=1)
+    df_refseq = pd.DataFrame(np.fliplr(ref), columns = list(range(1,ref.shape[1]+1)))
+    df_refseq = pd.concat([df_refseq, df_pos], axis=1)
 
-df_refseq_430 = df_refseq[df_refseq["pos"] == "430"]
-df_refseq_1337 = df_refseq[df_refseq["pos"] == "1337"]
-df_refseq_1842 = df_refseq[df_refseq["pos"] == "1842"]
-df_refseq_430_sliced = df_refseq_430.iloc[:,index_bases]
-df_refseq_1337_sliced = df_refseq_1337.iloc[:,index_bases]
-df_refseq_1842_sliced = df_refseq_1842.iloc[:,index_bases]
-
-
-fig, (ax1, ax2) = plt.subplots(1,2)
-ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
-ax1.boxplot(filter_by_pos(1337), showfliers = False)
-boxplot_ann(df_refseq_1337_sliced, ax1)
-ax1.set_yscale("symlog")
-ax1.set_xlabel("time steps")
-ax1.set_title(f"Pos {1337} ± {arround} bp")
+    df_refseq_430 = df_refseq[df_refseq["pos"] == "430"]
+    df_refseq_1337 = df_refseq[df_refseq["pos"] == "1337"]
+    df_refseq_1842 = df_refseq[df_refseq["pos"] == "1842"]
+    df_refseq_430_sliced = df_refseq_430.iloc[:,index_bases]
+    df_refseq_1337_sliced = df_refseq_1337.iloc[:,index_bases]
+    df_refseq_1842_sliced = df_refseq_1842.iloc[:,index_bases]
 
 
-ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
-ax2.boxplot(filter_by_pos(1842), showfliers = False)
-boxplot_ann(df_refseq_1842_sliced, ax2)
-ax2.set_yscale("symlog")
-ax2.set_title(f"Pos 1842 ± {arround} bp")
-ax2.set_xlabel("time steps")
-
-plt.savefig(f"resources/signal_summary_event_{event}.svg", dpi = 300)
-
-fig, (ax1, ax2) = plt.subplots(1,2)
-
-ax1.violinplot(filter_by_pos(430), showmeans = False, showextrema = False)
-ax1.boxplot(filter_by_pos(430), showfliers = False)
-boxplot_ann(df_refseq_430_sliced, ax1)
-ax1.set_yscale("symlog")
-ax1.set_title(f"Pos 430 ± {arround} bp")
-ax1.set_xlabel("time steps")
+    fig, (ax1, ax2) = plt.subplots(1,2)
+    ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
+    ax1.boxplot(filter_by_pos(1337), showfliers = False)
+    boxplot_ann(df_refseq_1337_sliced, ax1)
+    ax1.set_yscale("symlog")
+    ax1.set_xlabel("time steps")
+    ax1.set_title(f"Pos {1337} ± {arround} bp")
 
 
-ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
-ax2.boxplot(filter_by_pos(1842), showfliers = False)
-boxplot_ann(df_refseq_1842_sliced,ax2)
-ax2.set_yscale("symlog")
-ax2.set_title(f"Pos 1842 ± {arround} bp")
-ax2.set_xlabel("time steps")
+    ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
+    ax2.boxplot(filter_by_pos(1842), showfliers = False)
+    boxplot_ann(df_refseq_1842_sliced, ax2)
+    ax2.set_yscale("symlog")
+    ax2.set_title(f"Pos 1842 ± {arround} bp")
+    ax2.set_xlabel("time steps")
+
+    plt.savefig(f"resources/signal/signal_summary/1337_1842_event_{event}.svg", dpi = 300)
+
+    fig, (ax1, ax2) = plt.subplots(1,2)
+
+    ax1.violinplot(filter_by_pos(430), showmeans = False, showextrema = False)
+    ax1.boxplot(filter_by_pos(430), showfliers = False)
+    boxplot_ann(df_refseq_430_sliced, ax1)
+    ax1.set_yscale("symlog")
+    ax1.set_title(f"Pos 430 ± {arround} bp")
+    ax1.set_xlabel("time steps")
+
+
+    ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
+    ax2.boxplot(filter_by_pos(1842), showfliers = False)
+    boxplot_ann(df_refseq_1842_sliced,ax2)
+    ax2.set_yscale("symlog")
+    ax2.set_title(f"Pos 1842 ± {arround} bp")
+    ax2.set_xlabel("time steps")
+
+    plt.savefig(f"resources/signal/signal_summary/430_1842_event_{event}.svg", dpi = 300)
 
 def main(argv=sys.argv[1:]):
+    
+    for event in range(0,9):
+        make_plot(event=event)
 
 if __name__ == "__main__":
      exit(main())
