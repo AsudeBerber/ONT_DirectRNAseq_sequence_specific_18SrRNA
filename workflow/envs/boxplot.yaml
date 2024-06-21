@@ -3,7 +3,5 @@ channels:
   - bioconda
 dependencies:
   - numpy < 2.0.0
-  - pip
   - pandas
   - matplotlib
-  - argparse
