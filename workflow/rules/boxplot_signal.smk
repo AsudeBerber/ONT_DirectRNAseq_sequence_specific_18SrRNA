@@ -4,7 +4,7 @@ rule plot_boxplot:
     input: 
         "resources/results/p2s/{dir}.npz"
     output:
-        svg = expand("resources/signal/p2s/signal_summary/{dir}/1337_1842_430_event_{event}.svg".format(event = event, dir = "{dir}")) 
+        svg = expand("resources/signal/p2s/signal_summary/{dir}/1337_1842_430_event_{event}.svg", event = EVENTS, dir = "{dir}") 
     conda:
         "../envs/boxplot.yaml"
     params:
