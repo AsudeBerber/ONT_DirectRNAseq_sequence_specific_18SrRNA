@@ -12,8 +12,8 @@ import pdb
 
 motif = "CCG"
 window_size = 21
-npz_file = f"resources/results/p2s/CCG_window_21_p2s_aligned_subsample_0001.npz"
-arround=4
+npz_file = f"resources/results/p2s/CCG_window_21_p2s_aligned.npz"
+arround=9
 event = 5
 # event = args.feature
 
