@@ -3,3 +3,5 @@ results/
 data.json
 .Rproj.user
 workflow/scripts/__pycache__
+.temp*
+.snakemake
