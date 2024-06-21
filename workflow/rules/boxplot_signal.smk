@@ -1,11 +1,11 @@
 EVENTS = list(range(0,9))
 #dir without .npz ending
-dir = "CCG_window_21_p2s_aligned_subsample_0001"
+#dir = "CCG_window_21_p2s_aligned"
 rule plot_boxplot:
     input: 
-        f"resources/results/p2s/{dir}.npz"
+        "resources/results/p2s/{dir}.npz"
     output:
-        svg = ["resources/signal/p2s/signal_summary/{dir}/1337_1842_430_event_{event}.svg".format(event = event, dir = dir) for event in EVENTS]
+        svg = ["resources/signal/p2s/signal_summary/{dir}/1337_1842_430_event_{event}.svg".format(event = event) for event in EVENTS]
     conda:
         "../envs/boxplot.yaml"
     params:
