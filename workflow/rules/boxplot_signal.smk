@@ -11,7 +11,7 @@ rule plot_boxplot:
     params:
         # how many bases to plot left/right to the middle base
         window = 8
-    threads: 8
+    threads: 16
     shell:
     # --no-mmap command disables mmap (loading to disk), could make problems on local PCs without enough RAM
         "python workflow/scripts/boxplot_signal.py -f {input} -w {params.window}"
