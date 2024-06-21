@@ -22,4 +22,4 @@ rule bam_single_read_2:
     threads: 8
     shell:
         # snakemake throws an error although this is working, ||true ignores all errors ()
-        """samtools view -h {input.bam} | head -n2 | cat - {input.bam_temp} &> alloutput.txt > {output.bam} || true"""
+        """samtools view -h {input.bam} | head -n2 | cat - {input.bam_temp} {output.bam} || true"""
