@@ -16,11 +16,19 @@ logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 # frame=9
 
 
-def load_npz(npz_file):
-    ## mmap_mode writes in binary to disk to save RAM, can be deleted for smaller npz files
+def load_npz(npz_file, no_mmap=False):
     logger.info("loading npz")
-
-    loaded = np.load(npz_file, mmap_mode= "w+")
+    ## mmap_mode writes in binary to disk to save RAM, can be deleted for smaller npz files
+    if no_mmap == True:
+        try:
+            loaded = np.load(npz_file)
+            print("loading in no mmap mode")
+        except MemoryError:
+            raise MemoryError("Not enough memory for loading without mmap-mode")
+        
+    
+    else:
+        loaded = np.load(npz_file, mmap_mode= "r")
 
     """
     FEATURES:
@@ -59,13 +67,14 @@ def parse_args(argv):
 
     parser.add_argument("-w", "--window", type=int)
     parser.add_argument("-f", "--file", type=str)
+    parser.add_argument("--no-mmap", action="store_true")
 
     args = parser.parse_args()
 
     return args
 
 #frame: #number of bases to plot arround CCG (including CCG)
-def slice_bases(event, frame, query, features, ref):
+def slice_bases(event, query, features, ref):
     whole_window = len(query[0])
     middle = whole_window //2
     index_bases = np.arange(0,whole_window) [middle-frame:middle+frame+1]
@@ -73,7 +82,7 @@ def slice_bases(event, frame, query, features, ref):
     sliced_refseq = ref[:,index_bases]
     return index_bases, sliced_event, sliced_refseq
     
-def filter_by_pos(pos):
+def filter_by_pos(pos, df_event_pos):
     df = df_event_pos
     df_filtered = df[df["pos"] == str(pos)]
     df_plot = df_filtered.iloc[:,:frame*2+1]
@@ -82,15 +91,15 @@ def filter_by_pos(pos):
 
 
 
-def make_dfs(event, frame, query, features, ref, pos): 
-    index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, frame=frame, query=query, features=features, ref=ref)
+def make_dfs(event, query, features, ref, pos): 
+    index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, query=query, features=features, ref=ref)
 
     df_event = pd.DataFrame((sliced_event), columns = list(range(1,frame*2+2)))
     df_pos = pd.DataFrame(pos, columns = ["pos"])
 
     df_event_pos = pd.concat([df_event, df_pos], axis=1)
 
-    return df_event_pos, sliced_event, sliced_ref_seq
+    return df_event_pos, sliced_event, sliced_ref_seq, index_bases
 
 def boxplot_ann(refseq, axis):
     for i, base in enumerate(refseq.iloc[0]):
@@ -101,7 +110,7 @@ def boxplot_ann(refseq, axis):
 
 
 #1337 | 1842
-def make_plot(event, window_size, ref, df_pos):
+def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos):
     # df_event_filtered = filter_by_pos(pos)
 
     df_refseq = pd.DataFrame(np.fliplr(ref), columns = list(range(1,window_size+1)))
@@ -116,16 +125,16 @@ def make_plot(event, window_size, ref, df_pos):
 
 
     fig, (ax1, ax2) = plt.subplots(1,2)
-    ax1.violinplot(filter_by_pos(1337), showmeans = False, showextrema = False)
-    ax1.boxplot(filter_by_pos(1337), showfliers = False)
+    ax1.violinplot(filter_by_pos(1337, df_event_pos), showmeans = False, showextrema = False)
+    ax1.boxplot(filter_by_pos(1337, df_event_pos), showfliers = False)
     boxplot_ann(df_refseq_1337_sliced, ax1)
     ax1.set_yscale("symlog")
     ax1.set_xlabel("time steps")
     ax1.set_title(f"Pos {1337} ± {frame} bp")
 
 
-    ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
-    ax2.boxplot(filter_by_pos(1842), showfliers = False)
+    ax2.violinplot(filter_by_pos(1842, df_event_pos), showmeans = False, showextrema = False)
+    ax2.boxplot(filter_by_pos(1842, df_event_pos), showfliers = False)
     boxplot_ann(df_refseq_1842_sliced, ax2)
     ax2.set_yscale("symlog")
     ax2.set_title(f"Pos 1842 ± {frame} bp")
@@ -135,16 +144,16 @@ def make_plot(event, window_size, ref, df_pos):
 
     fig, (ax1, ax2) = plt.subplots(1,2)
 
-    ax1.violinplot(filter_by_pos(430), showmeans = False, showextrema = False)
-    ax1.boxplot(filter_by_pos(430), showfliers = False)
+    ax1.violinplot(filter_by_pos(430, df_event_pos), showmeans = False, showextrema = False)
+    ax1.boxplot(filter_by_pos(430, df_event_pos), showfliers = False)
     boxplot_ann(df_refseq_430_sliced, ax1)
     ax1.set_yscale("symlog")
     ax1.set_title(f"Pos 430 ± {frame} bp")
     ax1.set_xlabel("time steps")
 
 
-    ax2.violinplot(filter_by_pos(1842), showmeans = False, showextrema = False)
-    ax2.boxplot(filter_by_pos(1842), showfliers = False)
+    ax2.violinplot(filter_by_pos(1842, df_event_pos), showmeans = False, showextrema = False)
+    ax2.boxplot(filter_by_pos(1842, df_event_pos), showfliers = False)
     boxplot_ann(df_refseq_1842_sliced,ax2)
     ax2.set_yscale("symlog")
     ax2.set_title(f"Pos 1842 ± {frame} bp")
@@ -156,13 +165,15 @@ def main(argv=sys.argv[1:]):
 
     args = parse_args(argv)
 
-    features, qual, query, ref, id, window_size, pos = load_npz(args.file)
+    global frame
+    frame = args.window
 
-    
+    features, qual, query, ref, id, window_size, pos = load_npz(args.file, args.no_mmap)
+
     for event in range(0,9):
         logging.info(f"creating plot {event+1} of 9")
-        df_event_pos, sliced_event, sliced_ref_seq = make_dfs(event= event, frame=args.window, query=query, features=features, ref=ref, pos=pos)
-        make_plot(event = event, window_size = window_size, ref=ref, df_pos = df_event_pos)
+        df_event_pos, sliced_event, sliced_ref_seq, index_bases = make_dfs(event= event, query=query, features=features, ref=ref, pos=pos)
+        make_plot(event = event, window_size = window_size, ref=ref, df_pos = df_event_pos, index_bases=index_bases, df_event_pos=df_event_pos)
 
 if __name__ == "__main__":
      exit(main())
