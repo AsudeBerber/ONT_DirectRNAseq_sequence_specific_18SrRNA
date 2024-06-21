@@ -1,3 +1,4 @@
+# takes about ~1h to run on PromethIon, max. RAM usage < 50%; multiple cores are used by Pandas/Matplotlib(?)
 EVENTS = list(range(0,9))
 #dir without .npz ending
 rule plot_boxplot:
@@ -12,4 +13,5 @@ rule plot_boxplot:
         window = 8
     threads: 8
     shell:
+    # --no-mmap command disables mmap (loading to disk), could make problems on local PCs without enough RAM
         "python workflow/scripts/boxplot_signal.py -f {input} -w {params.window}"
