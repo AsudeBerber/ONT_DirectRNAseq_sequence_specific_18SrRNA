@@ -14,7 +14,7 @@ rule bam_single_read:
 
 rule bam_single_read_2:
     input: 
-        bam = "resources/alignments/p2s_aligned.bam"
+        bam = "resources/alignments/p2s_aligned.bam",
         bam_temp = temp("resources/.temp/{read_ID}.bam")
     output: 
         bam = "resources/alignments/single_reads/{read_ID}.bam"
