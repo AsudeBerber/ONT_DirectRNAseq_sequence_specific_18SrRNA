@@ -6,15 +6,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import sys
+import logging
 import pdb
 
-
-npz_file = f"resources/results/p2s/CCG_window_21_p2s_aligned_sorted.npz"
-frame=9
+logger = logging.getLogger(__name__)
+# npz_file = f"resources/results/p2s/CCG_window_21_p2s_aligned_sorted.npz"
+# frame=9
 
 
 def load_npz(npz_file):
     ## mmap_mode writes in binary to disk to save RAM, can be deleted for smaller npz files
+    logger.info("loading npz")
     loaded = np.load(npz_file, mmap_mode= "w+")
 
     """
@@ -35,6 +37,8 @@ def load_npz(npz_file):
     # ref contains "None" strings, in cases where deletions occured
     ref = loaded["ref"]
     id = loaded["id"]
+
+    logger.info("npz loaded")
 
     window_size = ref.shape[1]
 
@@ -58,7 +62,7 @@ def parse_args(argv):
     return args
 
 #frame: #number of bases to plot arround CCG (including CCG)
-def slice_bases(event, frame, query):
+def slice_bases(event, frame, query, features, ref):
     whole_window = len(query[0])
     middle = whole_window //2
     index_bases = np.arange(0,whole_window) [middle-frame:middle+frame+1]
@@ -75,11 +79,10 @@ def filter_by_pos(pos):
 
 
 
-def make_dfs(event, frame, query): 
-    index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, frame=frame, query=query)
+def make_dfs(event, frame, query, features, ref): 
+    index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, frame=frame, query=query, features=features, ref=ref)
 
     df_event = pd.DataFrame((sliced_event), columns = list(range(1,frame*2+2)))
-    df_id = pd.DataFrame(id)
     df_pos = pd.DataFrame(pos, columns = ["pos"])
 
     df_event_pos = pd.concat([df_event, df_pos], axis=1)
@@ -152,8 +155,10 @@ def main(argv=sys.argv[1:]):
 
     features, qual, query, ref, id, window_size, pos = load_npz(args.file)
 
+    
     for event in range(0,9):
-        df_event_pos, sliced_event, sliced_ref_seq = make_dfs(event= event, frame=args.window, query=query)
+        logging.info(f"creating plot {event} of 9")
+        df_event_pos, sliced_event, sliced_ref_seq = make_dfs(event= event, frame=args.window, query=query, features=features, ref=ref)
         make_plot(event = event, window_size = window_size, ref=ref, df_pos = df_event_pos)
 
 if __name__ == "__main__":
