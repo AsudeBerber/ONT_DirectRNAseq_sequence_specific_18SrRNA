@@ -5,7 +5,7 @@ rule plot_boxplot:
     output:
         svg = expand(f"resources/signal/p2s/signal_summary/{dir}/1337_1842_430_event_{event}.svg", event = EVENTS)
     conda:
-        "../envs/"
+        "../envs/boxplot.yaml"
     params:
         # how many bases to plot left/right to the middle base
         window = 8
