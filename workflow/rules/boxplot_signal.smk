@@ -1,7 +1,7 @@
 EVENTS = range(0,9)
 rule plot_boxplot:
     input: 
-        "resources/results/p2s/CCG_window_21_{dir}.npz"
+        "resources/results/p2s/{dir}.npz"
     output:
         expand(f"resources/signal/p2s/signal_summary/{dir}/1337_1842_430_event_{event}.svg", event = EVENTS)
     conda:
