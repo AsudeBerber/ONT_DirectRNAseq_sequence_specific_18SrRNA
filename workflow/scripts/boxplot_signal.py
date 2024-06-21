@@ -8,6 +8,7 @@ import pandas as pd
 import sys
 import logging
 import os
+import pathlib
 import pdb
 
 logger = logging.getLogger(__name__)
@@ -104,13 +105,13 @@ def make_dfs(event, query, features, ref, pos):
 def boxplot_ann(refseq, axis):
     for i, base in enumerate(refseq.iloc[0]):
         if i == frame: 
-            axis.annotate(base, xy = (i+1, 0.96), xycoords=("data", "axes fraction"), ha = "center", color = "darkred")
+            axis.annotate(base, xy = (i+1, 0.04), xycoords=("data", "axes fraction"), ha = "center", color = "darkred", fontsize = 12)
         else:
-            axis.annotate(base, xy = (i+1, 0.96), xycoords=("data", "axes fraction"), ha = "center")
+            axis.annotate(base, xy = (i+1, 0.04), xycoords=("data", "axes fraction"), ha = "center", fontsize = 12)
 
 
 #1337 | 1842
-def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos):
+def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos, file):
     # df_event_filtered = filter_by_pos(pos)
 
     df_refseq = pd.DataFrame(np.fliplr(ref), columns = list(range(1,window_size+1)))
@@ -124,42 +125,34 @@ def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos):
     df_refseq_1842_sliced = df_refseq_1842.iloc[:,index_bases]
 
 
-    fig, (ax1, ax2) = plt.subplots(1,2)
+    fig, (ax1, ax2, ax3) = plt.subplots(1,3, figsize = (20,4), sharey= True)
     ax1.violinplot(filter_by_pos(1337, df_event_pos), showmeans = False, showextrema = False)
     ax1.boxplot(filter_by_pos(1337, df_event_pos), showfliers = False)
     boxplot_ann(df_refseq_1337_sliced, ax1)
     ax1.set_yscale("symlog")
-    ax1.set_xlabel("time steps")
+    ax1.set_xlabel("Steps")
     ax1.set_title(f"Pos {1337} ± {frame} bp")
 
 
     ax2.violinplot(filter_by_pos(1842, df_event_pos), showmeans = False, showextrema = False)
     ax2.boxplot(filter_by_pos(1842, df_event_pos), showfliers = False)
     boxplot_ann(df_refseq_1842_sliced, ax2)
+    ax2.tick_params(labelleft = True)
     ax2.set_yscale("symlog")
     ax2.set_title(f"Pos 1842 ± {frame} bp")
-    ax2.set_xlabel("time steps")
+    ax2.set_xlabel("Steps")
 
-    plt.savefig(f"resources/signal/signal_summary/1337_1842_event_{event}.svg", dpi = 300)
+    ax3.violinplot(filter_by_pos(430, df_event_pos), showmeans = False, showextrema = False)
+    ax3.boxplot(filter_by_pos(430, df_event_pos), showfliers = False)
+    boxplot_ann(df_refseq_430_sliced, ax3)
+    ax3.tick_params(labelleft = True)
+    ax3.set_yscale("symlog")
+    ax3.set_title(f"Pos 430 ± {frame} bp")
+    ax3.set_xlabel("Steps")
 
-    fig, (ax1, ax2) = plt.subplots(1,2)
-
-    ax1.violinplot(filter_by_pos(430, df_event_pos), showmeans = False, showextrema = False)
-    ax1.boxplot(filter_by_pos(430, df_event_pos), showfliers = False)
-    boxplot_ann(df_refseq_430_sliced, ax1)
-    ax1.set_yscale("symlog")
-    ax1.set_title(f"Pos 430 ± {frame} bp")
-    ax1.set_xlabel("time steps")
-
-
-    ax2.violinplot(filter_by_pos(1842, df_event_pos), showmeans = False, showextrema = False)
-    ax2.boxplot(filter_by_pos(1842, df_event_pos), showfliers = False)
-    boxplot_ann(df_refseq_1842_sliced,ax2)
-    ax2.set_yscale("symlog")
-    ax2.set_title(f"Pos 1842 ± {frame} bp")
-    ax2.set_xlabel("time steps")
-
-    plt.savefig(f"resources/signal/signal_summary/430_1842_event_{event}.svg", dpi = 300)
+    dir_save = pathlib.Path(file).stem
+    
+    plt.savefig(f"resources/signal/p2s/signal_summary/{dir_save}/1337_1842_430_event_{event}.svg", dpi = 300)
 
 def main(argv=sys.argv[1:]):
 
@@ -173,7 +166,7 @@ def main(argv=sys.argv[1:]):
     for event in range(0,9):
         logging.info(f"creating plot {event+1} of 9")
         df_event_pos, sliced_event, sliced_ref_seq, index_bases = make_dfs(event= event, query=query, features=features, ref=ref, pos=pos)
-        make_plot(event = event, window_size = window_size, ref=ref, df_pos = df_event_pos, index_bases=index_bases, df_event_pos=df_event_pos)
+        make_plot(event = event, window_size = window_size, ref=ref, df_pos = df_event_pos, index_bases=index_bases, df_event_pos=df_event_pos, file = args.file)
 
 if __name__ == "__main__":
      exit(main())
