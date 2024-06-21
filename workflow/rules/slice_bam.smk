@@ -22,4 +22,4 @@ rule bam_single_read_2:
         "../envs/slice_bam.yaml"
     threads: 8
     shell:
-        """set -x; samtools view -h {input.bam} | head -n2 | cat - {input.bam_temp} > {output.bam}"""
+        """set +o; samtools view -h {input.bam} | head -n2 | cat - {input.bam_temp} > {output.bam}"""
