@@ -1,4 +1,5 @@
 EVENTS = list(range(0,9))
+dir = "CCG_window_21_p2s_aligned_subsample_0001.npz"
 rule plot_boxplot:
     input: 
         "resources/results/p2s/{dir}.npz"
