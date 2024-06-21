@@ -1,6 +1,6 @@
 # Code mostly written by Christoph Engelhardt
 
-############### Run time for 4x10^7 reads: ~2 days; memory usage piles up over time up to ~50%/ 30 GB RAM in the end
+############### Run time for 4x10^7 reads: ~5 h; memory usage piles up over time up to ~50%/ 30 GB RAM in the end
 
 import numpy as np
 import pod5 as p5
@@ -13,6 +13,11 @@ import json
 from pathlib import Path
 import ipdb
 import time
+
+try:
+    import align_signal
+except ImportError: 
+    raise ImportError("Import of module align_signal failed, is align_signal.py in the same folder as this script?")
 
 
 pod5_file = "resources/pod5/p2s/"
@@ -80,6 +85,7 @@ def get_events(signal, moves, offset, rev_loci, motif_length, extra_window):
             
         prev = move_index[locus]*stride+offset
         sig_end = move_index[locus+1]*stride+offset
+        
         
         sig_len = sig_end-prev
         data_tmp[4]=np.log10(sig_len)
@@ -201,7 +207,7 @@ def main(argv=sys.argv[1:]):
 
                     # events: 0.01 s = 100/s
                     #events is inverted as the signal goes from 3' -> 5', but sequence from 5' -> 3'
-                    dict_events = get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), rev_loci, motif_length, extra_window)
+                    dict_events = align_signal.get_events(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), rev_loci, motif_length, extra_window, signal_stats=True)
                     
                     # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
                     
