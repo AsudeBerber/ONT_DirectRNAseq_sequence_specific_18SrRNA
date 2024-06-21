@@ -7,9 +7,11 @@ import numpy as np
 import pandas as pd
 import sys
 import logging
+import os
 import pdb
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 # npz_file = f"resources/results/p2s/CCG_window_21_p2s_aligned_sorted.npz"
 # frame=9
 
@@ -17,6 +19,7 @@ logger = logging.getLogger(__name__)
 def load_npz(npz_file):
     ## mmap_mode writes in binary to disk to save RAM, can be deleted for smaller npz files
     logger.info("loading npz")
+
     loaded = np.load(npz_file, mmap_mode= "w+")
 
     """
@@ -79,7 +82,7 @@ def filter_by_pos(pos):
 
 
 
-def make_dfs(event, frame, query, features, ref): 
+def make_dfs(event, frame, query, features, ref, pos): 
     index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, frame=frame, query=query, features=features, ref=ref)
 
     df_event = pd.DataFrame((sliced_event), columns = list(range(1,frame*2+2)))
@@ -157,8 +160,8 @@ def main(argv=sys.argv[1:]):
 
     
     for event in range(0,9):
-        logging.info(f"creating plot {event} of 9")
-        df_event_pos, sliced_event, sliced_ref_seq = make_dfs(event= event, frame=args.window, query=query, features=features, ref=ref)
+        logging.info(f"creating plot {event+1} of 9")
+        df_event_pos, sliced_event, sliced_ref_seq = make_dfs(event= event, frame=args.window, query=query, features=features, ref=ref, pos=pos)
         make_plot(event = event, window_size = window_size, ref=ref, df_pos = df_event_pos)
 
 if __name__ == "__main__":
