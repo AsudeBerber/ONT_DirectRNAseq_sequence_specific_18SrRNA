@@ -136,8 +136,7 @@ ax2.set_yscale("symlog")
 ax2.set_title(f"Pos 1842 ± {arround} bp")
 ax2.set_xlabel("time steps")
 
+def main(argv=sys.argv[1:]):
 
-
-# if __name__ == "__main__":
-#     args = parse_args(argv=sys.argv[1:])
-#     # exit(main())
+if __name__ == "__main__":
+     exit(main())
