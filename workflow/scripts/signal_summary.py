@@ -11,8 +11,6 @@ import sys
 import os
 import json
 from pathlib import Path
-import ipdb
-import time
 
 try:
     import align_signal
@@ -160,11 +158,13 @@ def main(argv=sys.argv[1:]):
 
     with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
+
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
         with open('resources/results/p2s/pod5.json', "r") as f:
             pod5_index= json.load(f)
 
         pod5_path = "resources/pod5/p2s/"
+        count_keyErr = 0 # counts skipped reads (s. below)
 
         for read in tqdm(bam):
             if read.is_unmapped:
@@ -194,6 +194,7 @@ def main(argv=sys.argv[1:]):
             try:
                 pod5_file = pod5_index[read.query_name]
             except KeyError:
+                count_keyErr += 1
                 continue
                 
 
@@ -242,6 +243,7 @@ def main(argv=sys.argv[1:]):
     ref_seq = np.array(ref_seq, dtype="U")
     np.savez_compressed(npz_file, feat = features, qual = qual, query = query_seq, ref = ref_seq, id = id)
 
+    print(f"{count_keyErr} reads in bam but not in pod5 (this is normal, don't panic)")
     # it should be somehow possible to convert this to a txt file, however the dimensions of the array have to be reduced for this, maybe via for loop?
     # does not work so far
     # np.savetxt('resources/results/p2s/summary.txt', features, qual, query_seq, ref_seq, id))
