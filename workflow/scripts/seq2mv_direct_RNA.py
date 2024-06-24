@@ -90,7 +90,7 @@ def bam_aligned(sample, read_ids, region, pos):
                 
             # print(read.get_tags())
             # print(f"ts:{ts}; {read_ID}") 
-            return(seq, mv, ts, pos_read, ref_seq)
+            return(seq, mv, ts, ref_seq)
         else: 
             #removing the else part makes the code only 1s faster
             i = i+1
