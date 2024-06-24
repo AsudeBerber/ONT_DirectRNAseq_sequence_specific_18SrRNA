@@ -204,6 +204,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             signal_slice = signal[start:end]
             time = np.arange(len(signal)) #arbitrary time units
             time_slice = time[start:end]
+
+            
             #
 
         #constructs colormap for plot
@@ -230,8 +232,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                     # like slice above, just for every base -> signal per base can be colored differently
                     base_start = int(seq2mv[base][0])
                     base_end = int(seq2mv[base][1])
-                    signal_slice_base = reversed(signal[base_start:base_end])
-                    time_slice_base = reversed(time [base_start:base_end])
+                    signal_slice_base = signal[base_start:base_end]
+                    time_slice_base = time [base_start:base_end]
                     ax.scatter(time_slice_base, signal_slice_base,
                                 linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
                                 # linewidth = 1, marker= "o", facecolor = viridis.colors[i], zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
