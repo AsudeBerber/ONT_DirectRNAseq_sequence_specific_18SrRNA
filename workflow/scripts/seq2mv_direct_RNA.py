@@ -1,6 +1,10 @@
 __author__ = "Jens Martin"
 __email__ = "jens.martin@outlook.com"
 
+#############  plots signal/squigle for one given read against basecalled sequence
+###############  bam file has to include following tags: mv, ts, ns (from basecaller), MD(minimap --MD)
+#################  runtime ~ 30s, faster when exact region is given, low memory usage
+
 import argparse
 import os
 import pod5 as p5
@@ -13,6 +17,9 @@ try:
     import align_signal
 except ImportError: 
     raise ImportError("Import of module align_signal failed, is align_signal.py in the same folder as this script?")
+
+##########################################################################
+#  not executed, but might be useful
 
 #creates textfile with all read_ids within bam file
 def read_id_list_bam(sample=None):
@@ -34,6 +41,23 @@ def read_id_list_bam(sample=None):
     f.close()
 
 
+#writes generated array to txt file
+def seq2mv_to_txt(seq2mv):
+    try:
+        a = open("resources/seq2mv.txt", "x")
+    except: 
+        # if file exists, it is wiped
+        a = open("resources/seq2mv.txt", "w")
+        a.write("")
+        a.close()
+
+    a = open("resources/seq2mv.txt", "a")
+    for line in seq2mv:
+        a.write(" ".join(line) + "\n")
+    a.close()
+
+##########################################################################
+
 #gets movetable (mv), ts and corresponding base sequence (seq) for given read id
 def bam_aligned(sample, read_ids, region, pos):
 
@@ -50,7 +74,7 @@ def bam_aligned(sample, read_ids, region, pos):
             
 
             # Workaround in cases where two ts tags per read exists:
-            # read.set_tag("ts", None) #first ts tag is transcript strand, has to be removed
+            # read.set_tag("ts", None) #first ts tag is transcript strand(+|-), has to be removed
 
             mv = read.get_tag("mv")
             ts = read.get_tag("ts")
@@ -118,22 +142,6 @@ def reverse_seq_mv(seq2mv):
         base_data[0] = k - end_old #start and end switch when string is read in other direction, former last base is now first and vice versa
         base_data[1] = k - start_old
     return rev_seq2mv
-
-
-#writes generated array to txt file
-def seq2mv_to_txt(seq2mv):
-    try:
-        a = open("resources/seq2mv.txt", "x")
-    except: 
-        # if file exists, it is wiped
-        a = open("resources/seq2mv.txt", "w")
-        a.write("")
-        a.close()
-
-    a = open("resources/seq2mv.txt", "a")
-    for line in seq2mv:
-        a.write(" ".join(line) + "\n")
-    a.close()
 
 
 #assigns every base a color for annotation
@@ -222,8 +230,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                     # like slice above, just for every base -> signal per base can be colored differently
                     base_start = int(seq2mv[base][0])
                     base_end = int(seq2mv[base][1])
-                    signal_slice_base = signal[base_start:base_end]
-                    time_slice_base = time [base_start:base_end]
+                    signal_slice_base = reversed(signal[base_start:base_end])
+                    time_slice_base = reversed(time [base_start:base_end])
                     ax.scatter(time_slice_base, signal_slice_base,
                                 linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
                                 # linewidth = 1, marker= "o", facecolor = viridis.colors[i], zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
