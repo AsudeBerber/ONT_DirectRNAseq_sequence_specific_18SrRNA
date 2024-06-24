@@ -149,14 +149,14 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
 
 
 def reverse_seq_mv(seq2mv):
-k = int(seq2mv[-1][1]) #signal range
-rev_seq2mv = np.flip(seq2mv,0)
-for base_data in rev_seq2mv:
-    start_old = int(base_data[0])
-    end_old = int(base_data[1])
-    base_data[0] = k - end_old #start and end switch when string is read in other direction, former last base is now first and vice versa
-    base_data[1] = k - start_old
-return rev_seq2mv
+    k = int(seq2mv[-1][1]) #signal range
+    rev_seq2mv = np.flip(seq2mv,0)
+    for base_data in rev_seq2mv:
+        start_old = int(base_data[0])
+        end_old = int(base_data[1])
+        base_data[0] = k - end_old #start and end switch when string is read in other direction, former last base is now first and vice versa
+        base_data[1] = k - start_old
+    return rev_seq2mv
 
 
 def bam_aligned(sample, read_ids, region, pos):
