@@ -105,7 +105,7 @@ def bam_aligned(sample, read_ids, region, pos):
 # assigns individual bases in sequence to corresponding part of signal through movetable information
 def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, pos=42):
     if fetch == True:
-        seq, mv, ts, pos_read, ref_seq = bam_aligned(sample, reads_ids, region, pos)
+        seq, mv, ts, ref_seq = bam_aligned(sample, reads_ids, region, pos)
     
     seq = seq[::-1] #sequence order is 5' -> 3', mv and signal are 3' -> 5': therefore sequence is turned around
     s = mv[0] #stride length
