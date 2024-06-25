@@ -9,6 +9,7 @@ rule minimap2_align_txome:
     threads:
         16
     shell:
+    # MM and ML include modified bases/probability, s. https://samtools.github.io/hts-specs/SAMtags.pdf, p.7
         """
         samtools fastq -@ {threads} -T mv,ts,ns,MM,ML {input.bam} |
             minimap2 -ax map-ont -k14 --secondary=no -t {threads} {input.fa} - -y --MD|
