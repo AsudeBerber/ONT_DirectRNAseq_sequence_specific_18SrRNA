@@ -44,15 +44,15 @@ rule signal2ref:
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
         # e.g resources/signal/squigualizer/READ_ID/p2s_aligned_1800-1850.html
-        temp = temp("resources/.temp/{read_id}/{bam_file}_{region}"),
         html = "resources/signal/squigualiser/{read_id}/{bam_file}_{region}.html"
     conda:
         "../envs/squigualiser.yaml"
     params:
         # this is the "chromosome" for 18S rRNA, change otherwise
         chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
+        temp = "resources/.temp/{wildcards.read_id}""
     threads: 16
     shell:
         """squigualiser plot  --rna --region {params.chr}:{wildcards.region}\
-        --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {output.temp}; \
-        mv {output.temp}/{wildcards.read_id}_.html {output.html}"""
+        --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {params.temp}; \
+        mv {params.temp}/{wildcards.read_id}_.html {output.html}; rm -r resources/.temp"""
