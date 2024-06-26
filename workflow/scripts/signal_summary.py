@@ -20,9 +20,8 @@ except ImportError:
 
 pod5_file = "resources/pod5/p2s/"
 bam_file = f"resources/alignments/p2s_aligned_sorted.bam"
-motif = "CCG" # "HCG" is possible ("[ACT]CG"), highest specificity is "CCG"
 window_size = 21
-npz_file = f"resources/results/p2s/{motif}_window_{window_size}_{Path(bam_file).stem}.npz"
+npz_file = f"resources/results/p2s/CCG_window_{window_size}_{Path(bam_file).stem}.npz"
 
 # different positions can be set here, ##### index is 0-based  ######
 ref_ac1 = 1336
@@ -41,7 +40,6 @@ def parse_args(argv):
     parser.add_argument("-p", "--pod5", type=str)
     parser.add_argument("-b", "--bam", type=str)
     parser.add_argument("-o", "--output", type=str)
-    parser.add_argument("-m", "--motif", type=str, default="CCG")
     parser.add_argument("-w", "--window", type=int, default=21)
 
     args = parser.parse_args()
@@ -148,11 +146,10 @@ def main(argv=sys.argv[1:]):
 
     args = parse_args(argv=argv)
 
-    # pod5_file = args.pod5
-    # bam_file = args.bam
-    # motif = args.motif
-    # window_size = args.window
-    # npz_file = args.output
+    pod5_file = args.pod5
+    bam_file = args.bam
+    window_size = args.window
+    npz_file = args.output
 
     extra_window = int((window_size - 1) / 2)
 
