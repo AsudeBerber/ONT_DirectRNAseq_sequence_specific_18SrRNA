@@ -11,5 +11,5 @@ rule signal_sum:
     threads:
         16
     shell:
-        "signal_summary.py --pod5 {input.pod5} --bam {input.bam} --window {output.window_size} --motif {wildcards.motif} --output {output}"
+        "signal_summary.py --pod5 {input.pod5} --bam {input.bam} --window {wildcards.window_size} --motif {wildcards.motif} --output {output}"
 
