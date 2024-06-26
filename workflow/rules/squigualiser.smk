@@ -50,8 +50,7 @@ rule signal2ref:
         "../envs/squigualiser.yaml"
     params:
         # this is the "chromosome" for 18S rRNA, change otherwise
-        chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
-        temp = "resources/.temp/""
+        chr = r"gi\|1154491913\|ref\|NR_003286.4\|"
     threads: 16
     shell:
         """squigualiser plot  --rna --region {params.chr}:{wildcards.region}\
