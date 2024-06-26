@@ -150,7 +150,10 @@ def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos, file):
     ax3.set_title(f"Pos 430 ± {frame} bp")
     ax3.set_xlabel("Steps")
 
-    dir_save = pathlib.Path(file).stem
+    dir_save = pathlib.Path(file).stem 
+
+    # creates directory if not present
+    if not os.path.isdir(dir_save): os.makedirs(dir_save)
     
     plt.savefig(f"resources/signal/p2s/signal_summary/{dir_save}/1337_1842_430_event_{event}.svg", dpi = 300)
 
