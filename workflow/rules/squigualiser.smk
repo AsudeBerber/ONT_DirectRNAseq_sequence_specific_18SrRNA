@@ -25,7 +25,7 @@ rule realign:
 
 rule pod2slow:
     input:
-        pod5 = "resources/pod5/p2s/" # test.bam: resources/pod5/p2s/PAW35875_9fd38647_68d05f77_211.pod5
+        pod5 = "resources/pod5/p2s/{pod5_file}" # test.bam: resources/pod5/p2s/PAW35875_9fd38647_68d05f77_211.pod5
     output:
         "resources/blow5/p2s/PAW35875_9fd38647_68d05f77.blow5"
     conda:
@@ -36,16 +36,18 @@ rule pod2slow:
 
 files = glob_wildcards("resources/blow5/p2s/{file}.blow5")
 
+# as this is only intended to do for a few reads, i would advise to check the corresponding pod5 file to the read_id (to find in resources/results/p2s/pod5.json)
+# it would be possible to create one big slow5 file, however this would take up ~100 GB of storage
 rule signal2ref:
     input:
-        slow5 = "resources/blow5/p2s/PAW35875_9fd38647_68d05f77.blow5", 
+        slow5 = "resources/blow5/p2s/{pod5_file}.blow5", 
         realigned = "resources/alignments/squigualiser/{bam_file}_realigned_sorted.bam",
         realigned_index = "resources/alignments/squigualiser/{bam_file}_realigned_sorted.bam.bai",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
         # e.g resources/signal/squigualizer/READ_ID/p2s_aligned_1800-1850.html
         temp = temp("resources/.temp/{read_id}/{bam_file}_{region}/"),
-        html = "resources/signal/squigualiser/{read_id}/{bam_file}_{region}.html"
+        html = "resources/signal/squigualiser/{read_id}-{pod5_file}/{bam_file}_{region}.html"
     conda:
         "../envs/squigualiser.yaml"
     params:
