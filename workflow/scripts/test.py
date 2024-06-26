@@ -17,8 +17,7 @@ def main(argv = sys.argv[1:]):
     seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
                     seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos)  
     
-
-
+def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, pos=42):
 
 
 def cmd_parser(argv):

@@ -123,8 +123,6 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
     if fetch == True:
         seq, mv, ts, pos_read, ref_seq = bam_aligned(sample, reads_ids, region, pos)
 
-
-    
     seq = seq[::-1] #sequence order is 5' -> 3', mv and signal are 3' -> 5': therefore sequence is turned around
     s = stride
     p = 1 #itinerates through movetable array
