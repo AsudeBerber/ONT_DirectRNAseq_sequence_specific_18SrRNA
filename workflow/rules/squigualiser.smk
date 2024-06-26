@@ -44,8 +44,8 @@ rule signal2ref:
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
         # e.g resources/signal/squigualizer/READ_ID/p2s_aligned_1800-1850.html
-        temp("resources/.temp/{read_id}"),
-        "resources/signal/squigualiser/{read_id}/{bam_file}_{region}.html"
+        temp = temp("resources/.temp/{read_id}"),
+        html = "resources/signal/squigualiser/{read_id}/{bam_file}_{region}.html"
     conda:
         "../envs/squigualiser.yaml"
     params:
@@ -54,5 +54,5 @@ rule signal2ref:
     threads: 16
     shell:
         """squigualiser plot  --rna --region {params.chr}:{wildcards.region}\
-        --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir resources/.temp/{wildcards.read_id} \n 
-        mv resources/.temp/{read_id}_.html {output}"""
+        --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {output.temp} \n 
+        mv {output.temp}/{read_id}_.html {output.html}"""
