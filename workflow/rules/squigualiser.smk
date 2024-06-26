@@ -53,6 +53,6 @@ rule signal2ref:
         chr = r"gi\|1154491913\|ref\|NR_003286.4\|"
     threads: 16
     shell:
-        """squigualiser plot  --rna --region {params.chr}:{wildcards.region}\
+        """squigualiser plot -r {wildcards.read_id} --rna --region {params.chr}:{wildcards.region}\
         --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {output.temp}; \
         mv {output.temp}/{wildcards.read_id}_.html {output.html}; rm -r resources/.temp"""
