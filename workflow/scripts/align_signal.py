@@ -3,7 +3,7 @@ __email__ = "jens.martin@outlook.com"
 
 import numpy as np
 import pdb
-def common(moves, loci, extra_window, read):
+def access_mv(moves, loci, extra_window, read):
     stride = moves.pop(0)
     move_index = np.where(moves)[0]
     rlen = len(move_index)
