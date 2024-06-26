@@ -3,10 +3,12 @@ __email__ = "jens.martin@outlook.com"
 
 import numpy as np
 import pdb
-def common():
+def common(moves, loci, extra_window, read):
     stride = moves.pop(0)
     move_index = np.where(moves)[0]
     rlen = len(move_index)
+
+    rev_loci = [rev_locus(locus, read) for locus in loci] 
 
     # last position is only to get sig_end
     pos_get_signal = [np.arange((locus - extra_window), locus + motif_length+extra_window) for locus in rev_loci]
@@ -146,56 +148,3 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
 
     print ("sequence-to-signal alignment finished,", len(seq), "bases, signal length =", end)    
     return seq2mv, pos_read
-
-
-def reverse_seq_mv(seq2mv):
-    k = int(seq2mv[-1][1]) #signal range
-    rev_seq2mv = np.flip(seq2mv,0)
-    for base_data in rev_seq2mv:
-        start_old = int(base_data[0])
-        end_old = int(base_data[1])
-        base_data[0] = k - end_old #start and end switch when string is read in other direction, former last base is now first and vice versa
-        base_data[1] = k - start_old
-    return rev_seq2mv
-
-
-def bam_aligned(sample, read_ids, region, pos):
-
-    samfile = ps.AlignmentFile(f"{sample}")
-
-    max_reads = samfile.mapped
-    i = 0
-
-    # if index file present, fetch(region = region)
-    for read in samfile.fetch(region = region):
-        if read.query_name == read_ids:
-            read_ID = read.query_name
-            seq = read.query_sequence
-            
-
-            # Workaround in cases where two ts tags per read exists:
-            # read.set_tag("ts", None) #first ts tag is transcript strand(+|-), has to be removed
-
-            mv = read.get_tag("mv")
-            ts = read.get_tag("ts")
-
-            ref_seq = read.get_reference_sequence()
-
-            aln_pairs = read.get_aligned_pairs(with_seq = True)
-            
-            # creates pairs of base positions (query, reference) -> looks up position in alignment sequence for corresponding reference base position
-            for pair in aln_pairs:
-                if pair [1] == pos: 
-                    pos_read = pair[0]
-                
-            # print(read.get_tags())
-            # print(f"ts:{ts}; {read_ID}") 
-            return(seq, mv, ts, pos_read, ref_seq)
-        else: 
-            #removing the else part makes the code only 1s faster
-            i = i+1
-            k = i/500000
-            if k.is_integer():
-                # print("currently at " +read.query_name + "\n")
-                print(f"reads compared: {i} of max. {max_reads}")
-            continue

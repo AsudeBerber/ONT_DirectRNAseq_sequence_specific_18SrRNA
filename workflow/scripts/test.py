@@ -11,18 +11,66 @@ try:
 except ImportError: 
     raise ImportError("Import of module align_signal failed, is align_signal.py in the same folder as this script?")
 
+#sample = "resources/alignments/c05e1233-6e1a-4698-bb74-9b47df9507f2.bam"
+#gets movetable (mv), ts and corresponding base sequence (seq) for given read id
+def bam_aligned(sample, read_ids, region, pos):
+
+    samfile = ps.AlignmentFile(f"{sample}")
+
+    max_reads = samfile.mapped
+    i = 0
+
+    # if index file present, fetch(region = region)
+    for read in samfile.fetch(region = region):
+        if read.query_name == read_ids:
+            read_ID = read.query_name
+            seq = read.query_sequence
+            
+
+            # Workaround in cases where two ts tags per read exists:
+            # read.set_tag("ts", None) #first ts tag is transcript strand(+|-), has to be removed
+
+            mv = read.get_tag("mv")
+            ts = read.get_tag("ts")
+
+            ref_seq = read.get_reference_sequence()
+
+            aln_pairs = read.get_aligned_pairs(with_seq = True)
+            
+            # creates pairs of base positions (query, reference) -> looks up position in alignment sequence for corresponding reference base position
+            for pair in aln_pairs:
+                if pair [1] == pos: 
+                    pos_read = pair[0]
+                
+            # print(read.get_tags())
+            # print(f"ts:{ts}; {read_ID}") 
+            return(seq, mv, ts, aln_pairs, ref_seq, read)
+        else: 
+            #removing the else part makes the code only 1s faster
+            i = i+1
+            k = i/500000
+            if k.is_integer():
+                # print("currently at " +read.query_name + "\n")
+                print(f"reads compared: {i} of max. {max_reads}")
+            continue
+
+
 def main(argv = sys.argv[1:]):
     args, fetch = cmd_parser(argv= argv)
 
     seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
-                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos)  
+                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, pos = args.pos, range = args.range)  
     
 def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, pos=42):
+    if fetch == True:
+        seq, mv, ts, aln_pairs, ref_seq, read = bam_aligned(sample, reads_ids, region, pos)
+
+    seq2mv, rev_loci, pos_get_signal = align_signal.common(moves = mv, loci = pos, extra_window = range, read = read)
 
 
 def cmd_parser(argv):
     parser = argparse.ArgumentParser(description="plots electric current/timepoint with corresponding basecalled base for given Read_ID")
-    parser.add_argument("--sequencer", help= "name of sequencer (p2i/p2s)")
+    parser.add_argument("--sequencer", help= "name of sequencer (p2i|p2s)")
     parser.add_argument("--sample", help= "Name of sample bam file w/o .bam ending", action="store")
     parser.add_argument("--readID", help= "Sample ID in bam and pod5 file", action="store")
     parser.add_argument("--pos", help= "position/index of base in middle, 1-based", type=int, action="store")
