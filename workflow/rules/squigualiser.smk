@@ -25,9 +25,9 @@ rule realign:
 
 rule pod2slow:
     input:
-        pod5 = "resources/pod5/p2s/{pod5_file}.pod5" # test.bam: resources/pod5/p2s/PAW35875_9fd38647_68d05f77_211.pod5
+        pod5 = "resources/pod5/p2s/" # test.bam: resources/pod5/p2s/PAW35875_9fd38647_68d05f77_211.pod5
     output:
-        "resources/blow5/p2s/{pod5_file}.blow5"
+        "resources/blow5/p2s/PAW35875_9fd38647_68d05f77.blow5"
     conda:
         "../envs/bluecrab.yaml"
     threads: 16
@@ -38,7 +38,7 @@ files = glob_wildcards("resources/blow5/p2s/{file}.blow5")
 
 rule signal2ref:
     input:
-        slow5 = "resources/blow5/p2s/PAW35875_9fd38647_68d05f77_211.blow5", 
+        slow5 = "resources/blow5/p2s/PAW35875_9fd38647_68d05f77.blow5", 
         realigned = "resources/alignments/squigualiser/{bam_file}_realigned_sorted.bam",
         realigned_index = "resources/alignments/squigualiser/{bam_file}_realigned_sorted.bam.bai",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
@@ -55,4 +55,4 @@ rule signal2ref:
     shell:
         """squigualiser plot -r {wildcards.read_id} --rna --region {params.chr}:{wildcards.region}\
         --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {output.temp}; \
-        mv {output.temp}/{wildcards.read_id}_.html {output.html}; rm -r resources/.temp"""
+        mv {output.temp}/{wildcards.read_id}_.html {output.html}"""
