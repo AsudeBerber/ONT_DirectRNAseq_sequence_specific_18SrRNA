@@ -48,8 +48,7 @@ rule signal2ref:
     conda:
         "../envs/squigualiser.yaml"
     params:
-        read_id = "7be77036-bcfb-4493-a95a-dd58b6975e5b",
-        OUTPUT_DIR = "resources/signal/p2s/squigualiser/{params.read_id}",
+        OUTPUT_DIR = "resources/signal/p2s/squigualiser/{wildcards.read_id}",
         # this is the "chromosome" for 18S rRNA, change otherwise
         chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
     threads: 16
