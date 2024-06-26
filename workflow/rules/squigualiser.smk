@@ -46,7 +46,7 @@ rule signal2ref:
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
         # e.g resources/signal/squigualizer/READ_ID/p2s_aligned_1800-1850.html
-        temp = temp(dir("resources/.temp/{read_id}-{pod5_file}/{bam_file}_{region}")),
+        temp = temp(directory("resources/.temp/{read_id}-{pod5_file}/{bam_file}_{region}")),
         html = "resources/signal/squigualiser/{read_id}-{pod5_file}/{bam_file}_{region}.html"
     conda:
         "../envs/squigualiser.yaml"
