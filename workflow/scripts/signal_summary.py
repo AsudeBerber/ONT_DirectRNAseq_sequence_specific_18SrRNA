@@ -18,10 +18,10 @@ except ImportError:
     raise ImportError("Import of module align_signal failed, is align_signal.py in the same folder as this script?")
 
 
-pod5_file = "resources/pod5/p2s/"
-bam_file = f"resources/alignments/p2s_aligned_sorted.bam"
-window_size = 21
-npz_file = f"resources/results/p2s/CCG_window_{window_size}_{Path(bam_file).stem}.npz"
+# pod5_file = "resources/pod5/p2s/"
+# bam_file = f"resources/alignments/p2s_aligned_sorted.bam"
+# window_size = 21
+# npz_file = f"resources/results/p2s/CCG_window_{window_size}_{Path(bam_file).stem}.npz"
 
 # different positions can be set here, ##### index is 0-based  ######
 ref_ac1 = 1336
