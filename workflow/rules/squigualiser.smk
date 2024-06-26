@@ -49,11 +49,10 @@ rule signal2ref:
     conda:
         "../envs/squigualiser.yaml"
     params:
-        OUTPUT_DIR = "resources/signal/p2s/squigualiser/{wildcards.read_id}",
         # this is the "chromosome" for 18S rRNA, change otherwise
         chr = r"gi\|1154491913\|ref\|NR_003286.4\|",
     threads: 16
     shell:
         """squigualiser plot  --rna --region {params.chr}:{wildcards.region}\
-        --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir resources/.temp \n 
+        --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir resources/.temp/{wildcards.read_id} \n 
         mv resources/.temp/{read_id}_.html {output}"""
