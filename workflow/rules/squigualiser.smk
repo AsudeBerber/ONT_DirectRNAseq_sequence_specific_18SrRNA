@@ -57,4 +57,4 @@ rule signal2ref:
     shell:
         """squigualiser plot -r {wildcards.read_id} --rna --region {params.chr}:{wildcards.region}\
         --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {output.temp}; \
-        mv {output.temp}_.html {output.html}"""
+        mv {output.temp} {output.html}"""
