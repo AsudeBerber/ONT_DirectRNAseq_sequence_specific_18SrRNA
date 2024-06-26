@@ -3,23 +3,6 @@ __email__ = "jens.martin@outlook.com"
 
 import numpy as np
 import pdb
-def access_mv(moves, loci, extra_window, read):
-    stride = moves.pop(0)
-    move_index = np.where(moves)[0]
-    rlen = len(move_index)
-
-    rev_loci = [rev_locus(locus, read) for locus in loci] 
-
-    # last position is only to get sig_end
-    pos_get_signal = [np.arange((locus - extra_window), locus + motif_length+extra_window) for locus in rev_loci]
-    pos_get_signal = np.reshape(pos_get_signal, -1)
-
-    for locus in pos_get_signal:
-        
-        prev = move_index[locus]*stride+offset
-        sig_end = move_index[locus+1]*stride+offset
-        sig_len = sig_end-prev
-
 # for getting position in signal (goes 3' to 5')
 def rev_locus(locus, read):
     locus_rev = read.query_length -1 - locus
@@ -61,8 +44,8 @@ def get_loci(read, pairs, wd, motif_length):
         rev_loci.append(rev_locus(locus, read))
     return loci, ref_loci, rev_loci
 
-
-def get_events(signal, moves, offset, rev_loci, motif_length=1, extra_window=21, signal_stats = False):
+# this part is modified from https://github.com/WGLab/DeepMod2/blob/main/src/detect.py
+def access_mv(signal, moves, offset, loci, motif_length, extra_window, read, mode):
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
     following values for each called based:
@@ -78,6 +61,7 @@ def get_events(signal, moves, offset, rev_loci, motif_length=1, extra_window=21,
     move_index = np.where(moves)[0]
     rlen = len(move_index)
     
+    rev_loci = [rev_locus(locus, read) for locus in loci] 
     
     dict_events = {}
 
@@ -85,7 +69,7 @@ def get_events(signal, moves, offset, rev_loci, motif_length=1, extra_window=21,
     pos_get_signal = [np.arange((locus - extra_window), locus + motif_length+extra_window) for locus in rev_loci]
     pos_get_signal = np.reshape(pos_get_signal, -1)
     
-    if signal_stats == True:
+    if mode == "signal_stats":
 
          # normalise signal
         median = np.median(signal)
@@ -115,36 +99,14 @@ def get_events(signal, moves, offset, rev_loci, motif_length=1, extra_window=21,
             dict_events.update({locus:data_tmp})
         return dict_events
 
-    elif signal_stats == False:
-        pass
+    elif mode == "single_read":
+        seq2mv = np.zeros(shape = (0,3))
+        for locus in pos_get_signal:
+            prev = move_index[locus]*stride+offset
+            sig_end = move_index[locus+1]*stride+offset
+            sig_len = sig_end-prev
+            seq2mv = np.append(seq2mv, [prev, sig_end, locus])
+        
+        return seq2mv, rev_loci
 
     else: raise Exception("signal_stats has to be either True or False")
-
-
-def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, pos=42):
-    if fetch == True:
-        seq, mv, ts, pos_read, ref_seq = bam_aligned(sample, reads_ids, region, pos)
-
-    seq = seq[::-1] #sequence order is 5' -> 3', mv and signal are 3' -> 5': therefore sequence is turned around
-    s = stride
-    p = 1 #itinerates through movetable array
-    x = 0 #number of additional strides (stride amount - 1)
-    start = ts + 1
-
-    seq2mv = np.array([[1, ts, "-", "-"]])
-    for i, base in enumerate(seq):
-        # print (base)
-        while p < len(mv)-1 and mv[p + 1] == 0: #last movetable index(p): mv[p+1] doesn't exist, would cause error
-            x = x + 1 #counts 0's
-            p = p + 1 #0 found -> movetable index moves by one
-            # print (f"{p},{x}\n")
-        p = p + 1 
-
-        end = start + (stride-1) + (x*s) #stride 1: start + 4 (as start number is already first position in stride), all further strides: additional +5
-        x = 0 #resets number of additional strides
-        ref_base = ref_seq [i]
-        seq2mv = np.append(values=[[start, end, base, ref_base]], arr=seq2mv, axis=0) # appends 
-        start = end+1 #next base starts 1 after end of previous base
-
-    print ("sequence-to-signal alignment finished,", len(seq), "bases, signal length =", end)    
-    return seq2mv, pos_read
