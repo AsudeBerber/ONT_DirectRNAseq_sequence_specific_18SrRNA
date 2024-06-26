@@ -40,7 +40,7 @@ rule signal2ref:
     input:
         slow5 = "resources/blow5/p2s/PAW35875_9fd38647_68d05f77_211.blow5", 
         realigned = "resources/alignments/squigualiser/{bam_file}_realigned_sorted.bam",
-        # realigned_index = "resources/alignments/squigualiser/{bam_file}_realigned.bam.bai",
+        realigned_index = "resources/alignments/squigualiser/{bam_file}_realigned_sorted.bam.bai",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
         # e.g resources/signal/squigualizer/READ_ID/p2s_aligned_1800-1850.html
