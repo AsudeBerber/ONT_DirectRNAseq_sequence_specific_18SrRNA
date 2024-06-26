@@ -4,7 +4,7 @@ rule signal_sum:
     output: 
         "resources/results/p2s/{motif}_window_{window_size}_{bam_file}.npz"
     conda:
-        ""../envs/signal_sum.yaml"
+        "../envs/signal_sum.yaml"
     #params:
         # window_size = 21
         # motif = "CCG"
