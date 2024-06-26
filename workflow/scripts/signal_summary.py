@@ -77,7 +77,7 @@ def main(argv=sys.argv[1:]):
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = False)
             ac_ccg= np.array(list(filter(lambda x: x[1] in ref_pos, aligned_pairs)), dtype= "object")
             # pairs_dict = dict((y, x) for x, y, z in ac_ccg if y is not None)
-            loci, ref_loci, rev_loci = align_signal.get_loci(read, ac_ccg, extra_window, motif_length)
+            loci, ref_loci, rev_loci = align_signal.get_loci(read, ac_ccg, extra_window, motif_length, ref_pos)
         
             if len(loci) == 0:
                 continue

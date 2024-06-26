@@ -8,7 +8,7 @@ def rev_locus(locus, read):
     locus_rev = read.query_length -1 - locus
     return locus_rev
 
-def get_loci(read, pairs, wd, motif_length):
+def get_loci(read, pairs, wd, motif_length, ref_pos):
     """
     find positions that match motif
     """    
