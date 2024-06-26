@@ -43,7 +43,8 @@ rule signal2ref:
         realigned_index = "resources/alignments/squigualiser/{bam_file}_realigned.bam.bai",
         ref = "resources/referencetranscriptome/18SrRNA.fa"
     output:
-        "{output_dir}/{read_id}/{bam_file}_{region}.html"
+        # e.g resources/signal/squigualizer/READ_ID/p2s_aligned_1800-1850.html
+        "{output_dir}/squigualiser/{read_id}/{bam_file}_{region}.html"
     conda:
         "../envs/squigualiser.yaml"
     params:
