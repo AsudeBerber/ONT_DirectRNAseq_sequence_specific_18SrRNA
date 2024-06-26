@@ -54,5 +54,5 @@ rule signal2ref:
     threads: 16
     shell:
         """squigualiser plot  --rna --region {params.chr}:{wildcards.region}\
-        --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {wildcards.temp}; \
-        mv {wildcards.temp}/{wildcards.read_id}_.html {output.html}; rm -r resources/.temp"""
+        --file {input.ref} --slow5 {input.slow5} --alignment {input.realigned} --output_dir {output.temp}; \
+        mv {output.temp}/{wildcards.read_id}_.html {output.html}; rm -r resources/.temp"""
