@@ -64,8 +64,9 @@ def main(argv = sys.argv[1:]):
 def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, pos=42):
     if fetch == True:
         seq, mv, ts, aln_pairs, ref_seq, read = bam_aligned(sample, reads_ids, region, pos)
-
-    seq2mv, rev_loci, pos_get_signal = align_signal.common(moves = mv, loci = pos, extra_window = range, read = read)
+    if fetch == False:
+        seq, mv, ts = args.seq, args.mv, args.ts
+    seq2mv, rev_loci, pos_get_signal = align_signal.access_mv(moves = mv, loci = pos, extra_window = range, read = read, mode = "single_read")
 
 
 def cmd_parser(argv):
