@@ -236,25 +236,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
         ax.annotate(f"18S RNA transcript - position {pos+1} ± {range_bp} bp", xy= (0.5, 0.95), xycoords="axes fraction", ha = "center")
 #
         #annotation of bases to signal plot
-        i = -range_bp
-        xticks = []
-        for base_data in seq2mv:
-            x_coord = (int(base_data[0])+int(base_data[1]))/2 
-            if x_coord < start:
-                pass
-            elif x_coord > start and x_coord < end: 
-                # read seq
-                ax.annotate(base_data[2], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
-                # ref seq
-                # ax.annotate(base_data[3], xy = (x_coord, 0.06), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
-                ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
-                ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
-                xticks.append(int(base_data[0])-0.5)
-                i = i + 1
-            else:
-                ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
-                xticks.append(int(base_data[0])-0.5)
-                break
         
         ax.set_xticks(ticks = xticks)
         ax.set_xticklabels([])
@@ -307,7 +288,6 @@ def main(argv = sys.argv[1:]):
     
     seq2mv, qseq, aln_pairs = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
                     seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, ref_pos = args.pos, range = args.range) 
-    breakpoint()
     plot_signal_plus_seq(seq2mv=seq2mv, read_ids = args.readID, pos=args.pos, qseq = qseq, aln_pairs = aln_pairs, range_bp = args.range,
                           sequencer = args.sequencer, full_read=False, range_var = "bases", pod5_dir = args.pod5_dir)
     
