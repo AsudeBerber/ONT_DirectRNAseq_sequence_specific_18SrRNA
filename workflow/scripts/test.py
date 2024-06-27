@@ -73,7 +73,7 @@ def bam_aligned(sample, read_ids, region, pos):
     for read in samfile.fetch(region = region):
         if read.query_name == read_ids:
             read_ID = read.query_name
-            seq = read.query_sequence
+            seq = read.query_alignment_sequence
             
 
             # Workaround in cases where two ts tags per read exists:
@@ -293,7 +293,7 @@ def main(argv = sys.argv[1:]):
     seq2mv, qseq, aln_pairs = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
                     seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, ref_pos = args.pos, range = args.range) 
     breakpoint()
-    plot_signal_plus_seq(seq2mv=seq2mv, read_ids = args.readID, pos=args.pos, qseq = qseq, aln_pairs = aln_pairs, range_bp = range,
+    plot_signal_plus_seq(seq2mv=seq2mv, read_ids = args.readID, pos=args.pos, qseq = qseq, aln_pairs = aln_pairs, range_bp = args.range,
                           sequencer = args.sequencer, full_read=False, range_var = "bases", pod5_dir = args.pod5_dir)
     
 
