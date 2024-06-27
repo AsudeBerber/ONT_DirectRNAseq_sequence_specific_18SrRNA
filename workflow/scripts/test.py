@@ -180,7 +180,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
                 cmap_plot[i] = "#67a9cf"
                 
         qseq_rev = qseq[::-1]
-        ref_seq_rev = aln_pairs[rev_pos, 2]
 
         # Plot using matplotlib
 
