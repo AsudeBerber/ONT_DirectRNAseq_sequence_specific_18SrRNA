@@ -71,8 +71,7 @@ def base_color(base):
     else: col = "black"
     return col    
 
-#sample = "resources/alignments/c05e1233-6e1a-4698-bb74-9b47df9507f2.bam"
-#gets movetable (mv), ts and corresponding base sequence (seq) for given read id
+#gets movetable (mv), ts and corresponding base sequence (seq) for given read id, as well as aligned pairs
 def bam_aligned(sample, read_ids, region, pos):
 
     samfile = ps.AlignmentFile(f"{sample}")
@@ -80,7 +79,7 @@ def bam_aligned(sample, read_ids, region, pos):
     max_reads = samfile.mapped
     i = 0
 
-    # if index file present, fetch(region = region)
+    # loops through samfile until it finds matching read, rather slow 
     for read in samfile.fetch(region = region):
         if read.query_name == read_ids:
             read_ID = read.query_name
@@ -94,6 +93,7 @@ def bam_aligned(sample, read_ids, region, pos):
 
             ref_seq = read.get_reference_sequence()
 
+            # list in form [query_pos, ref_pos, ref_base]; all 0-based
             aln_pairs = np.array(read.get_aligned_pairs(with_seq = True, matches_only = False))
             
             # creates pairs of base positions (query, reference) -> looks up position in alignment sequence for corresponding reference base position
@@ -116,7 +116,9 @@ def bam_aligned(sample, read_ids, region, pos):
 
 
 
-
+# alignes reference & query sequence to matching positions in signal
+# seq2mv: [start_signal, end_signal, position in query_sequence]; this is only done for the given window arround the required position
+# rev_loci: position when going from 3' -> 5' instead of 5' -> 3'
 def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, ref_pos=1841, range = 8):
     if fetch == True:
         seq, mv, ts, aln_pairs, ref_seq, read = bam_aligned(sample, reads_ids, region, ref_pos)
@@ -154,7 +156,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
                 continue
             #
             signal = read.signal
-#
+
             time = np.arange(len(signal)) #arbitrary time units
 
             # gets range for plotting signal
