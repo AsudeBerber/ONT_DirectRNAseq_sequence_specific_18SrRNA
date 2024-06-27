@@ -22,7 +22,7 @@ rule seq2mv_single_read:
         --sample {input.bam} \
         --readID {wildcards.read_id} \
         --pos {wildcards.pos} --range {wildcards.range} \
-        --pod5_dir resources/pod5/{wildcards.sequencer} \
+        --pod5-dir resources/pod5/{wildcards.sequencer} \
         --region {params.region}"""
      
  
