@@ -86,7 +86,6 @@ def bam_aligned(sample, read_ids, region, pos):
             read_ID = read.query_name
             seq = read.query_sequence
             
-
             # Workaround in cases where two ts tags per read exists:
             # read.set_tag("ts", None) #first ts tag is transcript strand(+|-), has to be removed
 
@@ -189,7 +188,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
 
         fig, ax = plt.subplots(figsize=(18, 4))
         xticks = []
-        
+
         ax.plot (time_slice, signal_slice,linewidth = 1, color = "#B9B9B9", zorder = 1)
         for i, [start, stop, rev_pos] in enumerate(seq2mv):
             signal_slice_base = signal[start:stop]
@@ -219,9 +218,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
         ax.set(xlabel = "base", ylabel = "signal (pA)")
         plt.title(str("Read ID: "+ read_ids))
         ax.annotate(f"18S rRNA transcript - position {pos+1} ± {range_bp} bp", xy= (0.1, 1.04), xycoords="axes fraction", ha = "center")
-#
-        #annotation of bases to signal plot
-        
+
         ax.set_xticks(ticks = xticks)
         ax.set_xticklabels([])
 
@@ -246,6 +243,7 @@ def cmd_parser(argv):
     parser.add_argument("--get_readids", help= "store name of all read ids in .txt", action= "store_true")
     parser.add_argument("--region", type= str, action= "store")
     parser.add_argument("--pod5-dir", type= str, action= "store")
+
     args = parser.parse_args()
 
     if args.sequencer == None:
@@ -269,9 +267,9 @@ def cmd_parser(argv):
 def main(argv = sys.argv[1:]):
     args, fetch = cmd_parser(argv= argv)
 
-    
     seq2mv, qseq, aln_pairs = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
                     seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, ref_pos = args.pos, range = args.range) 
+    
     plot_signal_plus_seq(seq2mv=seq2mv, read_ids = args.readID, pos=args.pos, qseq = qseq, aln_pairs = aln_pairs, range_bp = args.range,
                           sequencer = args.sequencer, full_read=False, range_var = "bases", pod5_dir = args.pod5_dir)
     
