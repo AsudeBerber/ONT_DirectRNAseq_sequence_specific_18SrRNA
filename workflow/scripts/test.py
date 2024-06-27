@@ -129,7 +129,7 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
 
 def cmd_parser(argv):
     parser = argparse.ArgumentParser(description="plots electric current/timepoint with corresponding basecalled base for given Read_ID")
-    parser.add_argument("sequencer", help= "name of sequencer (p2i|p2s)")
+    parser.add_argument("-sequencer", help= "name of sequencer (p2i|p2s)")
     parser.add_argument("--sample", help= "Name of sample bam file w/o .bam ending", action="store")
     parser.add_argument("--readID", help= "Sample ID in bam and pod5 file", action="store")
     parser.add_argument("--pos", help= "position/index of base in middle, 1-based", type=int, action="store")
@@ -142,6 +142,10 @@ def cmd_parser(argv):
     parser.add_argument("--region", type= str, action= "store")
     parser.add_argument("--pod5_dir", type= str, action= "store")
     args = parser.parse_args()
+
+    if args.sequencer == None:
+        args.sequencer = "p2s"
+        print("assuming p2s as sequencer")
 
     # starts at pos 0
     args.pos = args.pos - 1
