@@ -282,7 +282,7 @@ def cmd_parser(argv):
         fetch = True 
 
     if args.pod5_dir == False:
-        args.pod5_dir = "resources/p2s/pod5" 
+        args.pod5_dir = "resources/pod5/p2s/" 
 
     return args, fetch
 
