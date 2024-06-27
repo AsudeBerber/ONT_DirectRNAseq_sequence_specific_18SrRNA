@@ -204,6 +204,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
 
         fig, ax = plt.subplots(figsize=(18, 4))
         #
+        xticks = []
+        
         ax.plot (time_slice, signal_slice,linewidth = 1, color = "#B9B9B9", zorder = 1)
         for i, [start, stop, rev_pos] in enumerate(seq2mv):
             signal_slice_base = signal[start:stop]
@@ -222,7 +224,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
                 # ax.annotate(base_data[3], xy = (x_coord, 0.06), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
                 ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
                 ax.axvline(start-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
-                xticks.append(start-0.5)
+                ax.xticks.append(start-0.5)
                 i = i + 1
             else:
                 ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
