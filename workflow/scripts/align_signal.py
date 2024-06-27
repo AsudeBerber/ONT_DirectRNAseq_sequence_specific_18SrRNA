@@ -10,7 +10,7 @@ def rev_locus(locus, read):
 
 def get_loci(read, pairs, wd, motif_length, ref_pos):
     """
-    find positions that match motif
+    gets pos in query for reference position
     """    
     ref_loci = []
     ref_loci_index = []
