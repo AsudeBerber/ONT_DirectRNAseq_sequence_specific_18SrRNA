@@ -156,25 +156,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
             #
             signal = read.signal
 #
-            # when range is set by bases, starting and ending time are pulled from seq2mv array --> base range is converted to time range
             time = np.arange(len(signal)) #arbitrary time units
-            # if range_var == "bases":
-            #     print("plot for base range", start, "-", end)
-            #     start = int(seq2mv[start][0])
-            #     end = int(seq2mv[end][1])
-            #     print("corresponding time range:", start,"-", end)
-            # elif range_var == "time":
-            #     pass
-            # else:
-            #     raise Exception ("range_var has to be bases or time")
-            #
-            # if full_read == True:
-            #     start = 1
-            #     end = len(signal)
-            # #
-            # signal_slice = signal[start:end]
-            time = np.arange(len(signal)) #arbitrary time units
-            # time_slice = time[start:end]
 
             # gets range for plotting signal
             start_pos = seq2mv[0][0]
@@ -219,15 +201,13 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
                 ax.annotate(aln_pairs[rev_pos, 2], xy = x_coord, 0.04, fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
                 # read seq
                 ax.annotate(rev_qseq[rev_pos], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(rev_qseq[rev_pos]))
-                # ref seq
-                # ax.annotate(base_data[3], xy = (x_coord, 0.06), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
-                ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
+                ax.annotate(i+1, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
                 ax.axvline(start-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
                 xticks.append(start-0.5)
                 i = i + 1
             else:
-                ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
-                xticks.append(int(base_data[0])-0.5)
+                ax.axvline(start)-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
+                xticks.append(start)-0.5)
                 break
 
         ax.margins(0.05, 0.1)
