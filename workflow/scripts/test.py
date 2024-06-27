@@ -123,7 +123,7 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
 
 
 #plots array of [start, end, base] to position (start - end) in signal
-def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, sequencer, full_read=False, range_var = "bases", pod5_dir = "resources/p2s/pod5"):
+def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, sequencer, full_read=False, range_var = "bases", pod5_dir = "resources/pod5/p2s"):
      
     if pod5_dir == None:
         pod5_dir = "resources/pod5"
