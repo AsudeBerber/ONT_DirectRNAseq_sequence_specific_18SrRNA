@@ -5,3 +5,4 @@ data.json
 workflow/scripts/__pycache__
 .temp*
 .snakemake
+.vscode

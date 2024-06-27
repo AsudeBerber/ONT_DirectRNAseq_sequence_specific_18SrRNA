@@ -69,6 +69,7 @@ def parse_args(argv):
     parser.add_argument("-w", "--window", type=int)
     parser.add_argument("-f", "--file", type=str)
     parser.add_argument("--no-mmap", action="store_true")
+    parser.add_argument("--output-dir")
 
     args = parser.parse_args()
 
@@ -111,7 +112,7 @@ def boxplot_ann(refseq, axis):
 
 
 #1337 | 1842
-def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos, file):
+def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos, file, output_dir):
     # df_event_filtered = filter_by_pos(pos)
 
     df_refseq = pd.DataFrame(np.fliplr(ref), columns = list(range(1,window_size+1)))
@@ -150,9 +151,10 @@ def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos, file):
     ax3.set_title(f"Pos 430 ± {frame} bp")
     ax3.set_xlabel("Steps")
 
-    dir_save = pathlib.Path(file).stem
-    
-    plt.savefig(f"resources/signal/p2s/signal_summary/{dir_save}/1337_1842_430_event_{event}.svg", dpi = 300)
+    # creates directory if not present
+    if not os.path.isdir(f"resources/signal/p2s/signal_summary/{output_dir}"): os.makedirs(f"resources/signal/p2s/signal_summary/{output_dir}")
+
+    plt.savefig(f"resources/signal/p2s/signal_summary/{output_dir}/1337_1842_430_event_{event}.svg", dpi = 300)
 
 def main(argv=sys.argv[1:]):
 
@@ -166,7 +168,8 @@ def main(argv=sys.argv[1:]):
     for event in range(0,9):
         logging.info(f"creating plot {event+1} of 9")
         df_event_pos, sliced_event, sliced_ref_seq, index_bases = make_dfs(event= event, query=query, features=features, ref=ref, pos=pos)
-        make_plot(event = event, window_size = window_size, ref=ref, df_pos = df_event_pos, index_bases=index_bases, df_event_pos=df_event_pos, file = args.file)
+        make_plot(event = event, window_size = window_size, ref=ref, df_pos = df_event_pos, index_bases=index_bases,
+                   df_event_pos=df_event_pos, file = args.file, output_dir= args.output_dir)
 
 if __name__ == "__main__":
      exit(main())

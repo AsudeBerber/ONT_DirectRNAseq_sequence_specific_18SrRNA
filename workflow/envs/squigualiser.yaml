@@ -1,4 +1,4 @@
-name: squigle
+name: squigualiser
 channels:
   - conda-forge
   - bioconda

@@ -1,23 +1,27 @@
-rule signal_sum_temp:
-    input: pod5 = "",
-           bam = ""
+rule make_pod5_index:
+    input: 
+        "resources/pod5/p2s/"
     output: 
-        csv 1-7
-    wildcards.args:
-        pod5 parts
+        "resources/pod5/index/p2s/pod5_index.json"
     conda:
-        ""../envs/signal_sum.yaml"
+        "../envs/json.yaml"
+    threads: 8
+    shell:
+        "python workflow/scripts/pod5_index.py --pod5 {input} -o pod5_index"
+
+rule signal_sum:
+    input: pod5 = "resources/pod5/p2s/",
+           bam = "resources/alignments/{bam_file}.bam",
+           json = "resources/pod5/index/p2s/pod5_index.json"
+    output: 
+        "resources/results/p2s/{motif}_window_{window_size,[0-9]+}_{bam_file}.npz"
+    conda:
+        "../envs/signal_sum.yaml"
+    #params:
+        # window_size = 21
+        # motif = "CCG"
     threads:
         16
     shell:
-        "signal_summary.py"
-rule merge_temp_files:
-    input:
-        csvs
-    output:
-        1 csv
-    threads:
-        16
-    shell:
-        cat
+        "python workflow/scripts/signal_summary.py --pod5 {input.pod5} --bam {input.bam} --window {wildcards.window_size} --output {output}"
 
