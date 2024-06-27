@@ -242,7 +242,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
 
         # check if plot dir exists, creates it otherwise
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
-            os.makedirs(f"resources/mapped/signal/{sequencer}/plots/{read_ids}")
+            os.makedirs(f"resources/signal/{sequencer}/plots/{read_ids}")
 
         plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{pos+1}-pm{range_bp}.svg", dpi = 300)           
         plt.show()
