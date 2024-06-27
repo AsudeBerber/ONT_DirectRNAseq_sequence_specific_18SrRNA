@@ -196,8 +196,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
             ax.scatter(time_slice_base, signal_slice_base,
             linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
             x_coord = (start+stop)/2 
-            breakpoint()
-            if i < 5: 
+            if i < len(seq2mv)-2: 
                 # for ref_seq:
                 ax.annotate("Reference sequence:", xy = (-0.05, -0.12), xycoords=("axes fraction", "axes fraction"), ha = "center", color = "grey")
                 ax.annotate(ref_seq_rev[rev_pos], xy = (x_coord, -0.12), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
