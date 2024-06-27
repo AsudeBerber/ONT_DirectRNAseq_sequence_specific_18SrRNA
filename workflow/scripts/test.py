@@ -123,18 +123,14 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
 
 
 #plots array of [start, end, base] to position (start - end) in signal
-def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, full_read=False, range_var = "bases", pod5_dir = "resources/p2s/pod5"):
+def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, sequencer, full_read=False, range_var = "bases", pod5_dir = "resources/p2s/pod5"):
      
     if pod5_dir == None:
         pod5_dir = "resources/pod5"
     else: 
         pod5_dir = f"{pod5_dir}"
 
-    start = pos_read - range_bp
-    end = pos_read + range_bp
-
-    start_b = start
-    end_b = end
+    rev_qseq = qseq[::-1]
 
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
@@ -205,7 +201,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                 # for ref_seq:
                 print(aln_pairs[rev_pos, 2])
                 # read seq
-                ax.annotate(rev_pos, xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
+                ax.annotate(rev_qseq[rev_pos], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(rev_qseq[rev_pos]))
                 # ref seq
                 # ax.annotate(base_data[3], xy = (x_coord, 0.06), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
                 ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
@@ -294,11 +290,11 @@ def cmd_parser(argv):
 def main(argv = sys.argv[1:]):
     args, fetch = cmd_parser(argv= argv)
 
-    breakpoint()
+    
     seq2mv, qseq, aln_pairs = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
                     seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, ref_pos = args.pos, range = args.range) 
-    
-    plot_signal_plus_seq(seq2mv=seq2mv, read_ids = args.read_ID, pos= pos_read, range_bp = range, sequencer = args.sequencer, full_read=False, range_var = "bases", pod5_dir = args.pod5)
+    breakpoint()
+    plot_signal_plus_seq(seq2mv=seq2mv, read_ids = args.read_ID, pos= pos_read, qseq = qseq, aln_pairs = aln_pairs, range_bp = range, sequencer = args.sequencer, full_read=False, range_var = "bases", pod5_dir = args.pod5)
     
 
 if __name__ == "__main__":
