@@ -190,7 +190,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
         fig, ax = plt.subplots(figsize=(18, 4))
         #
         xticks = []
-        breakpoint()
         ax.plot (time_slice, signal_slice,linewidth = 1, color = "#B9B9B9", zorder = 1)
         for i, [start, stop, rev_pos] in enumerate(seq2mv):
             signal_slice_base = signal[start:stop]
@@ -203,9 +202,9 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
             elif x_coord > start_pos and x_coord < end_pos: 
                 # for ref_seq:
                 ax.annotate("Reference sequence:", xy = (-0.05, -0.12), xycoords=("axes fraction", "axes fraction"), ha = "center", color = "grey")
-                ax.annotate(ref_seq_rev[rev_pos-1], xy = (x_coord, -0.08), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
+                ax.annotate(ref_seq_rev[rev_pos], xy = (x_coord, -0.08), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
                 # read seq
-                ax.annotate(rev_qseq[rev_pos-1], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(rev_qseq[rev_pos]))
+                ax.annotate(rev_qseq[rev_pos-1], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(rev_qseq[rev_pos-1]))
                 ax.annotate(i+1, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
                 ax.axvline(start-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
                 xticks.append(start-0.5)
