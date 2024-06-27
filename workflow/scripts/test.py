@@ -59,6 +59,17 @@ def seq2mv_to_txt(seq2mv):
 
 ##########################################################################
     
+    
+#assigns every base a color for annotation
+def base_color(base):
+    if base == "A": col = "#E9452C"
+    elif base == "C": col = "#4596F7" 
+    elif base == "T": col = "#55B73B"
+    elif base == "U": col = "#F3B642" 
+    elif base == "G": col = "#F3B642" 
+    elif base == "X": col = "#00ffc3" #for acetylation?
+    else: col = "black"
+    return col    
 
 #sample = "resources/alignments/c05e1233-6e1a-4698-bb74-9b47df9507f2.bam"
 #gets movetable (mv), ts and corresponding base sequence (seq) for given read id
@@ -165,6 +176,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
             # signal_slice = signal[start:end]
             time = np.arange(len(signal)) #arbitrary time units
             # time_slice = time[start:end]
+
+            # gets range for plotting signal
             start_pos = seq2mv[0][0]
             end_pos = seq2mv[-1][1]
             
