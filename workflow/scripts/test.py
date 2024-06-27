@@ -119,19 +119,16 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
     seq2mv, rev_loci = align_signal.access_mv(signal = None, moves = mv, offset = ts,
                                                                rev_loci = rev_loci, motif_length = 1, extra_window = range,
                                                                  read = read, mode = "single_read")
-    breakpoint()
-    pass
+    return seq2mv, seq, aln_pairs
 
 
 #plots array of [start, end, base] to position (start - end) in signal
-def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, full_read=False, range_var = "bases", pod5_dir = "pod5"):
+def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, full_read=False, range_var = "bases", pod5_dir = "resources/p2s/pod5"):
      
     if pod5_dir == None:
         pod5_dir = "resources/pod5"
     else: 
         pod5_dir = f"{pod5_dir}"
-
-    #for output file naming
 
     start = pos_read - range_bp
     end = pos_read + range_bp
@@ -150,7 +147,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
                 continue
             #
             signal = read.signal
-            signal = signal[::-1] #reverses signal as RNA is sequenced 3' -> 5' but sequence is read 5' -> 3'
 #
             # when range is set by bases, starting and ending time are pulled from seq2mv array --> base range is converted to time range
             time = np.arange(len(signal)) #arbitrary time units
@@ -185,6 +181,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
             else:
                 cmap_plot[i] = "#67a9cf"
                 
+        qseq_rev = read.query_sequence[::-1]
+        ref_seq_rev = aln_pairs[rev_pos, 2]
 
         # Plot using matplotlib
 
@@ -195,19 +193,30 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, pos_read, range_bp, sequencer, f
         fig, ax = plt.subplots(figsize=(18, 4))
         #
         ax.plot (time_slice, signal_slice,linewidth = 1, color = "#B9B9B9", zorder = 1)
-        for i, base in enumerate(range(start_b, end_b +1)):
-                    # like slice above, just for every base -> signal per base can be colored differently
-                    base_start = int(seq2mv[base][0])
-                    base_end = int(seq2mv[base][1])
-                    signal_slice_base = signal[base_start:base_end]
-                    time_slice_base = time [base_start:base_end]
-                    ax.scatter(time_slice_base, signal_slice_base,
-                                linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
-                                # linewidth = 1, marker= "o", facecolor = viridis.colors[i], zorder = 2, alpha = 0.5, edgecolor = "none", s = 600)
-            
-        
-        
-        
+        for i, [start, stop, rev_pos] in enumerate(seq2mv):
+            signal_slice_base = signal[start:stop]
+            time_slice_base = time [start:stop]
+            ax.scatter(time_slice_base, signal_slice_base,
+            linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
+            x_coord = (start+stop)/2 
+            if x_coord < start:
+                pass
+            elif x_coord > start and x_coord < end: 
+                # for ref_seq:
+                print(aln_pairs[rev_pos, 2])
+                # read seq
+                ax.annotate(rev_pos, xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(base_data[2]))
+                # ref seq
+                # ax.annotate(base_data[3], xy = (x_coord, 0.06), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
+                ax.annotate(i, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
+                ax.axvline(start-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
+                xticks.append(start-0.5)
+                i = i + 1
+            else:
+                ax.axvline(int(base_data[0])-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
+                xticks.append(int(base_data[0])-0.5)
+                break
+
         ax.margins(0.05, 0.1)
         ax.set(xlabel = "base", ylabel = "signal (pA)")
         plt.title(str("Read ID: "+ read_ids))
@@ -285,7 +294,8 @@ def cmd_parser(argv):
 def main(argv = sys.argv[1:]):
     args, fetch = cmd_parser(argv= argv)
 
-    seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
+    breakpoint()
+    seq2mv, qseq, aln_pairs = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
                     seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, ref_pos = args.pos, range = args.range) 
     
     plot_signal_plus_seq(seq2mv=seq2mv, read_ids = args.read_ID, pos= pos_read, range_bp = range, sequencer = args.sequencer, full_read=False, range_var = "bases", pod5_dir = args.pod5)

@@ -60,7 +60,6 @@ def access_mv(signal, moves, offset, rev_loci, motif_length, extra_window, read,
     stride = moves.pop(0)
     move_index = np.where(moves)[0]
     rlen = len(move_index)
-    breakpoint()
     
     dict_events = {}
 
@@ -100,7 +99,6 @@ def access_mv(signal, moves, offset, rev_loci, motif_length, extra_window, read,
 
     elif mode == "single_read":
         seq2mv = []
-        breakpoint()
         for locus in pos_get_signal:
             prev = move_index[locus]*stride+offset
             sig_end = move_index[locus+1]*stride+offset
