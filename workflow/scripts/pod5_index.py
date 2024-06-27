@@ -11,8 +11,8 @@ def parse_args(argv):
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-p", "--pod5", type=int)
-    parser.add_argument("-o", "--output", type=int)
+    parser.add_argument("-p", "--pod5", required=True)
+    parser.add_argument("-o", "--output", required=True)
 
     args = parser.parse_args()
 
