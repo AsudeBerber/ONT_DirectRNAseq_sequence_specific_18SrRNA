@@ -62,7 +62,7 @@ def main(argv = sys.argv[1:]):
                     seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, ref_pos = args.pos, range = args.range)  
 def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, ref_pos=1841, range = 8):
     if fetch == True:
-        seq, mv, ts, aln_pairs, ref_seq, read = bam_aligned(sample, reads_ids, region, pos)
+        seq, mv, ts, aln_pairs, ref_seq, read = bam_aligned(sample, reads_ids, region, ref_pos)
         breakpoint()
         pass
     if fetch == False:
