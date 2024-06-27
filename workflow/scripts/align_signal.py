@@ -100,6 +100,7 @@ def access_mv(signal, moves, offset, rev_loci, motif_length, extra_window, read,
 
     elif mode == "single_read":
         seq2mv = []
+        breakpoint()
         for locus in pos_get_signal:
             prev = move_index[locus]*stride+offset
             sig_end = move_index[locus+1]*stride+offset
