@@ -1,9 +1,9 @@
 __author__ = "Jens Martin"
 __email__ = "jens.martin@outlook.com"
 
-#############  plots signal/squigle for one given read against basecalled sequence
-###############  bam file has to include following tags: mv, ts, ns (from basecaller), MD(minimap --MD)
-#################  runtime ~ 30s, faster when exact region is given, low memory usage
+"""  plots signal/squigle for one given read against basecalled sequence
+bam file has to include following tags: mv, ts, ns (from basecaller), MD(minimap --MD) & also needs to be indexed!
+runtime ~ 30s, faster when exact region is given, low memory usage """
 
 import argparse
 import os
@@ -59,7 +59,7 @@ def seq2mv_to_txt(seq2mv):
 
 ##########################################################################
     
-    
+
 #assigns every base a color for annotation
 def base_color(base):
     if base == "A": col = "#E9452C"
