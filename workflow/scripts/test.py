@@ -176,7 +176,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
                 cmap_plot[i] = "#67a9cf"
                 
         qseq_rev = qseq[::-1]
-        ref_seq_rev = reversed(aln_pairs[:,2])
+        ref_seq_rev = aln_pairs[:,2]
+        ref_seq_rev = ref_seq_rev[::-1]
 
         # Plot using matplotlib
 
@@ -200,7 +201,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
             elif x_coord > start_pos and x_coord < end_pos: 
                 # for ref_seq:
                 ax.annotate("Reference sequence:", xy = (-0.05, -0.12), xycoords=("axes fraction", "axes fraction"), ha = "center", color = "grey")
-                ax.annotate(ref_seq_rev[rev_pos], xy = (x_coord, -0.12), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
+                ax.annotate(ref_seq_rev[rev_pos], xy = (x_coord, -0.08), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
                 # read seq
                 ax.annotate(rev_qseq[rev_pos], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(rev_qseq[rev_pos]))
                 ax.annotate(i+1, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
