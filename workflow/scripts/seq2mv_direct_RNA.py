@@ -189,29 +189,32 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
 
         fig, ax = plt.subplots(figsize=(18, 4))
         xticks = []
+        
         ax.plot (time_slice, signal_slice,linewidth = 1, color = "#B9B9B9", zorder = 1)
         for i, [start, stop, rev_pos] in enumerate(seq2mv):
             signal_slice_base = signal[start:stop]
             time_slice_base = time [start:stop]
+
             ax.scatter(time_slice_base, signal_slice_base,
             linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
             x_coord = (start+stop)/2 
-            if i < len(seq2mv)-2: 
-                # for ref_seq:
-                ax.annotate("Reference sequence:", xy = (-0.05, -0.12), xycoords=("axes fraction", "axes fraction"), ha = "center", color = "grey")
-                ax.annotate(ref_seq_rev[rev_pos], xy = (x_coord, -0.12), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
-                # read seq
-                ax.annotate(rev_qseq[rev_pos], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(rev_qseq[rev_pos]))
-                ax.annotate(rev_qseq[rev_pos:rev_pos-range_bp-1:-1], xy = (x_coord, 0.97), fontsize = 6, xycoords=("data", "axes fraction"), ha = "center", color = "black")
-                ax.annotate(i+1, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
-                ax.axvline(start-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
-                xticks.append(start-0.5)
-                i = i + 1
-            else:
+
+            # for ref_seq:
+            ax.annotate("Reference sequence:", xy = (-0.05, -0.12), xycoords=("axes fraction", "axes fraction"), ha = "center", color = "grey")
+            ax.annotate(ref_seq_rev[rev_pos], xy = (x_coord, -0.12), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
+
+            # read seq
+            ax.annotate(rev_qseq[rev_pos], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(rev_qseq[rev_pos]))
+            ax.annotate(rev_qseq[rev_pos:rev_pos-range_bp-1:-1], xy = (x_coord, 0.97), fontsize = 6, xycoords=("data", "axes fraction"), ha = "center", color = "black")
+            ax.annotate(i+1, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
+
+            ax.axvline(start-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
+            xticks.append(start-0.5)
+
+            if i == len(seq2mv)-1: # plots axline after last base
                 ax.axvline(stop+0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
                 xticks.append(stop+0.5)
-                break
-
+    
         ax.margins(0.05, 0.1)
         ax.set(xlabel = "base", ylabel = "signal (pA)")
         plt.title(str("Read ID: "+ read_ids))
