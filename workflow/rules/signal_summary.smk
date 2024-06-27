@@ -1,3 +1,14 @@
+rule make_pod5_index:
+    input: 
+        "resources/pod5/p2s/"
+    output: 
+        ""
+    conda:
+        "../envs/json.yaml"
+    threads: 8
+    shell:
+        "python workflow/scripts/pod5_index.py"
+
 rule signal_sum:
     input: pod5 = "resources/pod5/p2s/",
            bam = "resources/alignments/{bam_file}.bam"
