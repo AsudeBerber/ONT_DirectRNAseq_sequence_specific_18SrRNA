@@ -176,6 +176,8 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
                 cmap_plot[i] = "#67a9cf"
                 
         qseq_rev = qseq[::-1]
+        
+        # there is probably a better way to inverse this
         ref_seq_rev = aln_pairs[:,2]
         ref_seq_rev = ref_seq_rev[::-1]
 
