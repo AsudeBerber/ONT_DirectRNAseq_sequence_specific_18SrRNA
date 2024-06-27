@@ -66,9 +66,8 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
         seq, mv, ts, aln_pairs, ref_seq, read = bam_aligned(sample, reads_ids, region, pos)
     if fetch == False:
         seq, mv, ts = args.seq, args.mv, args.ts
-    breakpoint()
     seq2mv, rev_loci = align_signal.access_mv(signal = None, moves = mv, offset = ts,
-                                                               loci = int(pos), motif_length = 1, extra_window = range,
+                                                               loci = [int(pos)], motif_length = 1, extra_window = range,
                                                                  read = read, mode = "single_read")
     breakpoint()
     pass
