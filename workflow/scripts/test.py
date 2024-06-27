@@ -186,7 +186,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
         fig, ax = plt.subplots(figsize=(18, 4))
         #
         xticks = []
-
+        breakpoint()
         ax.plot (time_slice, signal_slice,linewidth = 1, color = "#B9B9B9", zorder = 1)
         for i, [start, stop, rev_pos] in enumerate(seq2mv):
             signal_slice_base = signal[start:stop]
