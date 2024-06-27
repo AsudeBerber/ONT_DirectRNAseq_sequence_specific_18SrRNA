@@ -35,7 +35,7 @@ def bam_aligned(sample, read_ids, region, pos):
 
             ref_seq = read.get_reference_sequence()
 
-            aln_pairs = read.get_aligned_pairs(with_seq = True)
+            aln_pairs = read.get_aligned_pairs(with_seq = True, matches_only = False)
             
             # creates pairs of base positions (query, reference) -> looks up position in alignment sequence for corresponding reference base position
             for pair in aln_pairs:
@@ -59,7 +59,9 @@ def main(argv = sys.argv[1:]):
     args, fetch = cmd_parser(argv= argv)
 
     seq2mv, pos_read = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
-                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, ref_pos = args.pos, range = args.range)  
+                    seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, ref_pos = args.pos, range = args.range) 
+
+
 def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, ref_pos=1841, range = 8):
     if fetch == True:
         seq, mv, ts, aln_pairs, ref_seq, read = bam_aligned(sample, reads_ids, region, ref_pos)
@@ -69,7 +71,7 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
         seq, mv, ts = args.seq, args.mv, args.ts
 
     breakpoint()
-    q_pos = aln_pairs                                                                                                                                                                                 
+    q_pos = align_signal.get_loci(read=read, pairs=aln_pairs, wd= range, motif_length=1, ref_pos=ref_pos)                                                                                                                                                                               
 
     seq2mv, rev_loci = align_signal.access_mv(signal = None, moves = mv, offset = ts,
                                                                loci = [int(pos)], motif_length = 1, extra_window = range,
