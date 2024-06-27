@@ -126,7 +126,7 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
 def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, sequencer, full_read=False, range_var = "bases", pod5_dir = "resources/pod5/p2s"):
      
     if pod5_dir == None:
-        pod5_dir = "resources/pod5"
+        pod5_dir = "resources/pod5/p2s"
     else: 
         pod5_dir = f"{pod5_dir}"
 
@@ -280,9 +280,6 @@ def cmd_parser(argv):
         fetch = False
     else:
         fetch = True 
-
-    if args.pod5_dir == False:
-        args.pod5_dir = "resources/pod5/p2s/" 
 
     return args, fetch
 
