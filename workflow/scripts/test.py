@@ -198,9 +198,9 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
             ax.scatter(time_slice_base, signal_slice_base,
             linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
             x_coord = (start+stop)/2 
-            if x_coord < start:
+            if x_coord < start_pos:
                 pass
-            elif x_coord > start and x_coord < end: 
+            elif x_coord > start_pos and x_coord < end_pos: 
                 # for ref_seq:
                 print(aln_pairs[rev_pos, 2])
                 # read seq
