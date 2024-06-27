@@ -105,7 +105,7 @@ def access_mv(signal, moves, offset, rev_loci, motif_length, extra_window, read,
             prev = move_index[locus]*stride+offset
             sig_end = move_index[locus+1]*stride+offset
             sig_len = sig_end-prev
-            seq2mv = seq2mv.append([prev, sig_end, locus])
+            seq2mv.append([prev, sig_end, locus])
         
         return seq2mv, rev_loci
 
