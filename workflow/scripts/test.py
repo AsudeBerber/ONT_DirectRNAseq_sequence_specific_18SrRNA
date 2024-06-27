@@ -35,7 +35,7 @@ def bam_aligned(sample, read_ids, region, pos):
 
             ref_seq = read.get_reference_sequence()
 
-            aln_pairs = read.get_aligned_pairs(with_seq = True, matches_only = False)
+            aln_pairs = np.array(read.get_aligned_pairs(with_seq = True, matches_only = False))
             
             # creates pairs of base positions (query, reference) -> looks up position in alignment sequence for corresponding reference base position
             for pair in aln_pairs:
