@@ -148,15 +148,15 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
 #
             # when range is set by bases, starting and ending time are pulled from seq2mv array --> base range is converted to time range
             time = np.arange(len(signal)) #arbitrary time units
-            if range_var == "bases":
-                print("plot for base range", start, "-", end)
-                start = int(seq2mv[start][0])
-                end = int(seq2mv[end][1])
-                print("corresponding time range:", start,"-", end)
-            elif range_var == "time":
-                pass
-            else:
-                raise Exception ("range_var has to be bases or time")
+            # if range_var == "bases":
+            #     print("plot for base range", start, "-", end)
+            #     start = int(seq2mv[start][0])
+            #     end = int(seq2mv[end][1])
+            #     print("corresponding time range:", start,"-", end)
+            # elif range_var == "time":
+            #     pass
+            # else:
+            #     raise Exception ("range_var has to be bases or time")
             #
             if full_read == True:
                 start = 1
