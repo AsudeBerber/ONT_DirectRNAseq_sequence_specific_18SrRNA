@@ -158,13 +158,13 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
             # else:
             #     raise Exception ("range_var has to be bases or time")
             #
-            if full_read == True:
-                start = 1
-                end = len(signal)
-            #
-            signal_slice = signal[start:end]
+            # if full_read == True:
+            #     start = 1
+            #     end = len(signal)
+            # #
+            # signal_slice = signal[start:end]
             time = np.arange(len(signal)) #arbitrary time units
-            time_slice = time[start:end]
+            # time_slice = time[start:end]
 
             
             #
