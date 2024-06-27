@@ -165,9 +165,11 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
             # signal_slice = signal[start:end]
             time = np.arange(len(signal)) #arbitrary time units
             # time_slice = time[start:end]
-
+            start_pos = seq2mv[0][0]
+            end_pos = seq2mv[-1][1]
             
-            #
+            time_slice = time[start_pos:end_pos+1]
+            signal_slice = signal[start_pos:end_pos+1]
 
         #constructs colormap for plot
         cmap_plot = list(range(range_bp*2 + 1))
