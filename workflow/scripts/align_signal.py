@@ -45,7 +45,7 @@ def get_loci(read, pairs, wd, motif_length, ref_pos):
     return loci, ref_loci, rev_loci
 
 # this part is modified from https://github.com/WGLab/DeepMod2/blob/main/src/detect.py
-def access_mv(signal, moves, offset, loci, motif_length, extra_window, read, mode):
+def access_mv(signal, moves, offset, rev_loci, motif_length, extra_window, read, mode):
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
     following values for each called based:
@@ -61,7 +61,6 @@ def access_mv(signal, moves, offset, loci, motif_length, extra_window, read, mod
     move_index = np.where(moves)[0]
     rlen = len(move_index)
     breakpoint()
-    rev_loci = [rev_locus(locus, read) for locus in loci] 
     
     dict_events = {}
 

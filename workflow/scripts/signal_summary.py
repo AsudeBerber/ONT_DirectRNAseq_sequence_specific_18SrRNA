@@ -111,7 +111,7 @@ def main(argv=sys.argv[1:]):
 
                     # events: 0.01 s = 100/s
                     #events is inverted as the signal goes from 3' -> 5', but sequence from 5' -> 3'
-                    dict_events = align_signal.access_mv(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), loci, motif_length, extra_window, read=read, mode="signal_stats")
+                    dict_events = align_signal.access_mv(pod5_record.signal, read.get_tag("mv"), read.get_tag("ts"), rev_loci, motif_length, extra_window, read=read, mode="signal_stats")
                     
                     # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
                     

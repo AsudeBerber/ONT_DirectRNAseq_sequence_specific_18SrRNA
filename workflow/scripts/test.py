@@ -71,10 +71,10 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
         seq, mv, ts = args.seq, args.mv, args.ts
 
     breakpoint()
-    q_pos = align_signal.get_loci(read=read, pairs=aln_pairs, wd= range, motif_length=1, ref_pos=ref_pos)                                                                                                                                                                               
+    q_pos, r_pos, rev_loci = align_signal.get_loci(read=read, pairs=aln_pairs, wd= range, motif_length=1, ref_pos=[ref_pos])                                                                                                                                                                            
 
     seq2mv, rev_loci = align_signal.access_mv(signal = None, moves = mv, offset = ts,
-                                                               loci = [int(pos)], motif_length = 1, extra_window = range,
+                                                               rev_loci = rev_loci, motif_length = 1, extra_window = range,
                                                                  read = read, mode = "single_read")
     breakpoint()
     pass
