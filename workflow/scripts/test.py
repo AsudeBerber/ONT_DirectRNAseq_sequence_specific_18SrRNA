@@ -140,6 +140,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
             # next() is required here as Reader.reads() returns a Generator
             try:
                 read = next(reader.reads([read_ids]))
+                print(f"read found in the following pod5_file: {filename}")
             except:
                 continue
             #
