@@ -205,6 +205,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
                 ax.annotate(ref_seq_rev[rev_pos], xy = (x_coord, -0.08), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
                 # read seq
                 ax.annotate(rev_qseq[rev_pos-1], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(rev_qseq[rev_pos-1]))
+                ax.annotate(rev_qseq[rev_pos-1:rev_pos-range_bp-1:-1], xy = (x_coord, 1.04), fontsize = 6, xycoords=("data", "axes fraction"), ha = "center", color = "black")
                 ax.annotate(i+1, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
                 ax.axvline(start-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
                 xticks.append(start-0.5)
