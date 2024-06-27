@@ -63,7 +63,7 @@ def main(argv=sys.argv[1:]):
 
 
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
-        with open('resources/results/p2s/pod5.json', "r") as f:
+        with open('resources/pod5/index/p2s/pod5_index.json', "r") as f:
             pod5_index= json.load(f)
 
         pod5_path = "resources/pod5/p2s/"

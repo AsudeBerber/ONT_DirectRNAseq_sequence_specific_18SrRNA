@@ -1,10 +1,22 @@
 import pod5 as p5
 import json
-import argparser
+import argparse
 from pathlib import Path
 import os
+import sys
 
-pod5_file = "resources/pod5/p2s/"
+
+def parse_args(argv):
+    """Read arguments from command line."""
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-p", "--pod5", type=int)
+    parser.add_argument("-o", "--output", type=int)
+
+    args = parser.parse_args()
+
+    return args
 
 
 ##### copied from https://github.com/WGLab/DeepMod2/blob/main/plot_utils/plot.py, Copyright (c) 2022 Wang Genomics Lab
@@ -25,10 +37,13 @@ def get_file_names(base_path):
     return read_filename_dict
                 
 try:
-    pod5_path_dict = get_file_names(base_path=pod5_file)
+    argv=sys.argv[1:]
+    args = parse_args(argv)
+    pod5_path_dict = get_file_names(base_path=args.pod5)
+    json_name = args.output
 except:
     raise Exception("pod5 file not found in given path")
 
-with open('resources/results/p2s/pod5.json', 'w') as fp:
+with open(f'resources/pod5/index/p2s/{json_name}.json', 'w') as fp:
     json.dump(pod5_path_dict, fp, sort_keys=True, separators=[",\n",":"], allow_nan=False, default=str)
 
