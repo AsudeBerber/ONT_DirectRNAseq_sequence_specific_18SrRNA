@@ -1,3 +1,10 @@
+__author__ = "Jens Martin"
+__email__ = "jens.martin@outlook.com"
+
+#############  plots signal/squigle for one given read against basecalled sequence
+###############  bam file has to include following tags: mv, ts, ns (from basecaller), MD(minimap --MD)
+#################  runtime ~ 30s, faster when exact region is given, low memory usage
+
 import argparse
 import os
 import pod5 as p5
@@ -10,6 +17,48 @@ try:
     import align_signal
 except ImportError: 
     raise ImportError("Import of module align_signal failed, is align_signal.py in the same folder as this script?")
+
+
+##########################################################################
+#  not executed, but might be useful
+
+#creates textfile with all read_ids within bam file
+def read_id_list_bam(sample=None):
+    try:
+        f = open("resources/read_id_list_bam.txt", "x")
+    except:
+        # if file exists, it is wiped
+        f = open("resources/read_id_list_bam.txt", "w")
+        f.write("")
+        f.close()
+
+    f = open("resources/read_id_list_bam.txt", "a")
+
+    with ps.AlignmentFile(f"{sample}") as samfile:
+        samfile.fetch()
+        for reads in samfile.fetch():
+            f.write(str(reads.query_name) +"\n")
+            print(reads.query_name)
+    f.close()
+
+
+#writes generated array to txt file
+def seq2mv_to_txt(seq2mv):
+    try:
+        a = open("resources/seq2mv.txt", "x")
+    except: 
+        # if file exists, it is wiped
+        a = open("resources/seq2mv.txt", "w")
+        a.write("")
+        a.close()
+
+    a = open("resources/seq2mv.txt", "a")
+    for line in seq2mv:
+        a.write(" ".join(line) + "\n")
+    a.close()
+
+##########################################################################
+    
 
 #sample = "resources/alignments/c05e1233-6e1a-4698-bb74-9b47df9507f2.bam"
 #gets movetable (mv), ts and corresponding base sequence (seq) for given read id
@@ -65,12 +114,10 @@ def main(argv = sys.argv[1:]):
 def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, ref_pos=1841, range = 8):
     if fetch == True:
         seq, mv, ts, aln_pairs, ref_seq, read = bam_aligned(sample, reads_ids, region, ref_pos)
-        breakpoint()
         pass
     if fetch == False:
         seq, mv, ts = args.seq, args.mv, args.ts
 
-    breakpoint()
     q_pos, r_pos, rev_loci = align_signal.get_loci(read=read, pairs=aln_pairs, wd= range, motif_length=1, ref_pos=[ref_pos])                                                                                                                                                                            
 
     seq2mv, rev_loci = align_signal.access_mv(signal = None, moves = mv, offset = ts,
@@ -82,7 +129,7 @@ def seq_to_mv(reads_ids, region, sample, seq=None, mv=None, ts=0, fetch = True, 
 
 def cmd_parser(argv):
     parser = argparse.ArgumentParser(description="plots electric current/timepoint with corresponding basecalled base for given Read_ID")
-    parser.add_argument("--sequencer", help= "name of sequencer (p2i|p2s)")
+    parser.add_argument("sequencer", help= "name of sequencer (p2i|p2s)")
     parser.add_argument("--sample", help= "Name of sample bam file w/o .bam ending", action="store")
     parser.add_argument("--readID", help= "Sample ID in bam and pod5 file", action="store")
     parser.add_argument("--pos", help= "position/index of base in middle, 1-based", type=int, action="store")
