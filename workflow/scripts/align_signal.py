@@ -99,12 +99,12 @@ def access_mv(signal, moves, offset, rev_loci, motif_length, extra_window, read,
         return dict_events
 
     elif mode == "single_read":
-        seq2mv = np.zeros(shape = (0,3))
+        seq2mv = []
         for locus in pos_get_signal:
             prev = move_index[locus]*stride+offset
             sig_end = move_index[locus+1]*stride+offset
             sig_len = sig_end-prev
-            seq2mv = np.append(seq2mv, [prev, sig_end, locus], axis=1)
+            seq2mv = seq2mv.append(prev, sig_end, locus)
         
         return seq2mv, rev_loci
 
