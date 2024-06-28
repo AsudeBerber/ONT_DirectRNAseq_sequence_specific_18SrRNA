@@ -20,6 +20,7 @@ calculates 9 features (s. align_signal.py) for given window_size (21 works very 
 not the "chromosome")
 as this function calls align_signal.py, both functions are required to be in the same directory
 """
+# https://github.com/hiruna72/squigualiser/tree/main/docs contains many useful explanations on the movetable, pore models etc.
 rule signal_sum:
     input: pod5 = "resources/pod5/p2s/",
            bam = "resources/alignments/{bam_file}.bam",
