@@ -16,10 +16,11 @@ rule seq2mv_single_read:
         # this is the transcriptome for 18S rRNA, could also be removed from function (with reads not aligning to this region in the bam file, this argument however makes the function faster)
         region = r"gi\|1154491913\|ref\|NR_003286.4\|" 
     wildcard_constraints:
-        # this can also be removed, argument is not required for script (function currently assumes p2s when no argument is given)
+        # this can also be removed (in shell), argument is not required for script (function currently assumes p2s when no argument is given)
         sequencer = "p2i|p2s"
     conda:
         "../envs/seq2mv.yaml"
+    threads: 1
     shell:
      """python workflow/scripts/seq2mv_direct_RNA.py \
         --sequencer {wildcards.sequencer} \
