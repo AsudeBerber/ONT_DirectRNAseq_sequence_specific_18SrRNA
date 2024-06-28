@@ -12,4 +12,4 @@ rule plot_boxplot:
     threads: 16
     shell:
     # --no-mmap command disables mmap (loading to disk), could make problems on local PCs without enough RAM
-        "python workflow/scripts/boxplot_signal.py -f {input} -w {wildcards.window} --output-dir {wildcards.dir}"
+        "python workflow/scripts/boxplot_signal.py -f {input} -w {wildcards.window} --output-dir {wildcards.motif}_window_{wildcards.window}_{wildcards.bamfile}"
