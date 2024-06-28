@@ -1,6 +1,13 @@
+__author__ = "Jens Martin"
+__email__ = "jens.martin@outlook.com"
+
+"""
+calculates features for all given reads around positions given below (could be made into argument) and outputs it to .npz file
+signal alignment and feature calculation are done by called module align_signal.py (has to be in same directory)
+"""
 # Code mostly written by Christoph Engelhardt
 
-############### Run time for 4x10^7 reads: ~5 h; memory usage piles up over time up to ~50%/ 30 GB RAM in the end
+############### Run time for 4x10^6 reads: ~5 h; memory usage piles up over time up to ~50%/ 30 GB RAM in the end
 
 import numpy as np
 import pod5 as p5
@@ -89,8 +96,7 @@ def main(argv=sys.argv[1:]):
                 seq_dict = dict((x, z) for x, y, z in aligned_pairs)
                 per_site_ref_seq = np.array([[seq_dict[key] for key in range(locus-extra_window, locus+motif_length+extra_window)] for locus in loci])
             except:
-                breakpoint()
-                pass
+                raise IndexError("Something went wrong during feature extraction (check given range and indexing of that)")
         
             # dorado sometimes splits reads (https://github.com/nanoporetech/dorado/blob/release-v0.6/documentation/SAM.md#split-read-tags),
             # it doesn't seem possible to align these back to one original read id --> these reads are ignored
@@ -126,8 +132,8 @@ def main(argv=sys.argv[1:]):
                     ref_seq.append(per_site_ref_seq)
                     id.append(per_site_id)
                 except:
-                    breakpoint()
-                    continue
+                    raise Exception("something went wrong while accessing pod5 data: \n 1) is the right pod5 path given?\n 2) does python try to append empty position?")
+                    
 
     
     features = np.vstack(features)

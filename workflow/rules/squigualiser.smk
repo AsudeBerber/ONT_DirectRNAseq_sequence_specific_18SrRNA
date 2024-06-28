@@ -1,3 +1,8 @@
+"""
+executes squigualiser (https://github.com/hiruna72/squigualiser/tree/main), this is mostly used to validate the output of our functions
+! the pod5 file (pod2slow) has to be changed for every read (to find in resources/results/p2s/pod5.json)
+"""
+
 rule reformat:
     input:
         "resources/alignments/{bam_file}.bam"
