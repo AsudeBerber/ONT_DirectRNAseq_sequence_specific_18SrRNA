@@ -4,14 +4,16 @@ EVENTS = list(range(0,9))
 
 rule plot_boxplot:
     input: 
-        "resources/results/p2s/{dir}.npz"
+        "resources/results/p2s/{params.motif}_window_{params.window_size,[0-9]+}_{params.bam_file}.npz"
     output:
         svg = expand("resources/signal/p2s/signal_summary/{dir}/1337_1842_430_event_{event}.svg", event = EVENTS, dir = "{dir}") 
     conda:
         "../envs/boxplot.yaml"
     params:
-        # how many bases to plot left/right to the middle base
-        window = 8
+        # change this parameters for different npz files
+        window_size = 21
+        bam_file = "p2s_aligned_sorted" 
+        motif = "CCG"
     threads: 16
     shell:
     # --no-mmap command disables mmap (loading to disk), could make problems on local PCs without enough RAM
