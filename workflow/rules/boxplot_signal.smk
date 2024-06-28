@@ -6,7 +6,7 @@ rule plot_boxplot:
     input: 
         "resources/results/p2s/{motif}_window_{window,[0-9]+}_{bam_file}.npz"
     output:
-        svg = expand("resources/signal/p2s/signal_summary/{motif}_window_{window,[0-9]+}_{bam_file}/1337_1842_430_event_{event}.svg", event = EVENTS, dir = "{dir}") 
+        svg = expand("resources/signal/p2s/signal_summary/{motif,[A-Za-z]}_window_{window,[0-9]+}_{bam_file}/1337_1842_430_event_{event}.svg", event = EVENTS, dir = "{dir}") 
     conda:
         "../envs/boxplot.yaml"
     threads: 16
