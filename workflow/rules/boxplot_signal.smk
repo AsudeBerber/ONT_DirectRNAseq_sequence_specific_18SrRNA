@@ -11,7 +11,7 @@ rule plot_boxplot:
         "../envs/boxplot.yaml"
     params:
         # change this parameters for different npz files
-        window_size = 21
+        window_size = 21,
         motif = "CCG"
     threads: 16
     shell:
