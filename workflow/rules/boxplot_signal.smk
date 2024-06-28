@@ -4,7 +4,7 @@ EVENTS = list(range(0,9))
 
 rule plot_boxplot:
     input: 
-        "resources/results/p2s/{params.motif}_window_{params.window_size,[0-9]+}_{params.bam_file}.npz"
+        "resources/results/p2s/{params.motif}_window_{params.window_size,[0-9]+}_{bam_file}.npz"
     output:
         svg = expand("resources/signal/p2s/signal_summary/{dir}_{bam_file}/1337_1842_430_event_{event}.svg", event = EVENTS, dir = "{dir}") 
     conda:
