@@ -5,6 +5,7 @@ from pathlib import Path
 import os
 import sys
 
+# creates index/dict containg read + corresponding pod5 file
 
 def parse_args(argv):
     """Read arguments from command line."""
