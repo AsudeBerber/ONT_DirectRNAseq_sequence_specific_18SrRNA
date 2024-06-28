@@ -10,6 +10,9 @@ rule plot_boxplot:
                     bam_file = "{bam_file}", window = "{window}") 
     conda:
         "../envs/boxplot.yaml"
+    wildcard_constraints:  
+        motif = "A-Za-z",
+        window = "0-9"
     threads: 16
     shell:
     # --no-mmap command disables mmap (loading to disk), could make problems on local PCs without enough RAM
