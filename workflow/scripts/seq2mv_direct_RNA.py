@@ -5,6 +5,8 @@ __email__ = "jens.martin@outlook.com"
 bam file has to include following tags: mv, ts, ns (from basecaller), MD(minimap --MD) & also needs to be indexed!
 runtime ~ 30s, faster when exact region is given, low memory usage """
 
+# calls align_signal as module, has to be in same directory
+
 import argparse
 import os
 import pod5 as p5
