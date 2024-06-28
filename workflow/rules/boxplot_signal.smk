@@ -6,13 +6,9 @@ rule plot_boxplot:
     input: 
         "resources/results/p2s/{motif}_window_{window}_{bam_file}.npz"
     output:
-        svg = expand("resources/signal/p2s/signal_summary/{motif}_window_{window}_{bam_file}/1337_1842_430_event_{event}.svg", event = EVENTS, motif = "{motif}",
-                    bam_file = "{bam_file}", window = "{window}") 
+        svg = expand("resources/signal/p2s/signal_summary/{{motif,[A-Za-z]}}_window_{{window,[0-9]}}_{{bam_file}}/1337_1842_430_event_{event}.svg", event = EVENTS) 
     conda:
         "../envs/boxplot.yaml"
-    wildcard_constraints:  
-        motif = "A-Za-z",
-        window = "0-9"
     threads: 16
     shell:
     # --no-mmap command disables mmap (loading to disk), could make problems on local PCs without enough RAM
