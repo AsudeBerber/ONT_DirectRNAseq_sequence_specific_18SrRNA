@@ -20,6 +20,17 @@ calculates 9 features (s. align_signal.py) for given window_size (21 works very 
 not the "chromosome")
 as this function calls align_signal.py, both functions are required to be in the same directory
 """
+
+"""
+Normalises and collapses the signal based on the moves table. Outputs an array with the
+following values for each called based:
+4: log10 signal length
+5: mean signal intensity
+6: standard deviation of signal intensity
+7: median signal intensity
+8: median absolute deviation of signal intensity
+0-3: mean signal intensity for each quartile
+"""
 # https://github.com/hiruna72/squigualiser/tree/main/docs contains many useful explanations on the movetable, pore models etc.
 rule signal_sum:
     input: pod5 = "resources/pod5/p2s/",
