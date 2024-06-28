@@ -132,7 +132,7 @@ def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos, file, 
     boxplot_ann(df_refseq_1337_sliced, ax1)
     ax1.set_yscale("symlog")
     ax1.set_xlabel("Steps")
-    ax1.set_title(f"Pos {1337} ± {frame} bp")
+    ax1.set_title(f"Pos 1337 ± {frame} bp")
 
 
     ax2.violinplot(filter_by_pos(1842, df_event_pos), showmeans = False, showextrema = False)
