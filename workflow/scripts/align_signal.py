@@ -1,13 +1,18 @@
 __author__ = "Jens Martin"
 __email__ = "jens.martin@outlook.com"
 
+"""
+this is a module called by both signal_summary.py and seq2mv_direct_RNA.py
+
+"""
 import numpy as np
-import pdb
-# for getting position in signal (goes 3' to 5')
+
+# for getting position in signal (goes 3' to 5'); 
 def rev_locus(locus, read):
     locus_rev = read.query_length -1 - locus
     return locus_rev
 
+# gives positions in query sequence (as well as position in reversed sequence (3'-> 5') for given positions in reference)
 def get_loci(read, pairs, wd, motif_length, ref_pos):
     """
     gets pos in query for reference position
@@ -17,6 +22,7 @@ def get_loci(read, pairs, wd, motif_length, ref_pos):
     # reversed loci, for operations from 3' end
     rev_loci = []
 
+    #ref_pos: list of positions to look at (single read plot: only one position; signal_summary: e.g. all acetylated positions)
     #pairs[0]: query pos; [1]: ref pos; [2] ref base
     for i, pos in enumerate(ref_pos):
         # for empty array
@@ -34,7 +40,7 @@ def get_loci(read, pairs, wd, motif_length, ref_pos):
             
  
     loci = [pairs[locus, 0] for locus in ref_loci_index]
-    # Remove loci that are not present on the query or too close to the ends of the alignment
+    # Remove loci that are not present on the query or too close to the ends of the alignment, matches ref_loci, so that is wont include positions to removed loci
     loci = [locus for locus in loci if locus is not None and locus > wd and locus < read.query_length - wd - (motif_length)]
     ref_loci = [pairs[index, 1] for index in ref_loci_index if pairs[index, 0] != None and pairs[index,0] in loci]
     if len(loci) != len(ref_loci):
@@ -45,6 +51,7 @@ def get_loci(read, pairs, wd, motif_length, ref_pos):
     return loci, ref_loci, rev_loci
 
 # this part is modified from https://github.com/WGLab/DeepMod2/blob/main/src/detect.py
+# reads movetable and calculates features per read (for signal_summary) or build array with signal positions inferred from movetable (for seq2mv*.py)
 def access_mv(signal, moves, offset, rev_loci, motif_length, extra_window, read, mode):
     """
     Normalises and collapses the signal based on the moves table. Outputs an array with the
@@ -56,7 +63,7 @@ def access_mv(signal, moves, offset, rev_loci, motif_length, extra_window, read,
     8: median absolute deviation of signal intensity
     0-3: mean signal intensity for each quartile
     """
-
+    # for explanation, s. https://github.com/hiruna72/squigualiser/blob/main/docs/move_table.md
     stride = moves.pop(0)
     move_index = np.where(moves)[0]
     rlen = len(move_index)
@@ -98,6 +105,7 @@ def access_mv(signal, moves, offset, rev_loci, motif_length, extra_window, read,
         return dict_events
 
     elif mode == "single_read":
+        # seq2mv: [signal start, signal end, position in query] --> is used for plotting single read plot
         seq2mv = []
         for locus in pos_get_signal:
             prev = move_index[locus]*stride+offset

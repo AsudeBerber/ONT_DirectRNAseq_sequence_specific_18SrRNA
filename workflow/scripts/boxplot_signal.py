@@ -1,6 +1,12 @@
 __author__ = "Jens Martin"
 __email__ = "jens.martin@outlook.com"
 
+"""
+plots boxplot for all features given by .npz file, currently for pos 403, 1337 and 1842
+for future: no plotting, instead only loading of .npz file and production of small .csv file containing only data needed to construct boxplot (mean, quartils, limits)
+--> could then be loaded in R (currently .npz is to big for that)
+"""
+
 import argparse
 import matplotlib.pyplot as plt
 import numpy as np
@@ -8,8 +14,6 @@ import pandas as pd
 import sys
 import logging
 import os
-import pathlib
-import pdb
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
@@ -75,6 +79,7 @@ def parse_args(argv):
 
     return args
 
+
 #frame: #number of bases to plot arround CCG (including CCG)
 def slice_bases(event, query, features, ref):
     whole_window = len(query[0])
@@ -84,6 +89,7 @@ def slice_bases(event, query, features, ref):
     sliced_refseq = ref[:,index_bases]
     return index_bases, sliced_event, sliced_refseq
     
+
 def filter_by_pos(pos, df_event_pos):
     df = df_event_pos
     df_filtered = df[df["pos"] == str(pos)]
@@ -91,8 +97,7 @@ def filter_by_pos(pos, df_event_pos):
     df_plot_flip = np.fliplr(df_plot)
     return df_plot_flip
 
-
-
+#makes dataframes to plot data
 def make_dfs(event, query, features, ref, pos): 
     index_bases, sliced_event, sliced_ref_seq = slice_bases(event=event, query=query, features=features, ref=ref)
 
@@ -111,9 +116,7 @@ def boxplot_ann(refseq, axis):
             axis.annotate(base, xy = (i+1, 0.04), xycoords=("data", "axes fraction"), ha = "center", fontsize = 12)
 
 
-#1337 | 1842
 def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos, file, output_dir):
-    # df_event_filtered = filter_by_pos(pos)
 
     df_refseq = pd.DataFrame(np.fliplr(ref), columns = list(range(1,window_size+1)))
     df_refseq = pd.concat([df_refseq, df_pos], axis=1)
@@ -125,7 +128,6 @@ def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos, file, 
     df_refseq_1337_sliced = df_refseq_1337.iloc[:,index_bases]
     df_refseq_1842_sliced = df_refseq_1842.iloc[:,index_bases]
 
-
     fig, (ax1, ax2, ax3) = plt.subplots(1,3, figsize = (20,4), sharey= True)
     ax1.violinplot(filter_by_pos(1337, df_event_pos), showmeans = False, showextrema = False)
     ax1.boxplot(filter_by_pos(1337, df_event_pos), showfliers = False)
@@ -133,7 +135,6 @@ def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos, file, 
     ax1.set_yscale("symlog")
     ax1.set_xlabel("Steps")
     ax1.set_title(f"Pos 1337 ± {frame} bp")
-
 
     ax2.violinplot(filter_by_pos(1842, df_event_pos), showmeans = False, showextrema = False)
     ax2.boxplot(filter_by_pos(1842, df_event_pos), showfliers = False)
