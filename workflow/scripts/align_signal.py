@@ -2,7 +2,6 @@ __author__ = "Jens Martin"
 __email__ = "jens.martin@outlook.com"
 
 import numpy as np
-import pdb
 # for getting position in signal (goes 3' to 5')
 def rev_locus(locus, read):
     locus_rev = read.query_length -1 - locus
