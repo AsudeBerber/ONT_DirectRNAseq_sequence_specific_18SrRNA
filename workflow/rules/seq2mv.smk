@@ -3,8 +3,6 @@ seq2mv_direct_RNA.py produces a plot of the sequencing signal (squigle) for a gi
 sites of interest in 18S rRNA:     site 1: 1337	ac4C 79%        site 2: 1842	ac4C 99%
 reads (and corresponding regions) can be found in the IGV viewer 
     or  (w/o region; gi... with no position stays the same for all 18S rRNA) in resources/pod5/index/p2s/pod5_index.json (can be generated via snakemake)
-
-
 """
 rule seq2mv_single_read:
     input: 
@@ -15,9 +13,10 @@ rule seq2mv_single_read:
     params: 
         # region = reference span (in IGV read description); e.g. "gi\|1154491913\|ref\|NR_003286.4\|:15-1868" (this would work only if the read exactly matches this, therefore it is also much faster)
         # thousand seperators have to be removed (e.g. 1.868 -> 1868); special characters like "|" have to be written with escape sign ("|" -> "\|")
-        region = r"gi\|1154491913\|ref\|NR_003286.4\|"
-        # :15-1868"
+        # this is the transcriptome for 18S rRNA, could also be removed from function (with reads not aligning to this region in the bam file, this argument however makes the function faster)
+        region = r"gi\|1154491913\|ref\|NR_003286.4\|" 
     wildcard_constraints:
+        # this can also be removed, argument is not required for script (function currently assumes p2s when no argument is given)
         sequencer = "p2i|p2s"
     conda:
         "../envs/seq2mv.yaml"
