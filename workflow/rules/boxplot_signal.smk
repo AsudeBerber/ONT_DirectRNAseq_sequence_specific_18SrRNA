@@ -11,5 +11,7 @@ rule plot_boxplot:
         "../envs/boxplot.yaml"
     threads: 16
     shell:
-    # --no-mmap command disables mmap (loading to disk), could make problems on local PCs without enough RAM
+    # --no-mmap command disables mmap (loading to disk), could make problems on local PCs without enough RAM 
+    # for some reason the mmap arg (https://numpy.org/doc/stable/reference/generated/numpy.memmap.html) has no effect when run on the promethion,
+    # (takes ~40% RAM), but prevents crashing when computer memory is smaller than size of loaded file
         "python workflow/scripts/boxplot_signal.py -f {input} -w {wildcards.window} --output-dir {wildcards.motif}_window_{wildcards.window}_{wildcards.bam_file}"
