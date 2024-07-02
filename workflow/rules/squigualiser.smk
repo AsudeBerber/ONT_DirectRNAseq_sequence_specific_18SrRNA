@@ -3,6 +3,7 @@ executes squigualiser (https://github.com/hiruna72/squigualiser/tree/main), this
 ! the pod5 file (pod2slow) has to be changed for every read (to find in resources/results/p2s/pod5.json)
 """
 
+# reformating and realigning is necessary before creating slow5 file (squigualiser doesn't like pod5 format)
 rule reformat:
     input:
         "resources/alignments/{bam_file}.bam"
@@ -41,6 +42,8 @@ rule pod2slow:
 
 files = glob_wildcards("resources/blow5/p2s/{file}.blow5")
 
+#####  actually runs squigualiser (needs realigned, sorted, indexed bam file, even when only containing 1 read); 
+#####  creates html output of (when not otherwise specified) complete region of read (but scrollable)
 # as this is only intended to do for a few reads, i would advise to check the corresponding pod5 file to the read_id (to find in resources/results/p2s/pod5.json)
 # it would be possible to create one big slow5 file, however this would take up ~100 GB of storage
 rule signal2ref:

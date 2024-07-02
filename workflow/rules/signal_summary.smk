@@ -19,9 +19,8 @@ calculates 9 features (s. align_signal.py) for given window_size (21 works very 
 ! filtering of the bam_file for only the wanted reference transcript could be needed when aligning to several reference transcripts (currently the function only looks for the reference position,
 not the "chromosome")
 as this function calls align_signal.py, both functions are required to be in the same directory
-"""
 
-"""
+FEATURES:
 Normalises and collapses the signal based on the moves table. Outputs an array with the
 following values for each called based:
 4: log10 signal length
