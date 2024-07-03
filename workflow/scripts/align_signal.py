@@ -126,4 +126,4 @@ def access_mv(signal, moves, offset, rev_loci, motif_length, extra_window, read,
         
         return seq2mv, rev_loci
 
-    else: raise Exception("signal_stats has to be either True or False")
+    else: raise Exception("mode has to be either \'signal_stats\' or \'single_read\'")
