@@ -22,13 +22,17 @@ def parse_args(argv):
 
 ##### copied from https://github.com/WGLab/DeepMod2/blob/main/plot_utils/plot.py, Copyright (c) 2022 Wang Genomics Lab
 def get_file_names(base_path):
+
+    # dictionary of form {readID: pod5 file}
     read_filename_dict={}
     
+    # checks if given path is directory or one pod5 file
     if os.path.isdir(base_path):
         files=Path(base_path).rglob('*.pod5')
     else:
         files=[base_path]
 
+    # goes through every pod5 file, appends all containing read ids to dictionary
     for read_path in files:
         read_path=str(read_path)
         with p5.Reader(read_path) as reader:
@@ -36,15 +40,22 @@ def get_file_names(base_path):
                 read_filename_dict[rname]=read_path
                 
     return read_filename_dict
-                
+
+# main function, raises error when pod5 directory is not given correctly                
 try:
     argv=sys.argv[1:]
     args = parse_args(argv)
+    
+    # creates dictionary 
     pod5_path_dict = get_file_names(base_path=args.pod5)
+
+    # saves it
     json_name = args.output
+
 except:
     raise Exception("pod5 file not found in given path")
 
+# saves dictionary in json file
 with open(f'resources/pod5/index/p2s/{json_name}.json', 'w') as fp:
     json.dump(pod5_path_dict, fp, sort_keys=True, separators=[",\n",":"], allow_nan=False, default=str)
 
