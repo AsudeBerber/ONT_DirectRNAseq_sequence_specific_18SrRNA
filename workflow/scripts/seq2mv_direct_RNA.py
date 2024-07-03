@@ -144,6 +144,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
     else: 
         pod5_dir = f"{pod5_dir}"
 
+    # query sequence from 3' end on    
     rev_qseq = qseq[::-1]
 
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
@@ -156,7 +157,7 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
                 print(f"read found in the following pod5_file: {filename}")
             except:
                 continue
-            #
+            
             signal = read.signal
 
             time = np.arange(len(signal)) #arbitrary time units
@@ -177,8 +178,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
                 cmap_plot[i] = "#2166ac"
             else:
                 cmap_plot[i] = "#67a9cf"
-                
-        qseq_rev = qseq[::-1]
 
         # there is probably a better way to inverse this
         ref_seq_rev = aln_pairs[:,2]
@@ -193,24 +192,27 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
         fig, ax = plt.subplots(figsize=(18, 4))
         xticks = []
 
+        # plots signal
         ax.plot (time_slice, signal_slice,linewidth = 1, color = "#B9B9B9", zorder = 1)
         for i, [start, stop, rev_pos] in enumerate(seq2mv):
             signal_slice_base = signal[start:stop]
             time_slice_base = time [start:stop]
-
+            
+            #plots individual measure point on top of signal
             ax.scatter(time_slice_base, signal_slice_base,
             linewidth = 1, marker= "o", facecolor = cmap_plot[i], zorder = 2, alpha = 0.5, edgecolor = "none")
             x_coord = (start+stop)/2 
 
-            # for ref_seq:
+            # for ref_seq annotation
             ax.annotate("Reference sequence:", xy = (-0.05, -0.12), xycoords=("axes fraction", "axes fraction"), ha = "center", color = "grey")
             ax.annotate(ref_seq_rev[rev_pos], xy = (x_coord, -0.12), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = "grey")
 
-            # read seq
+            # read seq annotation, also gives 9-mer
             ax.annotate(rev_qseq[rev_pos], xy = (x_coord, 0.02), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center", color = base_color(rev_qseq[rev_pos]))
             ax.annotate(rev_qseq[rev_pos:rev_pos-range_bp-1:-1], xy = (x_coord, 0.97), fontsize = 6, xycoords=("data", "axes fraction"), ha = "center", color = "black")
             ax.annotate(i+1, xy= (x_coord, -0.04), fontsize = 8, xycoords=("data", "axes fraction"), ha = "center")
 
+            # plots vertical line between each base position + makes x axis tick there
             ax.axvline(start-0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
             xticks.append(start-0.5)
 
@@ -218,11 +220,13 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
                 ax.axvline(stop+0.5, linestyle = ":", linewidth = 0.5, color = "lightgrey")
                 xticks.append(stop+0.5)
     
+        # titles, labeling
         ax.margins(0.05, 0.1)
         ax.set(xlabel = "base", ylabel = "signal (pA)")
         plt.title(str("Read ID: "+ read_ids))
         ax.annotate(f"18S rRNA transcript - position {pos+1} ± {range_bp} bp", xy= (0.1, 1.04), xycoords="axes fraction", ha = "center")
 
+        # ugly way to set x axis ticks to start/end positions of each base
         ax.set_xticks(ticks = xticks)
         ax.set_xticklabels([])
 
@@ -230,9 +234,10 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
         if not os.path.isdir(f"resources/signal/{sequencer}/plots/{read_ids}"):
             os.makedirs(f"resources/signal/{sequencer}/plots/{read_ids}")
 
+        # saves plot
         plt.savefig(f"resources/signal/{sequencer}/plots/{read_ids}/{read_ids}_{pos+1}-pm{range_bp}.svg", dpi = 300) 
 
-
+# command line arguments
 def cmd_parser(argv):
     parser = argparse.ArgumentParser(description="plots electric current/timepoint with corresponding basecalled base for given Read_ID")
     parser.add_argument("--sequencer", help= "name of sequencer (p2i|p2s)")
@@ -257,9 +262,11 @@ def cmd_parser(argv):
     # starts at pos 0
     args.pos = args.pos - 1
 
+    # prints read id list
     if args.get_readids == True:
         read_id_list_bam(args.sequencer, args.sample)
 
+    # when no-fetch is turned on, mv, ts, seq have to be given, for testing purposes
     if args.no_fetch == True:
         fetch = False
     else:
@@ -271,9 +278,11 @@ def cmd_parser(argv):
 def main(argv = sys.argv[1:]):
     args, fetch = cmd_parser(argv= argv)
 
+    # gets seq2mv array with positions in signal for given reference position +- range; query sequence and aligned query-reference pairs (query pos - reference position)
     seq2mv, qseq, aln_pairs = seq_to_mv(reads_ids = args.readID, region = args.region, sample = args.sample,
                     seq = args.seq, mv = args.mv, ts = args.ts, fetch = fetch, ref_pos = args.pos, range = args.range) 
     
+    # plots requested position of given read
     plot_signal_plus_seq(seq2mv=seq2mv, read_ids = args.readID, pos=args.pos, qseq = qseq, aln_pairs = aln_pairs, range_bp = args.range,
                           sequencer = args.sequencer, full_read=False, range_var = "bases", pod5_dir = args.pod5_dir)
     
