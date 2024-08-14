@@ -10,7 +10,7 @@ rule dorado:
     threads:
         20
     shell:
-        "dorado_0.7.2 basecaller {params.model}{params.modification} -b {params.batch_size} {input} --emit-moves > {output}"
+        "dorado_0.7.3 basecaller {params.model}{params.modification} -b {params.batch_size} {input} --emit-moves > {output}"
 
 
 rule dorado_all:
@@ -19,6 +19,22 @@ rule dorado_all:
         "resources/basecalls/p2s_basecalls.bam"
 
 
+#merge these data p2i and p2s
+
+rule samtools_merge:
+    input:
+        directory("resources/pod5/{sample}")
+    output:
+        "resources/basecalls/{sample}_merged_basecalls.bam"
+    conda:
+        "../envs/merge_bam.yaml"
+    log: 
+        "{sample}_merged_basecalls.bam"
+    threads:
+        8
+    wrapper: 
+        "v3.14.1/bio/samtools/merge"
+    
 #dorado_all apply for all rules since I have two samples data files
 #while running it snakemake -np dorado_all (it recognizes all input files and rule dorado as well)
 #then snakemake dorado_all --cores 4 (to run it actual)
