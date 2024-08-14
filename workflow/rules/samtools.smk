@@ -4,7 +4,7 @@ rule samtools_sort:
     output:
         "resources/{dir}/{sample}_sorted.bam"
     conda:  
-        "../envs/sort.yaml"
+        "../envs/samtools.yaml"
     threads:
         16
     shell:
@@ -18,11 +18,20 @@ rule samtools_index:
     output:
         "resources/{dir}/{sample}.bam.bai"
     conda:  
-        "../envs/sort.yaml"
+        "../envs/samtools.yaml"
     threads:
         16
     shell:
         "samtools index -@ {threads} {input}"
 
 
-
+rule samtools_merge:
+    input:
+        "resources/basecalls/p2i_basecalls_sorted.bam",
+        "resources/basecalls/p2s_basecalls_sorted.bam"
+    output:
+        "resources/basecalls/wt_basecalls.bam"
+    conda:
+        "../envs/samtools.yaml"
+    shell: 
+        "samtools merge -o {output} {input}"
