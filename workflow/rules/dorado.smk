@@ -32,8 +32,8 @@ rule samtools_merge:
         "{sample}_merged_basecalls.bam"
     threads:
         8
-    wrapper: 
-        "v3.14.1/bio/samtools/merge"
+    shell: 
+        "v3.14.1/bio/samtools/merge {input} > {output}"
     
 #dorado_all apply for all rules since I have two samples data files
 #while running it snakemake -np dorado_all (it recognizes all input files and rule dorado as well)
