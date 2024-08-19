@@ -3,9 +3,9 @@ creates dict of all reads with corresponding pod5 file, this makes signal_summar
 """
 rule make_pod5_index:
     input: 
-        "resources/pod5/p2s/"
+        "resources/pod5/{sample}/"
     output: 
-        "resources/pod5/index/p2s/pod5_index.json"
+        "resources/pod5/index/{sample}/pod5_index.json"
     conda:
         "../envs/json.yaml"
     threads: 1
@@ -32,11 +32,11 @@ following values for each called based:
 """
 # https://github.com/hiruna72/squigualiser/tree/main/docs contains many useful explanations on the movetable, pore models etc.
 rule signal_sum:
-    input: pod5 = "resources/pod5/p2s/",
-           bam = "resources/alignments/{bam_file}.bam",
-           json = "resources/pod5/index/p2s/pod5_index.json"
+    input: pod5 = "resources/pod5/{sample}/",
+           bam = "resources/alignments/{sample}_basecalls.bam",
+           json = "resources/pod5/index/{sample}/pod5_index.json"
     output: 
-        "resources/results/p2s/{motif}_window_{window_size,[0-9]+}_{bam_file}.npz"
+        "resources/results/signal_summary/{motif}_window_{window_size,[0-9]+}_{sample}.npz"
     conda:
         "../envs/signal_sum.yaml"
     threads:
