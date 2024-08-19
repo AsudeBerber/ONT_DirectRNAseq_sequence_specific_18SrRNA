@@ -44,9 +44,9 @@ def parse_args(argv):
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-p", "--pod5", type=str, required= True)
-    parser.add_argument("-b", "--bam", type=str, required= True)
-    parser.add_argument("-o", "--output", type=str, required= True)
+    parser.add_argument("-p", "--pod5", type=str, required=True)
+    parser.add_argument("-b", "--bam", type=str, required=True)
+    parser.add_argument("-o", "--output", type=str, required=True)
     parser.add_argument("-w", "--window", type=int, default=21)
 
     args = parser.parse_args()

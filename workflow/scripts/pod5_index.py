@@ -41,21 +41,22 @@ def get_file_names(base_path):
                 
     return read_filename_dict
 
-# main function, raises error when pod5 directory is not given correctly                
-try:
-    argv=sys.argv[1:]
-    args = parse_args(argv)
-    
+
+def main(argv=sys.argv[1:]):
+
+    args = parse_args(argv=argv)
+
+    pod5_file = args.pod5
+    out_file = args.output
+
     # creates dictionary 
-    pod5_path_dict = get_file_names(base_path=args.pod5)
+    pod5_path_dict = get_file_names(base_path=pod5_file)
 
-    # saves it
-    json_name = args.output
+    # saves dictionary in json file
+    with open(out_file, 'w') as fp:
+        json.dump(pod5_path_dict, fp, sort_keys=True, separators=[",\n",":"], allow_nan=False, default=str)
 
-except:
-    raise Exception("pod5 file not found in given path")
+    return 0
 
-# saves dictionary in json file
-with open(f'resources/pod5/index/p2s/{json_name}.json', 'w') as fp:
-    json.dump(pod5_path_dict, fp, sort_keys=True, separators=[",\n",":"], allow_nan=False, default=str)
-
+if __name__ == "__main__":
+    exit(main())

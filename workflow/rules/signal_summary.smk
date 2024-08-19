@@ -5,9 +5,9 @@ rule make_pod5_index:
     input: 
         "resources/pod5/{sample}/"
     output: 
-        "resources/pod5/index/{sample}/pod5_index.json"
+        "resources/signal_summary/{sample}_pod5_index.json"
     conda:
-        "../envs/json.yaml"
+        "../envs/signal_sum.yaml"
     threads: 1
     shell:
         "python workflow/scripts/pod5_index.py --pod5 {input} -o pod5_index"
