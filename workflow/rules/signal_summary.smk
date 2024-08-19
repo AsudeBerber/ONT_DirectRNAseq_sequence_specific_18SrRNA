@@ -36,7 +36,7 @@ rule signal_sum:
            bam = "resources/alignments/{sample}_basecalls.bam",
            json = "resources/pod5/index/{sample}/pod5_index.json"
     output: 
-        "resources/results/signal_summary/{motif}_window_{window_size,[0-9]+}_{sample}.npz"
+        "resources/signal_summary/{motif}_window_{window_size,[0-9]+}_{sample}.npz"
     conda:
         "../envs/signal_sum.yaml"
     threads:
