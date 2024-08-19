@@ -44,7 +44,7 @@ def parse_args(argv):
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-p", "--pod5", type=str, required=True)
+    parser.add_argument("-j", "--json", type=str, required=True)
     parser.add_argument("-b", "--bam", type=str, required=True)
     parser.add_argument("-o", "--output", type=str, required=True)
     parser.add_argument("-w", "--window", type=int, default=21)
@@ -59,7 +59,7 @@ def main(argv=sys.argv[1:]):
 
     args = parse_args(argv=argv)
 
-    pod5_file = args.pod5
+    json_file = args.json
     bam_file = args.bam
     window_size = args.window
     npz_file = args.output
@@ -70,10 +70,9 @@ def main(argv=sys.argv[1:]):
 
 
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
-        with open('resources/pod5/index/p2s/pod5_index.json', "r") as f:
+        with open(json_file, "r") as f:
             pod5_index= json.load(f)
 
-        pod5_path = "resources/pod5/p2s/"
         count_keyErr = 0 # counts skipped reads (s. below)
 
         for read in tqdm(bam):

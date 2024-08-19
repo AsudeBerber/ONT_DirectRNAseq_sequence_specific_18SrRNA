@@ -43,7 +43,11 @@ rule signal_sum:
     threads:
         1
     shell:
-        "python workflow/scripts/signal_summary.py --pod5 {input.pod5} --bam {input.bam} --window {wildcards.window_size} --output {output}"
+        "python workflow/scripts/signal_summary.py \
+            --json {input.json} \
+            --bam {input.bam} \
+            --window {wildcards.window_size} \
+            --output {output}"
 
 
 rule signal_sum_all:
