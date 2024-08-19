@@ -21,7 +21,7 @@ rule minimap2_align_txome_all:
     input:
         "resources/alignments/p2s_aligned.bam",
         "resources/alignments/p2i_aligned.bam",
-        "resources/alignments/wt_aligned.bam"
+        "resources/alignments/ko_aligned.bam"
 
 
 ## rule ....all input file and output file extensions should match with each other
