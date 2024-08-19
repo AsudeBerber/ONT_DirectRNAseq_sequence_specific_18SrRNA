@@ -5,9 +5,9 @@ EVENTS = list(range(0,9))
 
 rule plot_boxplot:
     input: 
-        "resources/results/p2s/{motif}_window_{window}_{bam_file}.npz"
+        "resources/results/{sample}/{motif}_window_{window}_{bam_file}.npz"
     output:
-        svg = expand("resources/signal/p2s/signal_summary/{{motif,[A-Za-z]+}}_window_{{window,[0-9]+}}_{{bam_file}}/1337_1842_430_event_{event}.svg", event = EVENTS) 
+        svg = expand("resources/signal/{sample}/signal_summary/{{motif,[A-Za-z]+}}_window_{{window,[0-9]+}}_{{bam_file}}/1337_1842_430_event_{event}.svg", event = EVENTS) 
     conda:
         "../envs/boxplot.yaml"
     threads: 16
@@ -16,3 +16,9 @@ rule plot_boxplot:
     # for some reason the mmap arg (https://numpy.org/doc/stable/reference/generated/numpy.memmap.html) has no effect when run on the promethion,
     # (takes ~40% RAM), but prevents crashing when computer memory is smaller than size of loaded file
         "python workflow/scripts/boxplot_signal.py -f {input} -w {wildcards.window} --output-dir {wildcards.motif}_window_{wildcards.window}_{wildcards.bam_file}"
+
+#rule plot_boxplot_all:
+    #input:
+        #"resources/signal_summary/CCG_window_21_ko.npz",
+        #"resources/signal_summary/CCG_window_21_p2s.npz",
+        #"resources/signal_summary/CCG_window_21_p2i.npz"
