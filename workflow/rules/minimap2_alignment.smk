@@ -19,5 +19,5 @@ rule minimap2_align_txome:
 
 rule minimap2_align_txome_all:
     input:
-        "resources/basecalls/wt_basecalls.bam",
-        "resources/basecalls/ko_basecalls.bam"
+        "resources/alignments/ko_aligned.bam"
+        "resources/alignments/wt_aligned.bam"
