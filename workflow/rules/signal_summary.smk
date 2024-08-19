@@ -33,8 +33,9 @@ following values for each called based:
 # https://github.com/hiruna72/squigualiser/tree/main/docs contains many useful explanations on the movetable, pore models etc.
 rule signal_sum:
     input: pod5 = "resources/pod5/{sample}/",
-           bam = "resources/alignments/{sample}_basecalls.bam",
-           json = "resources/pod5/index/{sample}/pod5_index.json"
+           bam = "resources/alignments/{sample}_aligned.bam",
+           json = "resources/signal_summary/{sample}_pod5_index.json"
+
     output: 
         "resources/signal_summary/{motif}_window_{window_size,[0-9]+}_{sample}.npz"
     conda:
@@ -43,4 +44,12 @@ rule signal_sum:
         1
     shell:
         "python workflow/scripts/signal_summary.py --pod5 {input.pod5} --bam {input.bam} --window {wildcards.window_size} --output {output}"
+
+
+rule signal_sum_all:
+    input:
+        "resources/signal_summary/CCG_window_21_ko.npz",
+        "resources/signal_summary/CCG_window_21_p2s.npz",
+        "resources/signal_summary/CCG_window_21_p2i.npz"
+
 
