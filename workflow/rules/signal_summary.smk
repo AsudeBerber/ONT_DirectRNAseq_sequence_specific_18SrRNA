@@ -10,7 +10,7 @@ rule make_pod5_index:
         "../envs/signal_sum.yaml"
     threads: 1
     shell:
-        "python workflow/scripts/pod5_index.py --pod5 {input} -o pod5_index"
+        "python workflow/scripts/pod5_index.py --pod5 {input} -o {output}"
 
 
 """
