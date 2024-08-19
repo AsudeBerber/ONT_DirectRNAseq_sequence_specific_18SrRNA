@@ -1,6 +1,6 @@
 rule minimap2_align_txome:
     input:
-        bam = "resources/basecalls/{sample}.bam",
+        bam = "resources/basecalls/{sample}_basecalls.bam",
         fa = "resources/referencetranscriptome/18SrRNA.fa"
     output:
         "resources/alignments/{sample}_aligned.bam"
