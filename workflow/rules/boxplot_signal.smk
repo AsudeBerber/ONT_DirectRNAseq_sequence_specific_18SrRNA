@@ -13,7 +13,7 @@ rule plot_boxplot:
     input: 
         "resources/signal_summary/CCG_window_{{window,[0-9]+}}_{sample}.npz"
     output:
-        svg = expand("results/signal_summary/CCG_window_{{window,[0-9]+}}_{sample}/1337_1842_430_event_{event}.svg", event = EVENTS) 
+        svg = expand("results/signal_summary/CCG_window_{{window,[0-9]+}}_{{sample}}/1337_1842_430_event_{event}.svg", event = EVENTS) 
     conda:
         "../envs/boxplot.yaml"
     threads: 16
