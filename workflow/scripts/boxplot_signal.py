@@ -190,10 +190,10 @@ def make_plot(event, window_size, ref, df_pos, index_bases, df_event_pos, file, 
     ax3.set_xlabel("Steps")
 
     # creates directory if not present
-    if not os.path.isdir(f"resources/signal/p2s/signal_summary/{output_dir}"): os.makedirs(f"resources/signal/p2s/signal_summary/{output_dir}")
+    if not os.path.isdir(f"results/signal_summary/{output_dir}"): os.makedirs(f"results/signal_summary/{output_dir}")
 
     # saves figures in same directory with different endings for events
-    plt.savefig(f"resources/signal/p2s/signal_summary/{output_dir}/1337_1842_430_event_{event}.svg", dpi = 300)
+    plt.savefig(f"results/signal_summary/{output_dir}/1337_1842_430_event_{event}.svg", dpi = 300)
 
 def main(argv=sys.argv[1:]):
 
