@@ -1,5 +1,6 @@
 """
-creates dict of all reads with corresponding pod5 file, this makes signal_summary.py much faster (no looping needed)
+creates dict of all reads with corresponding pod5 file, this makes 
+signal_summary.py much faster (no looping needed)
 """
 rule make_pod5_index:
     input: 
@@ -14,11 +15,15 @@ rule make_pod5_index:
 
 
 """
-calculates 9 features (s. align_signal.py) for given window_size (21 works very well, for 9-mers at least 17) for all reads in bam file at pos 429 (no acetylation, rel. similar sequence),
-1337 and 1842 (this can be changed in line 27 of signal_summary.py)
-! filtering of the bam_file for only the wanted reference transcript could be needed when aligning to several reference transcripts (currently the function only looks for the reference position,
-not the "chromosome")
-as this function calls align_signal.py, both functions are required to be in the same directory
+calculates 9 features (s. align_signal.py) for given window_size (21 works very 
+well, for 9-mers at least 17) for all reads in bam file at pos 429 (no
+acetylation, rel. similar sequence), 1337 and 1842 (this can be changed in line
+27 of signal_summary.py)
+
+! filtering of the bam_file for only the wanted reference transcript could be
+needed when aligning to several reference transcripts (currently the function
+only looks for the reference position, not the "chromosome") as this function
+calls align_signal.py, both functions are required to be in the same directory
 
 FEATURES:
 Normalises and collapses the signal based on the moves table. Outputs an array with the
@@ -30,7 +35,8 @@ following values for each called based:
 8: median absolute deviation of signal intensity
 0-3: mean signal intensity for each quartile
 """
-# https://github.com/hiruna72/squigualiser/tree/main/docs contains many useful explanations on the movetable, pore models etc.
+# https://github.com/hiruna72/squigualiser/tree/main/docs contains many useful
+# explanations on the movetable, pore models etc.
 rule signal_sum:
     input: pod5 = "resources/pod5/{sample}/",
            bam = "resources/alignments/{sample}_aligned.bam",
