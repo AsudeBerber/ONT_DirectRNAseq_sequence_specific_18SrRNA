@@ -25,9 +25,9 @@ rule plot_boxplot:
 
 rule plot_boxplot_all:
     input:
-        expand("results/signal_summary/CCG_window_{{window,[0-9]+}}_ko/1337_1842_430_event_{event}.svg",
+        expand("results/signal_summary/CCG_window_21_ko/1337_1842_430_event_{event}.svg",
             event=EVENTS),
-        expand("results/signal_summary/CCG_window_{{window,[0-9]+}}_p2s/1337_1842_430_event_{event}.svg",
+        expand("results/signal_summary/CCG_window_21_p2s/1337_1842_430_event_{event}.svg",
             event=EVENTS),
-        expand("results/signal_summary/CCG_window_{{window,[0-9]+}}_p2i/1337_1842_430_event_{event}.svg",
+        expand("results/signal_summary/CCG_window_21_p2i/1337_1842_430_event_{event}.svg",
             event=EVENTS)
