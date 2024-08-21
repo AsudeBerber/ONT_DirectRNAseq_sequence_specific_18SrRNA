@@ -16,7 +16,8 @@ rule plot_boxplot:
         svg = expand("results/signal_summary/CCG_window_{{window_size,[0-9]+}}_{{sample}}/1337_1842_430_event_{event}.svg", event = EVENTS) 
     conda:
         "../envs/boxplot.yaml"
-    threads: 16
+    threads: 
+        16
     shell:
     # --no-mmap command disables mmap (loading to disk), could make problems on local PCs without enough RAM 
     # for some reason the mmap arg (https://numpy.org/doc/stable/reference/generated/numpy.memmap.html) has no effect when run on the promethion,
