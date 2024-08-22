@@ -22,14 +22,15 @@ rule plot_boxplot:
     # --no-mmap command disables mmap (loading to disk), could make problems on local PCs without enough RAM 
     # for some reason the mmap arg (https://numpy.org/doc/stable/reference/generated/numpy.memmap.html) has no effect when run on the promethion,
     # (takes ~40% RAM), but prevents crashing when computer memory is smaller than size of loaded file
-        "python workflow/scripts/boxplot_signal.py -f {input} -w {wildcards.window_size} --output-dir results/signal_summary/CCG_window_{wildcards.window_size}_{wildcards.sample}/"
+        "set -x python workflow/scripts/boxplot_signal.py -f {input} -w {wildcards.window_size} --output-dir results/signal_summary/CCG_window_{wildcards.window_size}_{wildcards.sample}/"
 
 rule plot_boxplot_all:
     input:
         expand("results/signal_summary/CCG_window_21_p2s/1337_1842_430_event_{event}.svg",
             event=EVENTS),
-
-#expand("results/signal_summary/CCG_window_21_ko/1337_1842_430_event_{event}.svg",
-            #event=EVENTS),
-#expand("results/signal_summary/CCG_window_21_p2i/1337_1842_430_event_{event}.svg",
-            #event=EVENTS)
+            
+        expand("results/signal_summary/CCG_window_21_ko/1337_1842_430_event_{event}.svg",
+            event=EVENTS),
+        
+        expand("results/signal_summary/CCG_window_21_p2i/1337_1842_430_event_{event}.svg",
+            event=EVENTS)
