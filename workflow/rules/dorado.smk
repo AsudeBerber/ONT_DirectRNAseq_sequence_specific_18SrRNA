@@ -8,7 +8,7 @@ rule dorado:
         modification = ",pseU@v1,m6A@v1",
         batch_size = 320
     wildcard_constraints:
-        sample = "ko_thn|p2i_thn"
+        sample = "ko|p2i|p2s"
     threads:
         20
     shell:
@@ -17,8 +17,8 @@ rule dorado:
 
 rule dorado_all:
     input:
-        "resources/basecalls/p2i_basecalls.bam.thn.bam",
-        "resources/basecalls/ko_basecalls.bam.thn.bam"
+        "resources/basecalls/wt_basecalls.bam",
+        "resources/basecalls/ko_basecalls.bam"
 
 
 
