@@ -8,7 +8,7 @@ rule dorado:
         modification = ",pseU@v1,m6A@v1",
         batch_size = 320
     wildcard_constraints:
-        sample = "ko|p2i|p2s"
+        sample = "ko|p2i"
     threads:
         20
     shell:
