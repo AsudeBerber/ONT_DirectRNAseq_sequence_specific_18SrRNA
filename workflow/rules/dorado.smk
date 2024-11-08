@@ -1,3 +1,7 @@
+# Load sample names from samples.txt
+with open("samples.txt") as f:
+    samples = [line.strip() for line in f if line.strip()]
+
 rule dorado:
     input:
         directory("resources/pod5/{sample}")
@@ -7,25 +11,11 @@ rule dorado:
         model = "sup@v5.0.0",
         modification = ",pseU@v1,m6A@v1",
         batch_size = 320
-    wildcard_constraints:
-        sample = "ko|p2i"
     threads:
         20
     shell:
         "dorado_0.7.3 basecaller {params.model}{params.modification} -b {params.batch_size} {input} --emit-moves > {output}"
 
-
 rule dorado_all:
     input:
-        "resources/basecalls/wt_basecalls.bam",
-        "resources/basecalls/ko_basecalls.bam"
-
-
-
-# merge these data p2i and p2s
-
-
-    
-# dorado_all apply for all rules since I have two samples data files
-# while running it snakemake -np dorado_all (it recognizes all input files and rule dorado as well)
-# then snakemake dorado_all --cores 4 (to run it actual)
+        expand("resources/basecalls/{sample}_basecalls.bam", sample=samples)
