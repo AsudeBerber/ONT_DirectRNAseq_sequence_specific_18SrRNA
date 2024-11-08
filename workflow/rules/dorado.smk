@@ -19,6 +19,8 @@ rule dorado_all:
     input:
         "resources/basecalls/wt_basecalls.bam",
         "resources/basecalls/ko_basecalls.bam"
+        "resources/basecalls/wt_thn_basecalls.bam",
+        "resources/basecalls/ko_thn_basecalls.bam"
 
 
 
