@@ -1,6 +1,9 @@
-# Load sample names from samples.txt
-with open("samples.txt") as f:
+# Read sample names from a file specified by the config parameter
+samples_file = config["samples_file"]
+
+with open(samples_file) as f:
     samples = [line.strip() for line in f if line.strip()]
+
 
 rule samtools_sort:
     input:
