@@ -16,6 +16,7 @@ rule samtools_sort:
     shell:
         "samtools sort -T resources/{wildcards.dir}/{wildcards.sample}_sorted -@ {threads} "
         "-O bam {input} > {output}"
+        print(f"Sort: {sample}")
 
 rule samtools_index:
     input:
