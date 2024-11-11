@@ -29,7 +29,7 @@ rule samtools_index:
     shell:
         "samtools index -@ {threads} {input}"
 
-rule all:
+rule samtools_all:
     input:
         expand("resources/alignments/{sample}_sorted.bam.bai", sample=samples)
 
