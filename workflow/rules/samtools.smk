@@ -15,7 +15,7 @@ rule samtools_sort:
         "../envs/samtools.yaml"
     threads: 16
     shell:
-        "samtools sort -T resources/{wildcards.dir}/{wildcards.sample}_sorted -@ {threads} -O bam {input} > {output}"
+        "samtools sort -T resources/alignments/{wildcards.sample}_sorted -@ {threads} -O bam {input} > {output}"
         
 
 rule samtools_index:
