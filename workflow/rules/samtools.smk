@@ -7,9 +7,9 @@ with open(samples_file) as f:
 
 rule samtools_sort:
     input:
-        "resources/{dir}/{sample}.bam"
+        "resources/alignments/{sample}_aligned.bam"
     output:
-        "resources/{dir}/{sample}_sorted.bam"
+        "resources/alignments/{sample}_sorted.bam"
     conda:  
         "../envs/samtools.yaml"
     threads: 16
@@ -19,9 +19,9 @@ rule samtools_sort:
 
 rule samtools_index:
     input:
-        "resources/{dir}/{sample}_sorted.bam"
+        "resources/alignments/{sample}_sorted.bam"
     output:
-        "resources/{dir}/{sample}_sorted.bam.bai"
+        "resources/alignments/{sample}_sorted.bam.bai"
     conda:  
         "../envs/samtools.yaml"
     threads: 16
