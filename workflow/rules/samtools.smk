@@ -4,7 +4,7 @@ samples_file = config["samples_file"]
 with open(samples_file) as f:
     samples = [line.strip() for line in f if line.strip()]
 
-
+print(f"Samples: {samples}")
 rule samtools_sort:
     input:
         "resources/alignments/{sample}_aligned.bam"
