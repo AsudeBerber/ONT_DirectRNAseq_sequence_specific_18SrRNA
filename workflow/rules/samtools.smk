@@ -6,6 +6,7 @@ with open(samples_file) as f:
 
 print(f"Samples: {samples}")
 rule samtools_sort:
+    '''print(f"Sort: {sample}")'''
     input:
         "resources/alignments/{sample}_aligned.bam"
     output:
@@ -15,7 +16,7 @@ rule samtools_sort:
     threads: 16
     shell:
         "samtools sort -T resources/{wildcards.dir}/{wildcards.sample}_sorted -@ {threads} -O bam {input} > {output}"
-        '''print(f"Sort: {sample}")'''
+        
 
 rule samtools_index:
     input:
