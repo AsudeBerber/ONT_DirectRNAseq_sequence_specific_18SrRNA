@@ -27,7 +27,7 @@ rule samtools_index:
     threads: 16
     shell:
         "samtools index -@ {threads} {input}"
-
+'''
 rule samtools_merge:
     input:
         expand("resources/{dir}/{sample}_sorted.bam", sample=samples, dir="basecalls")
@@ -37,3 +37,4 @@ rule samtools_merge:
         "../envs/samtools.yaml"
     shell: 
         "samtools merge -o {output} {input}"
+'''
