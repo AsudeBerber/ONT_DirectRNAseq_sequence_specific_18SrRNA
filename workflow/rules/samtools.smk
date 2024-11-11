@@ -27,6 +27,12 @@ rule samtools_index:
     threads: 16
     shell:
         "samtools index -@ {threads} {input}"
+
+rule all:
+    input:
+        expand("resources/alignments/{sample}_sorted.bam.bai", sample=samples)
+
+
 '''
 rule samtools_merge:
     input:
