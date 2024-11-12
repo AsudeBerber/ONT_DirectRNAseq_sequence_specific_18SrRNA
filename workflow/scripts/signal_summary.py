@@ -37,7 +37,7 @@ ref_no_ac = 429 #unacetylated CCG with similar sequence as 1336/1841 (TTCCG)
 ref_pos = [ref_ac1] + [ref_ac2] + [ref_no_ac]
 motif_length = 1
 
-
+print('hej')
 # handle sys args
 def parse_args(argv):
     """Read arguments from command line."""
