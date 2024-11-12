@@ -76,7 +76,6 @@ def main(argv=sys.argv[1:]):
 
         for read in tqdm(bam):
             if read.is_unmapped:
-                print(f"Unmapped read {read.query_name}: No loci found.")
                 continue
             
             # get loci on the reference matching the motif
