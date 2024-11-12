@@ -29,3 +29,9 @@ rule bam_single_read_2:
     shell:
         # Include header in the single-read BAM file
         """samtools view -h {input.bam} | head -n4 | cat - {input.bam_temp} | samtools view -bh -o {output} || true"""
+
+
+
+rule slice_all:
+    input:
+        expand("resources/alignments/single_reads/{read_ID}.bam")
