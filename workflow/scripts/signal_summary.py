@@ -86,6 +86,7 @@ def main(argv=sys.argv[1:]):
             loci, ref_loci, rev_loci = align_signal.get_loci(read, ac_ccg, extra_window, motif_length, ref_pos)
         
             if len(loci) == 0:
+                print(f"Skipped read {read.query_name}: No loci found.")
                 continue
             
             # extract features from bam file
@@ -103,8 +104,9 @@ def main(argv=sys.argv[1:]):
                 pod5_file = pod5_index[read.query_name]
             except KeyError:
                 count_keyErr += 1
+                print(f"Skipped read {read.query_name}: KeyError in pod5 index.")
                 continue
-                
+            print(f"Processing read {read.query_name}: loci={loci}")
 
             with p5.Reader(pod5_file) as pod5:
                 # Read the selected read from the pod5 file
