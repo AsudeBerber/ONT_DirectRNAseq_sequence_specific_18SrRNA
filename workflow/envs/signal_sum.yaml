@@ -1,7 +1,12 @@
+channels:
+  - conda-forge
+  - bioconda
 dependencies:
-  - samtools=1.20
+  - python=3.13
+  - samtools = 1.20
   - pip
   - pip:
-      - numpy<2.0
-      - pysam==0.22.1
-      - tqdm==2.2.3
+    - pod5==0.3.10
+    - numpy < 2.0
+    - pysam==0.22.1
+    - tqdm==2.2.3
