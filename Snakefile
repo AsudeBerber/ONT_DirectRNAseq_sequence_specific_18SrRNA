@@ -5,8 +5,9 @@ include: "workflow/rules/minimap2_alignment.smk"
 include: "workflow/rules/samtools.smk"
 #include: "workflow/rules/squigualiser.smk"
 #include: "workflow/rules/slice_bam.smk"
-include: "workflow/rules/boxplot_signal.smk"
 include: "workflow/rules/signal_summary.smk"
+include: "workflow/rules/boxplot_signal.smk"
+
 
 '''
 rule all:
