@@ -37,7 +37,6 @@ ref_no_ac = 429 #unacetylated CCG with similar sequence as 1336/1841 (TTCCG)
 ref_pos = [ref_ac1] + [ref_ac2] + [ref_no_ac]
 motif_length = 1
 
-print('hej')
 # handle sys args
 def parse_args(argv):
     """Read arguments from command line."""
@@ -68,15 +67,16 @@ def main(argv=sys.argv[1:]):
 
     with pysam.AlignmentFile(bam_file, mode = "rb", check_sq=False) as bam: 
 
-
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
         with open(json_file, "r") as f:
             pod5_index= json.load(f)
 
         count_keyErr = 0 # counts skipped reads (s. below)
+        print(count_keyErr)
 
         for read in tqdm(bam):
             if read.is_unmapped:
+                print(f"Unmapped read {read.query_name}: No loci found.")
                 continue
             
             # get loci on the reference matching the motif
