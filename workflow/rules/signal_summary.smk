@@ -11,7 +11,7 @@ rule make_pod5_index:
     output: 
         "resources/signal_summary/{sample}_pod5_index.json"
     conda:
-        "../envs/signal_sum.yaml"
+        "workflow/envs/signal_sum.yaml"
     threads: 1
     shell:
         "python workflow/scripts/pod5_index.py --pod5 {input} -o {output}"
@@ -24,7 +24,7 @@ rule signal_sum:
     output: 
         "resources/signal_summary/{motif}_window_{window_size,[0-9]+}_{sample}.npz"
     conda:
-        "../envs/signal_sum.yaml"
+        "workflow/envs/signal_sum.yaml"
     threads:
         1
     shell:
