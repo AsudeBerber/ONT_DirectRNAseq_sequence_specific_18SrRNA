@@ -1,4 +1,6 @@
 channels:
+  - conda-forge
+  - bioconda
 dependencies:
   - python=3.10
   - samtools>=1.17  # Adjust to the closest compatible version
