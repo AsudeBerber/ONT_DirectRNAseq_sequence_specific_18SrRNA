@@ -130,7 +130,7 @@ def main(argv=sys.argv[1:]):
                     continue
             
             print("Finished processing reads.")
-            
+            print(features, id)
             # Convert lists to arrays for saving
             features = np.vstack(features)
             qual = np.vstack(qual)
