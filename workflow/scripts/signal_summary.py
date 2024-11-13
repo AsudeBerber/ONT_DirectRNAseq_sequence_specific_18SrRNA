@@ -70,13 +70,13 @@ def main(argv=sys.argv[1:]):
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
         with open(json_file, "r") as f:
             pod5_index= json.load(f)
-        print(features, id)
+        
         count_keyErr = 0 # counts skipped reads (s. below)
         
         for read in tqdm(bam):
             if read.is_unmapped:
                 continue
-            
+            print(features, id)
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = False)
             ac_ccg= np.array(list(filter(lambda x: x[1] in ref_pos, aligned_pairs)), dtype= "object")
