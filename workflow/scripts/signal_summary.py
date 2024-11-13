@@ -113,7 +113,7 @@ def main(argv=sys.argv[1:]):
                             read=read,
                             mode="signal_stats"
                         )
-                        
+                        print(dict_events)
                         # Prepare per-site features and identifiers
                         per_site_features = np.array([[dict_events[key] for key in reversed(range(locus - extra_window, locus + extra_window + motif_length))] for locus in rev_loci])
                         per_site_id = np.array([read.query_name + ':' + str(locus + 1) for locus in ref_loci])
