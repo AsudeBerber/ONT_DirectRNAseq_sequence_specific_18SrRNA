@@ -77,7 +77,7 @@ def main(argv=sys.argv[1:]):
         for read in bam:
             if read.is_unmapped:
                 continue
-            print(features, id)
+            print('hej')
             # get loci on the reference matching the motif
             aligned_pairs = read.get_aligned_pairs(with_seq=True, matches_only = False)
             ac_ccg= np.array(list(filter(lambda x: x[1] in ref_pos, aligned_pairs)), dtype= "object")
