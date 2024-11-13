@@ -70,7 +70,7 @@ def main(argv=sys.argv[1:]):
         features, qual, query_seq, ref_seq, id = [], [], [], [], []
         with open(json_file, "r") as f:
             pod5_index= json.load(f)
-
+        print(features, id)
         count_keyErr = 0 # counts skipped reads (s. below)
         
         for read in tqdm(bam):
@@ -121,7 +121,6 @@ def main(argv=sys.argv[1:]):
                     # locus_rev is corresponding pos in signal, as this goes from 3' to 5'
                     
                     per_site_features = np.array([[dict_events[key] for key in reversed(range(locus - extra_window , locus + extra_window + motif_length))] for locus in rev_loci])
-                    print(per_site_features)
                     per_site_id = np.array([read.query_name + ':' + str(locus+1) for locus in ref_loci])
                     
 
