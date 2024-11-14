@@ -105,7 +105,10 @@ def slice_bases(event, query, features, ref):
 # creates dataframes from arrays for plotting
 def filter_by_pos(pos, df_event_pos):
     df = df_event_pos
-    df_filtered = df[df["pos"] == str(pos)]
+    #df_filtered = df[df["pos"] == str(pos)]
+    df_filtered = df[pd.to_numeric(df["pos"], errors='coerce') == pos]
+    df_filtered = df_filtered.apply(pd.to_numeric, errors='coerce')
+    print(df_filtered.dtypes)
     df_plot = df_filtered.iloc[:,:FRAME*2+1]
     df_plot_flip = np.fliplr(df_plot)
     return df_plot_flip
