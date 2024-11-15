@@ -35,7 +35,7 @@ rule seq2mv_single_read:
     input: 
         bam = "resources/alignments/{sample}_sorted.bam",
         bai = "resources/alignments/{sample}_sorted.bam.bai",
-        read_ids_file = "resources/{sample}_read_ids.txt"
+        #read_ids_file = "resources/{sample}_read_ids.txt"
     output:
         "resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
     params: 
