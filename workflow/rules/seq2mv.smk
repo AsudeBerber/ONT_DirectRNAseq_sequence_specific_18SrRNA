@@ -6,10 +6,10 @@ reads (and corresponding regions) can be found in the IGV viewer
 """
 rule seq2mv_single_read:
     input: 
-        bam = "resources/alignments/p2s_aligned_sorted.bam",
-        bai = "resources/alignments/p2s_aligned_sorted.bam.bai"
+        bam = "resources/alignments/{sample}_sorted.bam",
+        bai = "resources/alignments/{sample}_sorted.bam.bai"
     output:
-        "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
+        "resources/signal/ps2/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
     params: 
         # region = reference span (in IGV read description); e.g. "gi\|1154491913\|ref\|NR_003286.4\|:15-1868" (this would work only if the read exactly matches this, therefore it is also much faster)
         # thousand seperators have to be removed (e.g. 1.868 -> 1868); special characters like "|" have to be written with escape sign ("|" -> "\|")
@@ -27,9 +27,9 @@ rule seq2mv_single_read:
         --sample {input.bam} \
         --readID {wildcards.read_id} \
         --pos {wildcards.pos} --range {wildcards.range} \
-        --pod5-dir resources/pod5/{wildcards.sequencer} \
+        --pod5-dir resources/pod5/{sample} \
         --region {params.region}"""
      
 rule seq2mv_single_read_all:
     input:
-        "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
+        "resources/signal/ps2/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
