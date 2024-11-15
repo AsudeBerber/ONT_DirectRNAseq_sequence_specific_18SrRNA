@@ -30,6 +30,6 @@ rule seq2mv_single_read:
         --pod5-dir resources/pod5/{wildcards.sequencer} \
         --region {params.region}"""
      
- rule seq2mv_single_read_all:
+rule seq2mv_single_read_all:
     output:
         "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
