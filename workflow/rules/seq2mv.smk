@@ -31,5 +31,5 @@ rule seq2mv_single_read:
         --region {params.region}"""
      
 rule seq2mv_single_read_all:
-    output:
+    input:
         "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
