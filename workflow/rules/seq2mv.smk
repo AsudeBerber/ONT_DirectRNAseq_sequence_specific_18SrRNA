@@ -12,18 +12,33 @@ def get_all_read_ids():
     """Retrieve read IDs for all samples."""
     all_read_ids = {}
     for sample in samples:
-        read_ids_file = f"resources/{sample}_read_IDs.txt"
+        read_ids_file = f"resources/{sample}_read_ids.txt"
         with open(read_ids_file) as f:
             all_read_ids[sample] = [line.strip() for line in f if line.strip()]
     return all_read_ids
 
 all_read_ids = get_all_read_ids()
 
+def generate_input_combinations():
+    """Generate all combinations of sample and read_id."""
+    combinations = []
+    for sample in samples:
+        for read_id in all_read_ids[sample]:
+            combinations.append({
+                "sample": sample,
+                "read_id": read_id,
+                "pos": pos,
+                "range": range_val
+            })
+    return combinations
+
+input_combinations = generate_input_combinations()
+
 rule seq2mv_single_read:
     input: 
         bam = "resources/alignments/{sample}_aligned_sorted.bam",
         bai = "resources/alignments/{sample}_aligned_sorted.bam.bai",
-        read_ids_file = "resources/{sample}_read_IDs.txt"
+        read_ids_file = "resources/{sample}_read_ids.txt"
     output:
         "resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
     params: 
@@ -49,8 +64,5 @@ rule seq2mv_single_read_all:
     input:
         expand(
             "resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg",
-            sample=samples,
-            read_id=lambda sample: all_read_ids[sample],
-            pos=[pos],
-            range=[range_val]
+            input_combinations
         )
