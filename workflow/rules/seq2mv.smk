@@ -5,7 +5,6 @@ reads (and corresponding regions) can be found in the IGV viewer
     or  (w/o region; gi... with no position stays the same for all 18S rRNA) in resources/pod5/index/p2s/pod5_index.json (can be generated via snakemake)
 """
 
-READ_IDS = [line.strip() for line in open("resources/read_id_list_bam.txt")]
 
 rule seq2mv_single_read:
     input: 
@@ -33,6 +32,8 @@ rule seq2mv_single_read:
         --pod5-dir resources/pod5/{wildcards.sequencer} \
         --region {params.region}"""
      
+READ_IDS = [line.strip() for line in open("resources/read_id_list_bam.txt")]
+
 rule seq2mv_single_read_all:
     input:
         expand(
