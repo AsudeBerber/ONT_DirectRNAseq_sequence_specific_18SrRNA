@@ -8,6 +8,17 @@ with open(samples_file) as f:
 pos = 1337  # Example position
 range_val = 100  # Example range value
 
+def get_all_read_ids():
+    """Retrieve read IDs for all samples."""
+    all_read_ids = {}
+    for sample in samples:
+        read_ids_file = f"resources/{sample}_read_ids.txt"
+        with open(read_ids_file) as f:
+            all_read_ids[sample] = [line.strip() for line in f if line.strip()]
+    return all_read_ids
+
+all_read_ids = get_all_read_ids()
+
 rule seq2mv_single_read:
     input: 
         bam = "resources/alignments/{sample}_aligned_sorted.bam",
@@ -18,7 +29,8 @@ rule seq2mv_single_read:
     params: 
         region = r"gi\|1154491913\|ref\|NR_003286.4\|"
     wildcard_constraints:
-        sample = "|".join(samples)
+        sample = "|".join(samples),
+        read_id = "|".join(set(sum(all_read_ids.values(), [])))
     conda:
         "../envs/seq2mv.yaml"
     threads: 1
@@ -38,13 +50,7 @@ rule seq2mv_single_read_all:
         expand(
             "resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg",
             sample=samples,
-            read_id=lambda wildcards: get_read_ids(wildcards.sample),
-            pos=pos,
-            range=range_val
+            read_id=lambda sample: all_read_ids[sample],
+            pos=[pos],
+            range=[range_val]
         )
-
-def get_read_ids(sample):
-    """Retrieve read IDs from the appropriate file for a given sample."""
-    read_ids_file = f"resources/{sample}_read_ids.txt"
-    with open(read_ids_file) as f:
-        return [line.strip() for line in f if line.strip()]
