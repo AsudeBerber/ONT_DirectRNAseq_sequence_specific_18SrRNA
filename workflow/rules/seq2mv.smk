@@ -32,13 +32,12 @@ rule seq2mv_single_read:
         --pod5-dir resources/pod5/{wildcards.sequencer} \
         --region {params.region}"""
      
-READ_IDS = [line.strip() for line in open("resources/read_id_list_bam.txt")]
 
 rule seq2mv_single_read_all:
     input:
         expand(
             "resources/signal/ps2/plots/{read_id}/{read_id}_{pos}-pm{range}.svg",
-            read_id=READ_IDS,
+            read_id=lambda wildcards: get_read_ids("resources/read_id_list_bam.txt"),
             pos=["1337", "1842"],  # Example positions
-            range=["50"],  # Adjust range as required
+            range=["50"],  # Adjust as needed
         )
