@@ -19,20 +19,17 @@ def get_all_read_ids():
 
 all_read_ids = get_all_read_ids()
 
-def generate_input_combinations():
-    """Generate all combinations of sample and read_id."""
-    combinations = []
+def generate_output_files():
+    """Generate all output file paths for the seq2mv_single_read_all rule."""
+    output_files = []
     for sample in samples:
         for read_id in all_read_ids[sample]:
-            combinations.append({
-                "sample": sample,
-                "read_id": read_id,
-                "pos": pos,
-                "range": range_val
-            })
-    return combinations
+            output_files.append(
+                f"resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range_val}.svg"
+            )
+    return output_files
 
-input_combinations = generate_input_combinations()
+output_files = generate_output_files()
 
 rule seq2mv_single_read:
     input: 
@@ -62,7 +59,4 @@ rule seq2mv_single_read:
 
 rule seq2mv_single_read_all:
     input:
-        expand(
-            "resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg",
-            input_combinations
-        )
+        output_files
