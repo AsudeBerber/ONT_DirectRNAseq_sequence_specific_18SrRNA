@@ -149,7 +149,6 @@ def plot_signal_plus_seq(seq2mv, read_ids, pos, qseq, aln_pairs, range_bp, seque
 
     for filename in os.listdir(pod5_dir): #loops through all pod5 files in folder 
         pod5_file = os.path.join(pod5_dir, filename)
-        print(pod5_dir, filename)
         with p5.Reader(pod5_file) as reader:
             # Read the selected read from the pod5 file
             # next() is required here as Reader.reads() returns a Generator
