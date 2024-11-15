@@ -14,33 +14,33 @@ range_val = 100  # Example range value
 
 rule seq2mv_single_read:
     input: 
-        bam = "resources/alignments/{sequencer}_aligned_sorted.bam",
-        bai = "resources/alignments/{sequencer}_aligned_sorted.bam.bai"
+        bam = "resources/alignments/{sample}_aligned_sorted.bam",
+        bai = "resources/alignments/{sample}_aligned_sorted.bam.bai"
     output:
-        "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
+        "resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
     params: 
         region = r"gi\|1154491913\|ref\|NR_003286.4\|"
     wildcard_constraints:
-        sequencer = "|".join(sequencers)
+        sample = "|".join(samples)
     conda:
         "../envs/seq2mv.yaml"
     threads: 1
     shell:
         """
         python workflow/scripts/seq2mv_direct_RNA.py \
-            --sequencer {wildcards.sequencer} \
+            --sample {wildcards.sample} \
             --sample {input.bam} \
             --readID {wildcards.read_id} \
             --pos {wildcards.pos} --range {wildcards.range} \
-            --pod5-dir resources/pod5/{wildcards.sequencer} \
+            --pod5-dir resources/pod5/{wildcards.sample} \
             --region {params.region}
         """
 
 rule seq2mv_single_read_all:
     input:
         expand(
-            "resources/signal/{sequencer}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg",
-            sequencer=sequencers,
+            "resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg",
+            sample=samples,
             read_id=read_ids,
             pos=pos,
             range=range_val
