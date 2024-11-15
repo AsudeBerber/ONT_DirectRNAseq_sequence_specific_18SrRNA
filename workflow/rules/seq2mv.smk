@@ -4,10 +4,6 @@ samples_file = config["samples_file"]
 with open(samples_file) as f:
     samples = [line.strip() for line in f if line.strip()]
 
-# Load read IDs from read_ids.txt
-with open(f"resources/{sample}_read_ids.txt") as f:
-    read_ids = [line.strip() for line in f if line.strip()]
-
 # Define the position and range of interest (this can be adapted or read from a config if needed)
 pos = 1337  # Example position
 range_val = 100  # Example range value
@@ -15,7 +11,8 @@ range_val = 100  # Example range value
 rule seq2mv_single_read:
     input: 
         bam = "resources/alignments/{sample}_aligned_sorted.bam",
-        bai = "resources/alignments/{sample}_aligned_sorted.bam.bai"
+        bai = "resources/alignments/{sample}_aligned_sorted.bam.bai",
+        read_ids_file = "resources/{sample}_read_ids.txt"
     output:
         "resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
     params: 
@@ -41,7 +38,13 @@ rule seq2mv_single_read_all:
         expand(
             "resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg",
             sample=samples,
-            read_id=read_ids,
+            read_id=lambda wildcards: get_read_ids(wildcards.sample),
             pos=pos,
             range=range_val
         )
+
+def get_read_ids(sample):
+    """Retrieve read IDs from the appropriate file for a given sample."""
+    read_ids_file = f"resources/{sample}_read_ids.txt"
+    with open(read_ids_file) as f:
+        return [line.strip() for line in f if line.strip()]
