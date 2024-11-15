@@ -5,7 +5,7 @@ with open(samples_file) as f:
     samples = [line.strip() for line in f if line.strip()]
 
 # Load read IDs from read_ids.txt
-with open("resources/{sample}_read_ids.txt") as f:
+with open(f"resources/{sample}_read_ids.txt") as f:
     read_ids = [line.strip() for line in f if line.strip()]
 
 # Define the position and range of interest (this can be adapted or read from a config if needed)
