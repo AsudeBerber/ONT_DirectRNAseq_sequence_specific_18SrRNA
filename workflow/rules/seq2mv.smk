@@ -12,7 +12,7 @@ def get_all_read_ids():
     """Retrieve read IDs for all samples."""
     all_read_ids = {}
     for sample in samples:
-        read_ids_file = f"resources/{sample}_read_ids.txt"
+        read_ids_file = f"resources/{sample}_read_IDs.txt"
         with open(read_ids_file) as f:
             all_read_ids[sample] = [line.strip() for line in f if line.strip()]
     return all_read_ids
@@ -23,7 +23,7 @@ rule seq2mv_single_read:
     input: 
         bam = "resources/alignments/{sample}_aligned_sorted.bam",
         bai = "resources/alignments/{sample}_aligned_sorted.bam.bai",
-        read_ids_file = "resources/{sample}_read_ids.txt"
+        read_ids_file = "resources/{sample}_read_IDs.txt"
     output:
         "resources/signal/{sample}/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
     params: 
