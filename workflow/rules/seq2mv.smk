@@ -4,6 +4,9 @@ sites of interest in 18S rRNA:     site 1: 1337	ac4C 79%        site 2: 1842	ac4
 reads (and corresponding regions) can be found in the IGV viewer 
     or  (w/o region; gi... with no position stays the same for all 18S rRNA) in resources/pod5/index/p2s/pod5_index.json (can be generated via snakemake)
 """
+
+READ_IDS = [line.strip() for line in open("resources/read_id_list_bam.txt")]
+
 rule seq2mv_single_read:
     input: 
         bam = "resources/alignments/{sample}_sorted.bam",
@@ -27,9 +30,14 @@ rule seq2mv_single_read:
         --sample {input.bam} \
         --readID {wildcards.read_id} \
         --pos {wildcards.pos} --range {wildcards.range} \
-        --pod5-dir resources/pod5/{sample} \
+        --pod5-dir resources/pod5/{wildcards.sequencer} \
         --region {params.region}"""
      
 rule seq2mv_single_read_all:
     input:
-        "resources/signal/ps2/plots/{read_id}/{read_id}_{pos}-pm{range}.svg"
+        expand(
+            "resources/signal/ps2/plots/{read_id}/{read_id}_{pos}-pm{range}.svg",
+            read_id=READ_IDS,
+            pos=["1337", "1842"],  # Example positions
+            range=["50"],  # Adjust range as required
+        )
