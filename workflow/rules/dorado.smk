@@ -24,8 +24,9 @@ rule dorado_all:
 
 # merge these data p2i and p2s
 
+#update 041124 - taken first 100000 reads of bam files from ko and p2i. And running again from beginning
+#as starting with dorado
 
-    
 # dorado_all apply for all rules since I have two samples data files
 # while running it snakemake -np dorado_all (it recognizes all input files and rule dorado as well)
 # then snakemake dorado_all --cores 4 (to run it actual)
